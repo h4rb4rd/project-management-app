@@ -29,7 +29,21 @@ a:active {
   outline: none;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 1.6rem;
+  color: #091e42;
+  background: linear-gradient(0deg, #fff, #eae6ff 100%);
+  background-repeat: no-repeat;
 }

@@ -1,0 +1,56 @@
+.developer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 22rem;
+  width: 100%;
+  padding: 0rem 3rem 1rem 3rem;
+}
+
+.image {
+  width: 22rem;
+  height: 22rem;
+  margin-bottom: 1rem;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+.name {
+  text-align: center;
+  font-size: 2.4rem;
+  color: #5e6c84;
+  margin-bottom: 1rem;
+}
+
+.position {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #b3bac5;
+  margin-bottom: 1rem;
+}
+
+.github {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  color: #5e6c84;
+  margin-bottom: 1rem;
+
+  &:before {
+    content: '';
+    display: block;
+    background-image: url('../../../../assets/github.svg');
+    background-size: contain;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 0.5rem;
+  }
+}
+
+.description {
+  color: #5e6c84;
+  li {
+    list-style: square;
+    margin-bottom: 1rem;
+  }
+}

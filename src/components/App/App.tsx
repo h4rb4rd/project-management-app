@@ -1,9 +1,17 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 
-import cl from './App.module.scss';
+import { setupStore } from '../../store/store';
+import AppRouter from '../AppRouter';
+
+export const store = setupStore();
 
 const App = () => {
-  return <div className={cl.app}>App</div>;
+  return (
+    <Provider store={store}>
+      <AppRouter />
+    </Provider>
+  );
 };
 
 export default App;

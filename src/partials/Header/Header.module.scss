@@ -1,0 +1,38 @@
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 6.5rem;
+  background-color: #fff;
+
+  padding: 1.5rem;
+  background-color: transparent;
+  box-shadow: transparent;
+  transition: all 0.5s ease 0s;
+
+  &.blue {
+    background-color: rgba(0, 101, 255, 0.1);
+  }
+
+  &.shadow {
+    box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+  }
+
+  &.white {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+  }
+}
+
+@media screen and (max-width: 479.98px) {
+  .header {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
