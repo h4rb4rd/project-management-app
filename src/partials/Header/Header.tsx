@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import AuthBar from '../../components/AuthBar';
+import clsx from 'clsx';
 
+import AuthBar from '../../components/AuthBar';
 import Logo from '../../components/Logo';
 import NavBar from '../../components/NavBar';
 import UserBar from '../../components/UserBar';
@@ -11,7 +12,6 @@ import cl from './Header.module.scss';
 const Header = () => {
   const { user } = useAppSelector((state) => state.AuthReducer);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [classes, setClasses] = useState([cl.header]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -26,25 +26,15 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    if (!user) {
-      if (isScrolled) {
-        setClasses([cl.header, cl.white]);
-      } else {
-        setClasses([cl.header]);
-      }
-    } else {
-      setClasses([cl.header, cl.blue]);
-      if (isScrolled) {
-        setClasses([cl.header, cl.blue, cl.shadow]);
-      } else {
-        setClasses([cl.header, cl.blue]);
-      }
-    }
-  }, [user, isScrolled]);
-
   return (
-    <header className={classes.join(' ')}>
+    <header
+      className={clsx(
+        cl.header,
+        !user && isScrolled && cl.white,
+        user && cl.blue,
+        user && isScrolled && `${cl.blue} ${cl.shadow}`
+      )}
+    >
       <Logo />
       {!user && <AuthBar />}
       {user && (
