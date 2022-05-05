@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { UseFormRegister } from 'react-hook-form';
-import { LoginFormDataType } from '../../../../types';
+import { SignUpFormDataType } from '../../../../types';
 
 export type PasswordProps = {
-  register: UseFormRegister<LoginFormDataType>;
+  register: UseFormRegister<SignUpFormDataType>;
 };
 
 import cl from './Password.module.scss';
@@ -16,12 +16,12 @@ const Password = ({ register }: PasswordProps) => {
         {...register('password', {
           required: 'Required',
           minLength: {
-            value: 4,
-            message: 'must be of length 3 to 12',
+            value: 3,
+            message: 'must be of length 3 to 10',
           },
           maxLength: {
-            value: 12,
-            message: 'must be of length 3 to 12',
+            value: 10,
+            message: 'must be of length 3 to 10',
           },
         })}
         type="password"

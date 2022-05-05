@@ -2,28 +2,30 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import { LoginFormDataType } from '../../types';
+import { SignUpFormDataType } from '../../types';
 import Login from './Fields/Login';
+import Name from './Fields/Name';
 import Password from './Fields/Password';
 
-import cl from './LoginForm.module.scss';
+import cl from './SignUpForm.module.scss';
 
-interface LoginFormProps {
-  submitData: (data: LoginFormDataType) => void;
+interface SignUpFormProps {
+  submitData: (data: SignUpFormDataType) => void;
 }
 
-const LoginForm = ({ submitData }: LoginFormProps) => {
+const SignUpForm = ({ submitData }: SignUpFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm<LoginFormDataType>({
+  } = useForm<SignUpFormDataType>({
     mode: 'onSubmit',
   });
 
-  const onSubmit: SubmitHandler<LoginFormDataType> = (data) => {
+  const onSubmit: SubmitHandler<SignUpFormDataType> = (data) => {
     const userData = {
+      name: data.name,
       login: data.login,
       password: data.password,
     };
@@ -37,13 +39,14 @@ const LoginForm = ({ submitData }: LoginFormProps) => {
       {(errors.login || errors.password) && (
         <span className={cl.error}>Указан неверный адрес и/или пароль.</span>
       )}
+      <Name register={register} />
       <Login register={register} />
       <Password register={register} />
       <button className={cl.submit}>Войти</button>
       <hr className={cl.selector} />
-      <Link to="/signup">Зарегистрировать аккаунт</Link>
+      <Link to="/login">Уже есть аккаунт? Войти</Link>
     </form>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;

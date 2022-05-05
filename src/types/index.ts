@@ -3,15 +3,14 @@ import { FieldError } from 'react-hook-form';
 export type FieldErrorType = FieldError | undefined;
 
 export type LoginFormDataType = {
-  email: string;
+  login: string;
   password: string;
 };
 
 export type SignUpFormDataType = {
   name: string;
-  email: string;
+  login: string;
   password: string;
-  avatar: FileList;
 };
 
 export type LocationType = {
