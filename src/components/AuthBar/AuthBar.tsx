@@ -7,12 +7,10 @@ import { RouteNames } from '../AppRouter/types';
 
 import cl from './AuthBar.module.scss';
 
-import ava from '../../assets/avatar.jpg';
-
 const user = {
   name: 'Alex',
-  email: 'alex@mail.ru',
-  imgSrc: ava,
+  login: 'alex@mail.ru',
+  password: '12345',
 };
 
 const AuthBar = () => {

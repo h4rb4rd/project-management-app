@@ -25,10 +25,10 @@ const UserModal = () => {
     <div className={cl.modal}>
       <p className={cl.title}>Учетная запись</p>
       <div className={cl.user}>
-        <img src={user?.imgSrc} alt="ava" />
+        <div className={cl.ava}>{user?.name[0]}</div>
         <div className={cl.info}>
           <p>{user?.name}</p>
-          <p>{user?.email}</p>
+          <p>{user?.login}</p>
         </div>
       </div>
       <button className={cl.logout} onClick={logout}>

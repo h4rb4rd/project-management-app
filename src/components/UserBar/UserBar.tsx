@@ -22,7 +22,7 @@ const UserBar = () => {
   return (
     <div ref={barRef}>
       <button className={cl.userbar} onClick={toggleModal}>
-        <img src={user?.imgSrc} alt="user ava" />
+        <span>{user?.name[0]}</span>
       </button>
       <UserModal />
     </div>

@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { useAppSelector } from '../../hooks/redux';
 import img from '../../assets/home.png';
 import Team from '../../partials/Team';
 
 import cl from './Home.module.scss';
 
 const Home = () => {
+  const { user } = useAppSelector((state) => state.AuthReducer);
+
   return (
     <div className={cl.home}>
       <div className={cl.info}>
@@ -28,7 +31,7 @@ const Home = () => {
           Управляйте проектами, упорядочивайте задачи и поддерживайте командный дух — все это в
           Trello.
         </p>
-        <Link to="/signup">Начать работу &#8594;</Link>
+        {!user && <Link to="/signup">Начать работу &#8594;</Link>}
       </div>
       <Team />
     </div>
