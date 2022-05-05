@@ -1,8 +1,10 @@
 import React from 'react';
+import { withErrorBoundary } from 'react-error-boundary';
 import { Provider } from 'react-redux';
 
 import { setupStore } from '../../store/store';
 import AppRouter from '../AppRouter';
+import ErrorFallback from '../ErrorFallback';
 
 export const store = setupStore();
 
@@ -14,4 +16,6 @@ const App = () => {
   );
 };
 
-export default App;
+export default withErrorBoundary(App, {
+  fallback: <ErrorFallback />,
+});

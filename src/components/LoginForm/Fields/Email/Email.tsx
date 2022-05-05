@@ -13,15 +13,15 @@ const Email = ({ register }: EmailProps) => {
     <div className={cl.container}>
       <input
         {...register('email', {
-          required: 'Required',
-          minLength: {
-            value: 3,
-            message: 'must be of length 3 to 10',
-          },
-          maxLength: {
-            value: 10,
-            message: 'must be of length 3 to 10',
-          },
+          // required: 'Required',
+          // minLength: {
+          //   value: 3,
+          //   message: 'must be of length 3 to 10',
+          // },
+          // maxLength: {
+          //   value: 10,
+          //   message: 'must be of length 3 to 10',
+          // },
         })}
         placeholder="Укажите адрес электронной почты"
         type="email"

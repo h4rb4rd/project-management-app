@@ -14,15 +14,15 @@ const Password = ({ register }: PasswordProps) => {
     <div className={cl.container}>
       <input
         {...register('password', {
-          required: 'Required',
-          minLength: {
-            value: 3,
-            message: 'must be of length 3 to 10',
-          },
-          maxLength: {
-            value: 10,
-            message: 'must be of length 3 to 10',
-          },
+          // required: 'Required',
+          // minLength: {
+          //   value: 3,
+          //   message: 'must be of length 3 to 10',
+          // },
+          // maxLength: {
+          //   value: 10,
+          //   message: 'must be of length 3 to 10',
+          // },
         })}
         type="password"
         placeholder="Введите пароль"

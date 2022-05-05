@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { LoginFormDataType } from '../../types';
 
@@ -12,6 +12,7 @@ const Login = () => {
   const submitData = (data: LoginFormDataType) => {
     console.log(data);
   };
+
   return (
     <div className={cl.login}>
       <Logo />
