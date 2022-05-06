@@ -1,9 +1,105 @@
 .footer {
   display: flex;
   align-items: center;
-  min-height: 6.5rem;
+  // min-height: 6.5rem;
   background-color: #fff;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
-  padding: 1.5rem;
   margin-top: auto;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  color: #afafaf;
+  font-size: 2rem;
+  font-weight: 500;
+  padding: 0 3rem;
+  margin: 0 auto;
+}
+
+.githubs {
+  display: flex;
+
+  margin-right: 1rem;
+}
+
+.github {
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  color: #5e6c84;
+  font-size: 1.4rem;
+  font-weight: 500;
+
+  img {
+    width: 3rem;
+    width: 3rem;
+    object-fit: contain;
+    margin-right: 0.5rem;
+  }
+}
+
+.rss {
+  width: 13rem;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.copy {
+  margin-right: 31.5rem;
+}
+
+@media screen and (max-width: 1000.98px) {
+  .footer {
+    height: 100%;
+    padding: 2rem 0;
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .githubs {
+    order: 1;
+    margin-bottom: 1rem;
+  }
+
+  .rss {
+    order: 2;
+    margin-bottom: 2rem;
+  }
+
+  .copy {
+    order: 3;
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 479.98px) {
+  .githubs {
+    order: 2;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    a:not(:last-child) {
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+    }
+  }
+  .rss {
+    order: 1;
+    margin-bottom: 2rem;
+  }
+  .copy {
+    order: 3;
+  }
 }
