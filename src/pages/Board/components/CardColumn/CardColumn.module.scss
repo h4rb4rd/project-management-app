@@ -1,0 +1,44 @@
+.cardColumn {
+  display: flex;
+  flex-direction: column;
+  background-color: #ebecf0;
+  border-radius: 0.3rem;
+  min-height: 27.2rem;
+  overflow-x: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  padding-left: 1rem;
+  column-gap: 0.1rem;
+  align-items: center;
+  border-bottom: 0.01rem solid #0000003d;
+  overflow: hidden;
+}
+
+.titleBoard {
+  width: 100%;
+  color: #172b4d;
+  font-weight: bold;
+}
+
+.inputTitle {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #172b4d;
+  font-weight: bold;
+  width: 100%;
+}
+
+.addButton {
+  width: 5rem;
+  height: 3rem;
+  border: none;
+  outline: none;
+  background-color: #ebecf0;
+  color: lime;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
