@@ -14,14 +14,14 @@ const Login = ({ register }: LoginProps) => {
     <div className={cl.container}>
       <input
         {...register('login', {
-          required: 'Required',
+          required: 'Поле логин не может быть пустым',
           minLength: {
             value: 3,
-            message: 'must be of length 3 to 10',
+            message: 'Логин должен содержать не менее 3 символов',
           },
           maxLength: {
             value: 10,
-            message: 'must be of length 3 to 10',
+            message: 'Логин должен содержать не более 10 символов',
           },
         })}
         placeholder="Введите логин"

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { LoginFormDataType } from '../../types';
 import Login from './Fields/Login';
@@ -14,6 +16,7 @@ interface LoginFormProps {
 
 const LoginForm = ({ submitData }: LoginFormProps) => {
   const {
+    formState,
     register,
     handleSubmit,
     formState: { errors, isValid },
@@ -32,16 +35,34 @@ const LoginForm = ({ submitData }: LoginFormProps) => {
     reset();
   };
 
+  useEffect(() => {
+    if (formState.errors.login) {
+      toast.error(errors.login?.message);
+    }
+    if (formState.errors.password) {
+      toast.error(errors.password?.message);
+    }
+  }, [formState.isSubmitting]);
+
   return (
     <form className={cl.form} onSubmit={handleSubmit(onSubmit)}>
-      {(errors.login || errors.password) && (
-        <span className={cl.error}>Указан неверный адрес и/или пароль.</span>
-      )}
       <Login register={register} />
       <Password register={register} />
       <button className={cl.submit}>Войти</button>
       <hr className={cl.selector} />
       <Link to="/signup">Зарегистрировать аккаунт</Link>
+      <ToastContainer
+        position="bottom-right"
+        theme="colored"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+      />
     </form>
   );
 };

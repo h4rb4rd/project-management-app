@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { LoginFormDataType } from '../../types';
-
 import LoginForm from '../../components/LoginForm';
 import Logo from '../../components/Logo';
 import SignUpBg from '../../partials/SignUpBg';

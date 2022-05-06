@@ -14,15 +14,7 @@ const Name = ({ register }: NameProps) => {
     <div className={cl.container}>
       <input
         {...register('name', {
-          required: 'Required',
-          minLength: {
-            value: 3,
-            message: 'must be of length 3 to 10',
-          },
-          maxLength: {
-            value: 10,
-            message: 'must be of length 3 to 10',
-          },
+          required: 'Поле имя не может быть пустым',
         })}
         placeholder="Введите имя"
         type="text"
