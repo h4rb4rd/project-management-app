@@ -1,6 +1,7 @@
 .form {
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   a {
     text-align: center;
@@ -16,6 +17,7 @@
 }
 
 .submit {
+  width: 100%;
   background-color: #5aac44;
   color: #fff;
   padding: 0.8rem 1.8rem;
@@ -34,4 +36,13 @@
   border: 0;
   border-top: 1px solid hsl(0, 0%, 80%);
   margin: 3rem 0 2rem;
+}
+
+@media screen and (max-width: 479.98px) {
+  .form {
+    max-width: 31rem;
+  }
+  .submit {
+    max-width: 30rem;
+  }
 }

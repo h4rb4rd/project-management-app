@@ -28,3 +28,9 @@
     margin-bottom: 2.5rem;
   }
 }
+
+@media screen and (max-width: 479.98px) {
+  .container {
+    max-width: 31rem;
+  }
+}
