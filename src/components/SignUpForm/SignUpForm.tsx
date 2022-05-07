@@ -1,21 +1,24 @@
 import React, { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SignUpFormDataType } from '../../types';
+import AuthService from '../../services/AuthService';
+import { authSlice } from '../../store/reducers/AuthSlice';
+import { AxiosErrorDataType, SignUpFormDataType } from '../../types';
 import Login from './Fields/Login';
 import Name from './Fields/Name';
 import Password from './Fields/Password';
+import { useAppDispatch } from '../../hooks/redux';
 
 import cl from './SignUpForm.module.scss';
 
-interface SignUpFormProps {
-  submitData: (data: SignUpFormDataType) => void;
-}
+const SignUpForm = () => {
+  const { setUser } = authSlice.actions;
+  const dispatch = useAppDispatch();
 
-const SignUpForm = ({ submitData }: SignUpFormProps) => {
   const {
     formState,
     register,
@@ -26,15 +29,22 @@ const SignUpForm = ({ submitData }: SignUpFormProps) => {
     mode: 'onSubmit',
   });
 
-  const onSubmit: SubmitHandler<SignUpFormDataType> = (data) => {
-    const userData = {
-      name: data.name,
-      login: data.login,
-      password: data.password,
-    };
-
-    submitData(userData);
+  const onSubmit: SubmitHandler<SignUpFormDataType> = ({ name, login, password }) => {
+    signUp(name, login, password);
     reset();
+  };
+
+  const signUp = async (name: string, login: string, password: string) => {
+    try {
+      const signUpResponse = await AuthService.signUp(name, login, password);
+      localStorage.setItem('user', JSON.stringify(signUpResponse.data));
+      dispatch(setUser(signUpResponse.data));
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        const data = err.response.data as AxiosErrorDataType;
+        toast.error(data.message);
+      }
+    }
   };
 
   useEffect(() => {

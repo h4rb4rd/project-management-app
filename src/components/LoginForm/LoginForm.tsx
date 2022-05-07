@@ -1,20 +1,26 @@
 import React, { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import AuthService from '../../services/AuthService';
+import { authSlice } from '../../store/reducers/AuthSlice';
 import { LoginFormDataType } from '../../types';
 import Login from './Fields/Login';
+import UserService from '../../services/UserService';
 import Password from './Fields/Password';
+import { TokenDataType, AxiosErrorDataType } from '../../types';
+import { useAppDispatch } from '../../hooks/redux';
 
 import cl from './LoginForm.module.scss';
 
-interface LoginFormProps {
-  submitData: (data: LoginFormDataType) => void;
-}
+const LoginForm = () => {
+  const { setUser } = authSlice.actions;
+  const dispatch = useAppDispatch();
 
-const LoginForm = ({ submitData }: LoginFormProps) => {
   const {
     formState,
     register,
@@ -25,14 +31,26 @@ const LoginForm = ({ submitData }: LoginFormProps) => {
     mode: 'onSubmit',
   });
 
-  const onSubmit: SubmitHandler<LoginFormDataType> = (data) => {
-    const userData = {
-      login: data.login,
-      password: data.password,
-    };
-
-    submitData(userData);
+  const onSubmit: SubmitHandler<LoginFormDataType> = ({ login, password }) => {
+    signIn(login, password);
     reset();
+  };
+
+  const signIn = async (login: string, password: string) => {
+    try {
+      const signInResponse = await AuthService.signIn(login, password);
+      localStorage.setItem('token', signInResponse.data.token);
+
+      const tokenData: TokenDataType = jwt_decode(signInResponse.data.token);
+      const userResponse = await UserService.getUser(tokenData.userId);
+      localStorage.setItem('user', JSON.stringify(userResponse.data));
+      dispatch(setUser(userResponse.data));
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        const data = err.response.data as AxiosErrorDataType;
+        toast.error(data.message);
+      }
+    }
   };
 
   useEffect(() => {

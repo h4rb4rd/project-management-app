@@ -3,11 +3,10 @@
   align-items: center;
   font-size: 1.8rem;
 
-  button {
+  a {
     padding: 0.8rem 0.9rem;
     border-radius: 3px;
     font-weight: 500;
-    cursor: pointer;
     transition: all 0.2s ease 0s;
 
     &:nth-child(1) {
@@ -17,11 +16,11 @@
 
       &:hover {
         color: #0747a6;
-        text-decoration: underline;
       }
     }
 
     &:nth-child(2) {
+      text-decoration: none;
       color: #fff;
       background-color: #0065ff;
 

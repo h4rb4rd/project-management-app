@@ -18,3 +18,14 @@ export type LocationType = {
     pathname: string;
   };
 };
+
+export type TokenDataType = {
+  login: string;
+  userId: string;
+};
+
+export type AxiosErrorDataType = {
+  error: string;
+  message: string;
+  statusCode: number;
+};
