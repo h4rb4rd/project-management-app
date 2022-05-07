@@ -1,10 +1,18 @@
 .developer {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 22rem;
   width: 100%;
+  background-color: #fff;
+  box-shadow: rgb(0 0 0 / 10%) 0 0 10px;
+  border-radius: 3px;
   padding: 0rem 3rem 1rem 3rem;
+  transition: transform 0.2s ease-in-out 0s;
+  &:hover {
+    transform: scale(1.02);
+  }
 }
 
 .image {
@@ -30,21 +38,16 @@
 }
 
 .github {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   font-size: 2rem;
-  color: #5e6c84;
+  color: transparent;
   margin-bottom: 1rem;
-
-  &:before {
-    content: '';
-    display: block;
-    background-image: url('../../../../assets/github.svg');
-    background-size: contain;
-    width: 2.5rem;
-    height: 2.5rem;
-    margin-right: 0.5rem;
-  }
 }
 
 .description {
