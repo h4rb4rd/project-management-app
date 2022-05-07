@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useAppSelector } from '../../hooks/redux';
@@ -6,10 +6,18 @@ import img from '../../assets/home.png';
 import Team from '../../partials/Team';
 
 import cl from './Home.module.scss';
+import UserService from '../../services/UserService';
 
 const Home = () => {
   const { user } = useAppSelector((state) => state.AuthReducer);
 
+  const getUsers = async () => {
+    const userResponse = await UserService.getUsers();
+    console.log(userResponse);
+  };
+  useEffect(() => {
+    getUsers();
+  }, []);
   return (
     <div className={cl.home}>
       <div className={cl.info}>

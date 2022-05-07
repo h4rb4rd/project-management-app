@@ -5,6 +5,7 @@ import { authSlice } from '../../store/reducers/AuthSlice';
 import Boards from '../../pages/Boards';
 import Board from '../../pages/Board';
 import Home from '../../pages/Home';
+import { getValueWithExpiry } from '../../utils/storage';
 import Login from '../../pages/Login';
 import MainLayout from '../../Layouts/MainLayout';
 import NotFound from '../../pages/NotFound';
@@ -13,16 +14,23 @@ import OnlyPublicRoute from '../../hoc/OnlyPublicRoute';
 import { RouteNames } from './types';
 import SignUp from '../../pages/SignUp';
 import { useAppDispatch } from '../../hooks/redux';
+import UserService from '../../services/UserService';
 
 const AppRouter = () => {
   const { setUser } = authSlice.actions;
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (localStorage.getItem('user')) {
-      const user = JSON.parse(localStorage.getItem('user') || '');
-      dispatch(setUser(user));
+  const checkIsAuth = async () => {
+    const userId = getValueWithExpiry('userId');
+
+    if (userId) {
+      const userResponse = await UserService.getUser(userId);
+      dispatch(setUser(userResponse.data));
     }
+  };
+
+  useEffect(() => {
+    checkIsAuth();
   }, []);
 
   return (

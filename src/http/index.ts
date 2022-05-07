@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getValueWithExpiry } from '../utils/storage';
 
 export const API_URL = 'https://evening-lowlands-21075.herokuapp.com/';
 
@@ -8,7 +9,7 @@ const $api = axios.create({
 
 $api.interceptors.request.use((config) => {
   if (config.headers) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    config.headers.Authorization = `Bearer ${getValueWithExpiry('token')}`;
   }
 
   return config;

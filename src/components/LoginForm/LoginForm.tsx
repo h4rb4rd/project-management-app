@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { Link } from 'react-router-dom';
@@ -12,6 +12,8 @@ import { LoginFormDataType } from '../../types';
 import Login from './Fields/Login';
 import UserService from '../../services/UserService';
 import Password from './Fields/Password';
+import preloader from '../../assets/buttonPreloader.svg';
+import { setValueWithExpiry } from '../../utils/storage';
 import { TokenDataType, AxiosErrorDataType } from '../../types';
 import { useAppDispatch } from '../../hooks/redux';
 
@@ -20,6 +22,7 @@ import cl from './LoginForm.module.scss';
 const LoginForm = () => {
   const { setUser } = authSlice.actions;
   const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     formState,
@@ -37,19 +40,22 @@ const LoginForm = () => {
   };
 
   const signIn = async (login: string, password: string) => {
+    setIsLoading(true);
     try {
       const signInResponse = await AuthService.signIn(login, password);
-      localStorage.setItem('token', signInResponse.data.token);
-
+      setValueWithExpiry('token', signInResponse.data.token, 3600000);
       const tokenData: TokenDataType = jwt_decode(signInResponse.data.token);
+
+      setValueWithExpiry('userId', tokenData.userId, 3600000);
       const userResponse = await UserService.getUser(tokenData.userId);
-      localStorage.setItem('user', JSON.stringify(userResponse.data));
       dispatch(setUser(userResponse.data));
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         const data = err.response.data as AxiosErrorDataType;
         toast.error(data.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,7 +72,13 @@ const LoginForm = () => {
     <form className={cl.form} onSubmit={handleSubmit(onSubmit)}>
       <Login register={register} />
       <Password register={register} />
-      <button className={cl.submit}>Войти</button>
+      <button className={cl.submit} disabled={isLoading}>
+        {isLoading ? (
+          <img className={cl.preloader} src={preloader} alt="preloader" />
+        ) : (
+          <span>Войти</span>
+        )}
+      </button>
       <hr className={cl.selector} />
       <Link to="/signup">Зарегистрировать аккаунт</Link>
       <ToastContainer

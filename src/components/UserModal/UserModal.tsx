@@ -18,7 +18,7 @@ const UserModal = () => {
     dispatch(setIsOpen(false));
     dispatch(setUser(null));
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem('userId');
   };
 
   if (!isOpen) return null;
