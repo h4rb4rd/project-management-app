@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { getValueWithExpiry } from '../utils/storage';
 
 export const API_URL = 'https://evening-lowlands-21075.herokuapp.com/';
@@ -14,5 +15,16 @@ $api.interceptors.request.use((config) => {
 
   return config;
 });
+
+$api.interceptors.response.use(
+  (config) => {
+    return config;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      window.location.href = '/';
+    }
+  }
+);
 
 export default $api;

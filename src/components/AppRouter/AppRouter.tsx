@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
+import Account from '../../pages/Account';
 import { authSlice } from '../../store/reducers/AuthSlice';
 import Boards from '../../pages/Boards';
 import Board from '../../pages/Board';
@@ -24,8 +25,12 @@ const AppRouter = () => {
     const userId = getValueWithExpiry('userId');
 
     if (userId) {
-      const userResponse = await UserService.getUser(userId);
-      dispatch(setUser(userResponse.data));
+      try {
+        const userResponse = await UserService.getUser(userId);
+        dispatch(setUser(userResponse.data));
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -51,6 +56,14 @@ const AppRouter = () => {
           element={
             <PrivateRoute>
               <Board />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={RouteNames.ACCOUNT}
+          element={
+            <PrivateRoute>
+              <Account />
             </PrivateRoute>
           }
         />

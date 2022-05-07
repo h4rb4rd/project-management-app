@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import { authSlice } from '../../store/reducers/AuthSlice';
+import { RouteNames } from '../AppRouter/types';
 import { userModalSlice } from '../../store/reducers/UserModalSlice';
 
 import cl from './UserModal.module.scss';
@@ -12,6 +14,7 @@ const UserModal = () => {
   const { setIsOpen } = userModalSlice.actions;
   const { setUser } = authSlice.actions;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const closeModal = () => dispatch(setIsOpen(false));
   const logout = () => {
@@ -19,6 +22,11 @@ const UserModal = () => {
     dispatch(setUser(null));
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+  };
+
+  const openOptions = () => {
+    navigate(RouteNames.ACCOUNT);
+    dispatch(setIsOpen(false));
   };
 
   if (!isOpen) return null;
@@ -33,6 +41,9 @@ const UserModal = () => {
           <p>{user?.login}</p>
         </div>
       </div>
+      <button className={cl.options} onClick={openOptions}>
+        Настройки
+      </button>
       <button className={cl.logout} onClick={logout}>
         Выйти
       </button>
