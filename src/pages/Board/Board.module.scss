@@ -9,13 +9,11 @@
 
 .boardContainer{
     display: flex;
+    column-gap: 5px;
 }
 
 .boardColumns{
     display: flex;
 }
 
-.column{
-    height: 100%;
-    width: 27.2rem;
-}
+
