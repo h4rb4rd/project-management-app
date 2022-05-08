@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,13 +14,16 @@ import { updateUserData } from '../../store/thunks';
 
 import cl from './AccountForm.module.scss';
 
+import ModalPortal from '../../Portals/ModalPortal';
+import Confirmation from '../Confirmation';
+
 const AccountForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
   const { user } = useAppSelector((state) => state.AuthReducer);
   const { name, login, password } = useAppSelector((state) => state.AccountFormReducer);
   const { setName, setLogin, setPassword } = accountFormSlice.actions;
-
   const dispatch = useAppDispatch();
+  const [isModalActive, setIsModalActive] = useState(false);
 
   const {
     formState,
@@ -32,17 +35,26 @@ const AccountForm = () => {
   } = useForm<SignUpFormDataType>({
     mode: 'onSubmit',
     defaultValues: {
-      name: user?.name || name,
-      login: user?.login || login,
+      name: user?.name,
+      login: user?.login,
     },
   });
 
-  const onSubmit: SubmitHandler<SignUpFormDataType> = ({ name, login, password }) => {
+  const onSubmit: SubmitHandler<SignUpFormDataType> = () => {
+    setIsModalActive(true);
+    reset(initialState);
+  };
+
+  const closeModal = () => {
+    setIsModalActive(false);
+  };
+
+  const handleConfirm = () => {
     if (user) {
       const id = user.id;
       dispatch(updateUserData({ id, name, login, password }));
     }
-    reset(initialState);
+    setIsModalActive(false);
   };
 
   useEffect(() => {
@@ -81,7 +93,13 @@ const AccountForm = () => {
           <span>Сохранить</span>
         )}
       </button>
-
+      <ModalPortal isActive={isModalActive} close={closeModal}>
+        <Confirmation
+          text="Вы действительно хотите изменить данные?"
+          confirm={handleConfirm}
+          close={closeModal}
+        />
+      </ModalPortal>
       <ToastContainer
         position="bottom-right"
         theme="colored"

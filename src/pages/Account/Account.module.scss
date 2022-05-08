@@ -19,7 +19,7 @@
   border-radius: 3px;
   padding: 2.5rem 4rem;
   margin-top: 2rem;
-  z-index: 10;
+  z-index: 500;
 
   h2 {
     color: #5e6c84;
@@ -27,11 +27,11 @@
     line-height: 2.8rem;
     margin-bottom: 1rem;
   }
+}
 
-  img {
-    width: 100%;
-    margin-bottom: 2rem;
-  }
+.bg {
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
 .selector {
