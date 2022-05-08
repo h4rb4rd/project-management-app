@@ -12,7 +12,7 @@ import cl from './Password.module.scss';
 const Password = ({ register }: PasswordProps) => {
   return (
     <div className={cl.container}>
-      <label htmlFor="passwordFieldId">Изменить пароль</label>
+      <label htmlFor="passwordFieldId">Пароль</label>
       <input
         {...register('password', {
           required: 'Поле пароль не может быть пустым',

@@ -3,11 +3,12 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SignUpFormDataType } from '../../types';
+import { initialState, accountFormSlice } from '../../store/reducers/AccountFormSlice';
 import Login from './Fields/Login';
 import Name from './Fields/Name';
 import Password from './Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
+import { SignUpFormDataType } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { updateUserData } from '../../store/thunks';
 
@@ -16,6 +17,8 @@ import cl from './AccountForm.module.scss';
 const AccountForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
   const { user } = useAppSelector((state) => state.AuthReducer);
+  const { name, login, password } = useAppSelector((state) => state.AccountFormReducer);
+  const { setName, setLogin, setPassword } = accountFormSlice.actions;
 
   const dispatch = useAppDispatch();
 
@@ -23,13 +26,14 @@ const AccountForm = () => {
     formState,
     register,
     handleSubmit,
+    watch,
     formState: { errors, isValid },
     reset,
   } = useForm<SignUpFormDataType>({
     mode: 'onSubmit',
     defaultValues: {
-      name: user?.name,
-      login: user?.login,
+      name: user?.name || name,
+      login: user?.login || login,
     },
   });
 
@@ -38,9 +42,17 @@ const AccountForm = () => {
       const id = user.id;
       dispatch(updateUserData({ id, name, login, password }));
     }
-
-    reset();
+    reset(initialState);
   };
+
+  useEffect(() => {
+    const subscription = watch(({ name, login, password }) => {
+      if (name) dispatch(setName(name));
+      if (login) dispatch(setLogin(login));
+      if (password) dispatch(setPassword(password));
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   useEffect(() => {
     if (error) {

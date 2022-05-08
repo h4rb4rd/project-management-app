@@ -12,25 +12,41 @@ import { signIn } from '../../store/thunks';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './LoginForm.module.scss';
+import { initialState, loginFormSlice } from '../../store/reducers/LoginFormSlice';
 
 const LoginForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
+  const { login, password } = useAppSelector((state) => state.loginFormReducer);
+  const { setLogin, setPassword } = loginFormSlice.actions;
   const dispatch = useAppDispatch();
 
   const {
     formState,
     register,
     handleSubmit,
+    watch,
     formState: { errors, isValid },
     reset,
   } = useForm<LoginFormDataType>({
     mode: 'onSubmit',
+    defaultValues: {
+      login,
+      password,
+    },
   });
 
   const onSubmit: SubmitHandler<LoginFormDataType> = ({ login, password }) => {
     dispatch(signIn({ login, password }));
-    reset();
+    reset(initialState);
   };
+
+  useEffect(() => {
+    const subscription = watch(({ login, password }) => {
+      if (login) dispatch(setLogin(login));
+      if (password) dispatch(setPassword(password));
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   useEffect(() => {
     if (error) {

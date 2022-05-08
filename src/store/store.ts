@@ -1,11 +1,17 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
+import AccountFormReducer from './reducers/AccountFormSlice';
 import AuthReducer from './reducers/AuthSlice';
+import loginFormReducer from './reducers/LoginFormSlice';
+import signUpFormReducer from './reducers/SignUpFormSlice';
 import userModalReducer from './reducers/UserModalSlice';
 
 const rootReducer = combineReducers({
   AuthReducer,
   userModalReducer,
+  loginFormReducer,
+  signUpFormReducer,
+  AccountFormReducer,
 });
 
 export const setupStore = () => {

@@ -12,7 +12,7 @@ export type LoginProps = {
 const Login = ({ register }: LoginProps) => {
   return (
     <div className={cl.container}>
-      <label htmlFor="loginFieldId">Изменить логин</label>
+      <label htmlFor="loginFieldId">Логин</label>
       <input
         {...register('login', {
           required: 'Поле логин не может быть пустым',

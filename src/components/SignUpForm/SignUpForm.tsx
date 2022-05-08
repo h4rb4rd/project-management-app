@@ -4,35 +4,52 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { SignUpFormDataType } from '../../types';
+import { initialState, signUpFormSlice } from '../../store/reducers/SignUpFormSlice';
 import Login from './Fields/Login';
 import Name from './Fields/Name';
 import Password from './Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
-
+import { signUp } from '../../store/thunks';
+import { SignUpFormDataType } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './SignUpForm.module.scss';
-import { signUp } from '../../store/thunks';
 
 const SignUpForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
+  const { name, login, password } = useAppSelector((state) => state.signUpFormReducer);
+  const { setName, setLogin, setPassword } = signUpFormSlice.actions;
   const dispatch = useAppDispatch();
 
   const {
     formState,
     register,
     handleSubmit,
+    watch,
     formState: { errors, isValid },
     reset,
   } = useForm<SignUpFormDataType>({
     mode: 'onSubmit',
+    defaultValues: {
+      name,
+      login,
+      password,
+    },
   });
 
   const onSubmit: SubmitHandler<SignUpFormDataType> = ({ name, login, password }) => {
     dispatch(signUp({ name, login, password }));
-    reset();
+    reset(initialState);
   };
+
+  useEffect(() => {
+    const subscription = watch(({ name, login, password }) => {
+      if (name) dispatch(setName(name));
+      if (login) dispatch(setLogin(login));
+      if (password) dispatch(setPassword(password));
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   useEffect(() => {
     if (error) {

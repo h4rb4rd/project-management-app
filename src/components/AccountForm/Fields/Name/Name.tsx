@@ -12,7 +12,7 @@ export type NameProps = {
 const Name = ({ register }: NameProps) => {
   return (
     <div className={cl.container}>
-      <label htmlFor="nameFieldId">Изменить имя</label>
+      <label htmlFor="nameFieldId">Имя</label>
       <input
         {...register('name', {
           required: 'Поле имя не может быть пустым',
