@@ -39,6 +39,9 @@ const SignUpForm = () => {
 
   const onSubmit: SubmitHandler<SignUpFormDataType> = ({ name, login, password }) => {
     dispatch(signUp({ name, login, password }));
+    dispatch(setName(''));
+    dispatch(setLogin(''));
+    dispatch(setPassword(''));
     reset(initialState);
   };
 

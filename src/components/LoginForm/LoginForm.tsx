@@ -37,6 +37,8 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<LoginFormDataType> = ({ login, password }) => {
     dispatch(signIn({ login, password }));
+    dispatch(setLogin(''));
+    dispatch(setPassword(''));
     reset(initialState);
   };
 
