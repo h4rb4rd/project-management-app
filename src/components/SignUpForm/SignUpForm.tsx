@@ -1,26 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import AuthService from '../../services/AuthService';
-import { authSlice } from '../../store/reducers/AuthSlice';
-import { AxiosErrorDataType, SignUpFormDataType } from '../../types';
+import { SignUpFormDataType } from '../../types';
 import Login from './Fields/Login';
 import Name from './Fields/Name';
 import Password from './Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
-import { setValueWithExpiry } from '../../utils/storage';
-import { useAppDispatch } from '../../hooks/redux';
+
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './SignUpForm.module.scss';
+import { signUp } from '../../store/thunks';
 
 const SignUpForm = () => {
-  const { setUser } = authSlice.actions;
+  const { isPending, error } = useAppSelector((state) => state.AuthReducer);
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     formState,
@@ -33,25 +30,15 @@ const SignUpForm = () => {
   });
 
   const onSubmit: SubmitHandler<SignUpFormDataType> = ({ name, login, password }) => {
-    signUp(name, login, password);
+    dispatch(signUp({ name, login, password }));
     reset();
   };
 
-  const signUp = async (name: string, login: string, password: string) => {
-    setIsLoading(true);
-    try {
-      const signUpResponse = await AuthService.signUp(name, login, password);
-      setValueWithExpiry('userId', signUpResponse.data.id, 3600000);
-      dispatch(setUser(signUpResponse.data));
-    } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
-        const data = err.response.data as AxiosErrorDataType;
-        toast.error(data.message);
-      }
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
     }
-  };
+  }, [error]);
 
   useEffect(() => {
     if (formState.errors.name) {
@@ -70,8 +57,8 @@ const SignUpForm = () => {
       <Name register={register} />
       <Login register={register} />
       <Password register={register} />
-      <button className={cl.submit} disabled={isLoading}>
-        {isLoading ? (
+      <button className={cl.submit} disabled={isPending}>
+        {isPending ? (
           <img className={cl.preloader} src={preloader} alt="preloader" />
         ) : (
           <span>Войти</span>

@@ -1,30 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { AxiosErrorDataType } from '../../types';
-import { authSlice } from '../../store/reducers/AuthSlice';
 import { SignUpFormDataType } from '../../types';
 import Login from './Fields/Login';
 import Name from './Fields/Name';
-import UserService from '../../services/UserService';
 import Password from './Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { updateUserData } from '../../store/thunks';
 
 import cl from './AccountForm.module.scss';
 
-interface AccountFormProps {
-  openSuccessWindow: () => void;
-}
-
-const AccountForm = ({ openSuccessWindow }: AccountFormProps) => {
+const AccountForm = () => {
+  const { isPending, error } = useAppSelector((state) => state.AuthReducer);
   const { user } = useAppSelector((state) => state.AuthReducer);
-  const { setUser } = authSlice.actions;
+
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     formState,
@@ -41,29 +34,19 @@ const AccountForm = ({ openSuccessWindow }: AccountFormProps) => {
   });
 
   const onSubmit: SubmitHandler<SignUpFormDataType> = ({ name, login, password }) => {
-    updateUserData(name, login, password);
+    if (user) {
+      const id = user.id;
+      dispatch(updateUserData({ id, name, login, password }));
+    }
+
     reset();
   };
 
-  const updateUserData = async (name: string, login: string, password: string) => {
-    setIsLoading(true);
-    try {
-      if (user) {
-        await UserService.updateUser(user.id, name, login, password);
-        const userResponse = await UserService.getUser(user.id);
-        dispatch(setUser(userResponse.data));
-        openSuccessWindow();
-      }
-    } catch (err) {
-      console.log(err);
-      if (axios.isAxiosError(err) && err.response) {
-        const data = err.response.data as AxiosErrorDataType;
-        toast.error(data.message);
-      }
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
     }
-  };
+  }, [error]);
 
   useEffect(() => {
     if (formState.errors.login) {
@@ -79,8 +62,8 @@ const AccountForm = ({ openSuccessWindow }: AccountFormProps) => {
       <Name register={register} />
       <Login register={register} />
       <Password register={register} />
-      <button className={cl.submit} disabled={isLoading}>
-        {isLoading ? (
+      <button className={cl.submit} disabled={isPending}>
+        {isPending ? (
           <img className={cl.preloader} src={preloader} alt="preloader" />
         ) : (
           <span>Сохранить</span>

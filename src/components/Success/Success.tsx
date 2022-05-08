@@ -1,14 +1,22 @@
 import React from 'react';
 
 import img from '../../assets/success.svg';
+import { useAppDispatch } from '../../hooks/redux';
+import { authSlice } from '../../store/reducers/AuthSlice';
 
 import cl from './Success.module.scss';
 
 interface SuccessProps {
   text: string;
-  close: () => void;
 }
-const Success = ({ text, close }: SuccessProps) => {
+const Success = ({ text }: SuccessProps) => {
+  const { setIsChanged } = authSlice.actions;
+  const dispatch = useAppDispatch();
+
+  const close = () => {
+    dispatch(setIsChanged(false));
+  };
+
   return (
     <div className={cl.success}>
       <img src={img} alt="success" />

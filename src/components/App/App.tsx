@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withErrorBoundary } from 'react-error-boundary';
-import { Provider } from 'react-redux';
 
-import { setupStore } from '../../store/store';
 import AppRouter from '../AppRouter';
+import { checkIsAuth } from '../../store/thunks';
 import ErrorFallback from '../ErrorFallback';
-
-export const store = setupStore();
+import Preloader from '../../pages/Preloader';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 const App = () => {
-  return (
-    <Provider store={store}>
-      <AppRouter />
-    </Provider>
-  );
+  const { isChecking } = useAppSelector((state) => state.AuthReducer);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(checkIsAuth());
+  }, []);
+
+  if (isChecking) {
+    return <Preloader />;
+  }
+
+  return <AppRouter />;
 };
 
 export default withErrorBoundary(App, {
