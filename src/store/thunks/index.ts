@@ -63,6 +63,8 @@ export const updateUserData = createAsyncThunk(
 export const deleteUser = createAsyncThunk('auth/delete', async (id: string, thunkAPI) => {
   try {
     await UserService.deleteUser(id);
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
       const data = err.response.data as AxiosErrorDataType;

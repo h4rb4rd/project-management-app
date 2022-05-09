@@ -8,6 +8,7 @@ import { initialState, signUpFormSlice } from '../../store/reducers/SignUpFormSl
 import Login from './Fields/Login';
 import Name from './Fields/Name';
 import Password from './Fields/Password';
+import PasswordConfirm from './Fields/PasswordConfirm';
 import preloader from '../../assets/buttonPreloader.svg';
 import { signUp } from '../../store/thunks';
 import { SignUpFormDataType } from '../../types';
@@ -17,8 +18,10 @@ import cl from './SignUpForm.module.scss';
 
 const SignUpForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
-  const { name, login, password } = useAppSelector((state) => state.signUpFormReducer);
-  const { setName, setLogin, setPassword } = signUpFormSlice.actions;
+  const { name, login, password, passwordConfirm } = useAppSelector(
+    (state) => state.signUpFormReducer
+  );
+  const { setName, setLogin, setPassword, setPasswordConfirm } = signUpFormSlice.actions;
   const dispatch = useAppDispatch();
 
   const {
@@ -34,6 +37,7 @@ const SignUpForm = () => {
       name,
       login,
       password,
+      passwordConfirm,
     },
   });
 
@@ -42,14 +46,17 @@ const SignUpForm = () => {
     dispatch(setName(''));
     dispatch(setLogin(''));
     dispatch(setPassword(''));
+    dispatch(setPasswordConfirm(''));
     reset(initialState);
   };
 
   useEffect(() => {
-    const subscription = watch(({ name, login, password }) => {
+    const subscription = watch(({ name, login, password, passwordConfirm }) => {
       if (name) dispatch(setName(name));
       if (login) dispatch(setLogin(login));
       if (password) dispatch(setPassword(password));
+      if (password) dispatch(setPassword(password));
+      if (passwordConfirm) dispatch(setPasswordConfirm(passwordConfirm));
     });
     return () => subscription.unsubscribe();
   }, [watch]);
@@ -70,6 +77,9 @@ const SignUpForm = () => {
     if (formState.errors.password) {
       toast.error(errors.password?.message);
     }
+    if (formState.errors.passwordConfirm) {
+      toast.error(errors.passwordConfirm?.message);
+    }
   }, [formState.isSubmitting]);
 
   return (
@@ -77,6 +87,7 @@ const SignUpForm = () => {
       <Name register={register} />
       <Login register={register} />
       <Password register={register} />
+      <PasswordConfirm register={register} watch={watch} />
       <button className={cl.submit} disabled={isPending}>
         {isPending ? (
           <img className={cl.preloader} src={preloader} alt="preloader" />

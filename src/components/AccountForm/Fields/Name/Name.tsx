@@ -1,12 +1,12 @@
 import React from 'react';
 import { UseFormRegister } from 'react-hook-form';
 
-import { SignUpFormDataType } from '../../../../types';
+import { AccountFormDataType } from '../../../../types';
 
 import cl from './Name.module.scss';
 
 export type NameProps = {
-  register: UseFormRegister<SignUpFormDataType>;
+  register: UseFormRegister<AccountFormDataType>;
 };
 
 const Name = ({ register }: NameProps) => {

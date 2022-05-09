@@ -2,16 +2,16 @@ import { FieldError } from 'react-hook-form';
 
 export type FieldErrorType = FieldError | undefined;
 
-export type LoginFormDataType = {
-  login: string;
-  password: string;
-};
-
 export type SignUpFormDataType = {
   name: string;
   login: string;
   password: string;
+  passwordConfirm: string;
 };
+
+export type LoginFormDataType = Pick<SignUpFormDataType, 'login' | 'password'>;
+
+export type AccountFormDataType = Omit<SignUpFormDataType, 'passwordConfirm'>;
 
 export type LocationType = {
   from: {

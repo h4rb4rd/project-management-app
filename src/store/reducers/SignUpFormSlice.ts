@@ -4,12 +4,14 @@ interface signUpFormSlice {
   name: string;
   login: string;
   password: string;
+  passwordConfirm: string;
 }
 
 export const initialState: signUpFormSlice = {
   name: '',
   login: '',
   password: '',
+  passwordConfirm: '',
 };
 
 export const signUpFormSlice = createSlice({
@@ -24,6 +26,9 @@ export const signUpFormSlice = createSlice({
     },
     setPassword(state, action: PayloadAction<string>) {
       state.password = action.payload;
+    },
+    setPasswordConfirm(state, action: PayloadAction<string>) {
+      state.passwordConfirm = action.payload;
     },
   },
 });

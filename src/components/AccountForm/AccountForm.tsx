@@ -3,19 +3,18 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { AccountFormDataType } from '../../types';
+import Confirmation from '../Confirmation';
 import { initialState, accountFormSlice } from '../../store/reducers/AccountFormSlice';
 import Login from './Fields/Login';
+import ModalPortal from '../../Portals/ModalPortal';
 import Name from './Fields/Name';
 import Password from './Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
-import { SignUpFormDataType } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { updateUserData } from '../../store/thunks';
 
 import cl from './AccountForm.module.scss';
-
-import ModalPortal from '../../Portals/ModalPortal';
-import Confirmation from '../Confirmation';
 
 const AccountForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
@@ -32,7 +31,7 @@ const AccountForm = () => {
     watch,
     formState: { errors, isValid },
     reset,
-  } = useForm<SignUpFormDataType>({
+  } = useForm<AccountFormDataType>({
     mode: 'onSubmit',
     defaultValues: {
       name: user?.name,
@@ -40,7 +39,7 @@ const AccountForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<SignUpFormDataType> = () => {
+  const onSubmit: SubmitHandler<AccountFormDataType> = () => {
     setIsModalActive(true);
     reset(initialState);
   };

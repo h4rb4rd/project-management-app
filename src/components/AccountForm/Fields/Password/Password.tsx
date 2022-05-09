@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { UseFormRegister } from 'react-hook-form';
-import { SignUpFormDataType } from '../../../../types';
+import { AccountFormDataType } from '../../../../types';
 
 export type PasswordProps = {
-  register: UseFormRegister<SignUpFormDataType>;
+  register: UseFormRegister<AccountFormDataType>;
 };
 
 import cl from './Password.module.scss';
