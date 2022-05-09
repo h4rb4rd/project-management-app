@@ -47,10 +47,15 @@ export default class BoardService {
     }
   }
 
-  static async updateColumn(boardId: string, titleColumn: string, orderColumn: number) {
+  static async updateColumn(
+    boardId: string,
+    columnId: string,
+    titleColumn: string,
+    orderColumn: number
+  ) {
     try {
       const result = await axios.put(
-        `boards/${boardId}/columns`,
+        `boards/${boardId}/columns/${columnId}`,
         {
           title: titleColumn,
           order: orderColumn,
@@ -65,7 +70,7 @@ export default class BoardService {
         }
       );
     } catch (err) {
-      console.log(err);
+      console.log([orderColumn, err]);
     }
   }
 }

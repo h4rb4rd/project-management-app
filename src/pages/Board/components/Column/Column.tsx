@@ -7,11 +7,17 @@ import cl from './Column.module.scss';
 type TTaskList = [{ id: number; task: string }] | undefined;
 
 interface IColumnView extends IColumn {
-  moveListItem: (dragIndex: number, hoverIndex: number) => void;
+  index: number;
+  moveListItem: (dragId: string, hoverId: string) => void;
+  dropColumn: (column1: IColumn, column2: IColumn) => void;
 }
 
-const Column = ({ id, title, order, moveListItem }: IColumnView) => {
-  const [titleCard, setTitle] = useState(title || 'Board');
+interface IHoverColumn {
+  id: string;
+}
+
+const Column = ({ id, title, order, index, moveListItem, dropColumn }: IColumnView) => {
+  const [titleCard, setTitle] = useState(title || 'column');
   const [isChangeTitle, setIsChangeTitle] = useState(false);
   const [tasks, setTasks] = useState([]);
   const itemRef = useRef(null);
@@ -34,21 +40,26 @@ const Column = ({ id, title, order, moveListItem }: IColumnView) => {
     [tasks]
   );
 
-  const [{ isDragging, handlerId }, dragRef] = useDrag({
-    type: 'item',
-    item: { order },
+  const [{ isDragging }, dragRef] = useDrag({
+    type: 'column',
+    item: { id, title, order },
     collect: (monitor) => {
-      const result = { handlerId: monitor.getHandlerId(), isDragging: monitor.isDragging() };
+      const result = { isDragging: monitor.isDragging() };
       return result;
     },
   });
 
   const [spec, dropRef] = useDrop({
-    accept: 'item',
-    hover({ id: draggedId }: { id: number; tpe: string }) {
-      if (draggedId !== order) {
-        moveListItem(draggedId, order);
+    accept: 'column',
+    hover: (column: IHoverColumn) => {
+      // console.log(index);
+      if (column.id !== id) {
+        moveListItem(column.id, id);
       }
+    },
+    drop: (columnDrop: IColumn) => {
+      console.log('drop', columnDrop);
+      dropColumn(columnDrop, { id, title, order });
     },
   });
 
@@ -75,7 +86,7 @@ const Column = ({ id, title, order, moveListItem }: IColumnView) => {
   };
 
   return (
-    <div ref={itemRef} className={cl.column}>
+    <div ref={itemRef} className={isDragging ? `${cl.column} ${cl.hide}` : cl.column}>
       <div className={cl.columnHeader}>
         {isChangeTitle ? (
           <input

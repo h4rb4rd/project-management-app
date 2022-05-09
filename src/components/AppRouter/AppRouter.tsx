@@ -18,6 +18,7 @@ const AppRouter = () => {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Navigate to={RouteNames.HOME} />} />
+
         <Route path={RouteNames.HOME} element={<Home />} />
         <Route element={<PrivateRoutes />}>
           <Route path={RouteNames.BOARDS} element={<Boards />} />
