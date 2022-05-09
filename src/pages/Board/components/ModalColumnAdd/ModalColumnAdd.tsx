@@ -1,4 +1,4 @@
-import React, { ReactEventHandler, useEffect } from 'react';
+import React, { MouseEventHandler, ReactEventHandler, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import cl from './ModalColumnAdd.module.scss';
@@ -18,13 +18,13 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
     };
   });
 
-  const handleClickContainer = (e:ReactEventHandler<HTMLDivElement>) => {
-    e.
+  const handleClickContainer = (e:React.MouseEvent) => {
+    e.stopPropagation();
   }
 
   return ReactDOM.createPortal(
     <div className={cl.modal} onClick={handleClose}>
-      <div className={cl.formContainer} onClick={handleClickContainer}>
+      <div className={cl.formContainer} onClick={(e) => handleClickContainer(e)}>
         <form action="">
           <input type="text" name="" id="" />
           <div className={cl.btmFormContainer}>
