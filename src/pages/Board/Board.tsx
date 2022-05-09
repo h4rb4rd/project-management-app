@@ -6,6 +6,7 @@ import BoardService from '../../services/BoardService';
 
 import cl from './Board.module.scss';
 import Column from './components/Column';
+import ModalColumnAdd from './components/ModalColumnAdd';
 
 {
   /* <Route path="board" element={<Board />} /> */
@@ -19,6 +20,7 @@ const Board = () => {
   const [columnList, setColumnList] = useState<IColumn[]>([]);
   const boardId = 'aa2c9f91-36f0-4e1c-b177-489c42584bc5';
   // BoardService.getColumns('aa2c9f91-36f0-4e1c-b177-489c42584bc5');
+  const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
 
   useEffect(() => {
     BoardService.getColumns(boardId, setColumnList);
@@ -52,11 +54,25 @@ const Board = () => {
     [columnList]
   );
 
+  const handleCloseModal = () => {
+    setIsShowColumnAdd(false);
+  };
+
+  const addColumn = (title: string) => {
+    console.log(title);
+  };
+
+  const showAddColumnDialog = () => {
+    setIsShowColumnAdd(true);
+  };
+
   return (
     // <DndProvider backend={HTML5Backend}>
     <div className={cl.board}>
       <div className={cl.boardBtnContainer}>
-        <button className={cl.btnColumnAdd}>Column Add</button>
+        <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
+          Column Add
+        </button>
       </div>
       <div className={cl.boardContainer}>
         {/* <div className="boardColumns"> */}
@@ -75,6 +91,9 @@ const Board = () => {
           : null}
         {/* </div> */}
       </div>
+      {isShowColumnAdd ? (
+        <ModalColumnAdd handleClose={handleCloseModal} addColumn={addColumn} />
+      ) : null}
     </div>
     // </DndProvider>
   );

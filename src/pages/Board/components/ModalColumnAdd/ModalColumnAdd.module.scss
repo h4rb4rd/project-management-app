@@ -1,0 +1,50 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  z-index: 1040;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 40rem;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: rgb(0 0 0 / 10%) 0 0 10px;
+  border-radius: 3px;
+  padding: 2.5rem 4rem;
+}
+
+.btmFormContainer {
+  display: flex;
+  width: 100%;
+  column-gap: 1rem;
+}
+
+.buttonForm {
+  width: 50%;
+  background-color: #5aac44;
+  color: #fff;
+  padding: 0.8rem 1.8rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease 0s;
+}
+
+.btnOk{
+    background-color: #5aac44;
+}
+
+.btnCancel{
+    background-color: #ac4444;
+}
