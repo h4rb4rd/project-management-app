@@ -16,6 +16,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  row-gap: 1.5rem;
   align-items: center;
   max-width: 40rem;
   width: 100%;
@@ -23,6 +24,27 @@
   box-shadow: rgb(0 0 0 / 10%) 0 0 10px;
   border-radius: 3px;
   padding: 2.5rem 4rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 1.5rem;
+  }
+
+  input {
+    font-size: 1.4rem;
+    background-color: #fafbfc;
+    border: 2px solid #dfe1e6;
+    border-radius: 3px;
+    height: 4.4rem;
+    width: 32rem;
+    padding: 0.5rem 1rem;
+
+    &:focus {
+      border: 2px solid #4c9aff;
+    }
+  }
 }
 
 .btmFormContainer {
@@ -41,10 +63,10 @@
   transition: background-color 0.3s ease 0s;
 }
 
-.btnOk{
-    background-color: #5aac44;
+.btnOk {
+  background-color: #5aac44;
 }
 
-.btnCancel{
-    background-color: #ac4444;
+.btnCancel {
+  background-color: #ac4444;
 }

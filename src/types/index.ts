@@ -33,3 +33,7 @@ export type AxiosErrorDataType = {
   message: string;
   statusCode: number;
 };
+
+export type TTitleInput = {
+  titleColumn:string;
+}

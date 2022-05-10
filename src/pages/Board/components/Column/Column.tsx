@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { IColumn } from '../../../../models/IColumns';
+import BoardService from '../../../../services/BoardService';
 
 import cl from './Column.module.scss';
 
@@ -8,15 +9,26 @@ type TTaskList = [{ id: number; task: string }] | undefined;
 
 interface IColumnView extends IColumn {
   index: number;
+  // startDrag: (column: IColumn) => void;
   moveListItem: (dragId: string, hoverId: string) => void;
   dropColumn: (column1: IColumn, column2: IColumn) => void;
+  updateTitle: (column: IColumn) => void;
 }
 
 interface IHoverColumn {
   id: string;
 }
 
-const Column = ({ id, title, order, index, moveListItem, dropColumn }: IColumnView) => {
+const Column = ({
+  id,
+  title,
+  order,
+  index,
+  // startDrag,
+  moveListItem,
+  dropColumn,
+  updateTitle,
+}: IColumnView) => {
   const [titleCard, setTitle] = useState(title || 'column');
   const [isChangeTitle, setIsChangeTitle] = useState(false);
   const [tasks, setTasks] = useState([]);
@@ -43,10 +55,21 @@ const Column = ({ id, title, order, index, moveListItem, dropColumn }: IColumnVi
   const [{ isDragging }, dragRef] = useDrag({
     type: 'column',
     item: { id, title, order },
-    collect: (monitor) => {
-      const result = { isDragging: monitor.isDragging() };
-      return result;
-    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+    // (monitor) => {
+    //   const result = { isDragging: monitor.isDragging() };
+    //   return result;
+    // },
+    // begin: () => {
+    //   // const columnLoc = {
+    //   //   id: id,
+    //   //   title: title,
+    //   //   order: order,
+    //   // };
+    //   // startDrag(colum1nLoc);
+    // },
   });
 
   const [spec, dropRef] = useDrop({
@@ -71,10 +94,14 @@ const Column = ({ id, title, order, index, moveListItem, dropColumn }: IColumnVi
   };
 
   const handleBlur = () => {
-    if (!title.trim()) {
-      setTitle(title.trim());
+    if (!titleCard.trim()) {
+      setTitle(title);
     } else {
-      setTitle(title.trim());
+      updateTitle({
+        id,
+        title: titleCard,
+        order,
+      });
     }
     setIsChangeTitle(false);
   };
@@ -92,7 +119,7 @@ const Column = ({ id, title, order, index, moveListItem, dropColumn }: IColumnVi
           <input
             type="text"
             className={cl.inputTitle}
-            value={title}
+            value={titleCard}
             onChange={(e) => {
               handleChangeTitle(e);
             }}
@@ -102,7 +129,7 @@ const Column = ({ id, title, order, index, moveListItem, dropColumn }: IColumnVi
           />
         ) : (
           <div className={cl.titleBoard} onDoubleClick={() => setIsChangeTitle(true)}>
-            {title}
+            {titleCard}
           </div>
         )}
         <button className={cl.addButton}>+</button>
