@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { IColumn } from '../../../../models/IColumns';
-import { ITask } from '../../../../models/ITask';
+import { IDropTasks, ITask } from '../../../../models/ITask';
 import BoardService from '../../../../services/BoardService';
 import ModalTaskAdd from '../ModalTaskAdd.tsx';
 import Task from '../Task';
+import { ITaskView } from '../Task/Task';
 
 import cl from './Column.module.scss';
 
@@ -17,6 +18,7 @@ interface IColumnView extends IColumn {
   moveListItem: (dragId: string, hoverId: string) => void;
   dropColumn: (column1: IColumn, column2: IColumn) => void;
   updateTitle: (column: IColumn) => void;
+  requestBoard: () => void;
 }
 
 interface IHoverColumn {
@@ -33,6 +35,7 @@ const Column = ({
   moveListItem,
   dropColumn,
   updateTitle,
+  requestBoard,
 }: IColumnView) => {
   const [titleCard, setTitle] = useState(title || 'column');
   const [isChangeTitle, setIsChangeTitle] = useState(false);
@@ -42,21 +45,27 @@ const Column = ({
   const itemRef = useRef(null);
 
   useEffect(() => {
-    BoardService.getTasks(boardId, id, setTaskList);
+    requestTaskList();
+    console.log(id);
   }, [isRequestTask]);
 
+  const requestTaskList = async () => {
+    await BoardService.getTasks(boardId, id, setTaskList);
+  };
+
   const moveTaskItem = useCallback(
-    (dragIndex: number, hoverIndex: number) => {
+    (dragId: string, hoverId: string) => {
+      const dragIndex = taskList.findIndex((item) => item.id === dragId);
+      const hoverIndex = taskList.findIndex((item) => item.id === hoverId);
       const dragItem = taskList[dragIndex];
       const hoverItem = taskList[hoverIndex];
 
-      const tmpTasks = taskList.slice(0);
+      // [dragItem.order, hoverItem.order] = [hoverItem.order, dragItem.order];
 
-      // if (tmpTasks) {
-      //   tmpTasks[dragIndex] = hoverItem;
-      //   tmpTasks[hoverIndex] = dragItem;
-      //   setTasks(tmpTasks ? tmpTasks : undefined);
-      // }
+      const copyList = [...taskList];
+      copyList[dragIndex] = hoverItem;
+      copyList[hoverIndex] = dragItem;
+      setTaskList(copyList);
     },
     [taskList]
   );
@@ -67,18 +76,6 @@ const Column = ({
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    // (monitor) => {
-    //   const result = { isDragging: monitor.isDragging() };
-    //   return result;
-    // },
-    // begin: () => {
-    //   // const columnLoc = {
-    //   //   id: id,
-    //   //   title: title,
-    //   //   order: order,
-    //   // };
-    //   // startDrag(colum1nLoc);
-    // },
   });
 
   const [spec, dropRef] = useDrop({
@@ -95,8 +92,18 @@ const Column = ({
     },
   });
 
+  const [specTask, dropTaskRef] = useDrop({
+    accept: 'task',
+    drop: (dropenTask: IDropTasks) => {
+      console.log('dropTask', dropenTask);
+      // dropColumn(columnDrop, { id, title, order });
+      dropTask(dropenTask);
+    },
+  });
+
   dragRef(itemRef);
   dropRef(itemRef);
+  dropTaskRef(itemRef);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -140,8 +147,59 @@ const Column = ({
     requestTasks();
   };
 
+  const dropTask = (dropTask: IDropTasks, task?: ITask) => {
+    // if (!taskList.length) {
+    //   await BoardService.addTask(
+    //     boardId,
+    //     id,
+    //     dropTask.title,
+    //     taskList.length + 1,
+    //     dropTask.description,
+    //     dropTask.userId
+    //   );
+    // } else
+    if (dropTask.columnId !== id) {
+      console.log('!=');
+      dropTask.columnId = id;
+      dropTask.deleteTask(dropTask.id);
+      taskList.push(dropTask);
+      setTaskList([...taskList]);
+    }
+    if (!task) {
+      // await BoardService.deleteTask(boardId, dropTask.columnId, dropTask.id);
+      // await BoardService.addTask(
+      //   boardId,
+      //   id,
+      //   dropTask.title,
+      //   taskList.length + 1,
+      //   dropTask.description,
+      //   dropTask.userId
+      // );
+      // taskList.push(dropTask);
+      // setTaskList([...taskList]);
+    } else {
+      ///
+    }
+    // requestTaskList();
+    // requestBoard();
+  };
+
   const showAddTaskDialog = () => {
     setIsShowTaskAdd(true);
+  };
+
+  const deleteTask = async (taskId: string) => {
+    // await BoardService.deleteTask(boardId, id, taskId);
+    // requestBoard();
+    console.log('deleteTask');
+    const listIndex = taskList.findIndex((item) => item.id === taskId);
+    taskList.splice(listIndex, 1);
+    setTaskList([...taskList]);
+  };
+
+  const deleteColumn = async () => {
+    await BoardService.deleteColumn(boardId, id);
+    requestBoard();
   };
 
   return (
@@ -165,19 +223,24 @@ const Column = ({
           </div>
         )}
       </div>
-      <button className={cl.addButton} onClick={showAddTaskDialog}>
+      <button className={`${cl.columnBtn} ${cl.addButton}`} onClick={showAddTaskDialog}>
         Добавить задачу
       </button>
       <div className={cl.taskList}>
         {taskList.length
-          ? taskList.map(({ id, description, title }, index) => (
+          ? taskList.map(({ id, description, title, order, boardId, columnId, userId }, index) => (
               <Task
                 key={id}
                 title={title}
-                // moveListItem={moveListItem}
+                moveTaskItem={moveTaskItem}
                 id={id}
-                descr={description}
-                // boardId={boardId}
+                description={description}
+                order={order}
+                boardId={boardId}
+                columnId={columnId}
+                userId={userId}
+                dropTask={dropTask}
+                deleteTask={deleteTask}
                 // index={index}
                 // dropColumn={updateColumnOrder}
                 // updateTitle={updateColumnTitle}
@@ -185,6 +248,9 @@ const Column = ({
             ))
           : null}
       </div>
+      <button className={`${cl.columnBtn} ${cl.deleteButton}`} onClick={deleteColumn}>
+        Удалить колонку
+      </button>
       {isShowTaskAdd ? <ModalTaskAdd handleClose={handleCloseModal} addTask={addTask} /> : null}
     </div>
   );

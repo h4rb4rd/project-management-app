@@ -24,10 +24,17 @@ const Board = () => {
   const [isRequestColumn, setIsRequestColumn] = useState(false);
 
   useEffect(() => {
-    BoardService.getColumns(boardId, setColumnList);
+    requestColumnList();
+    console.log('use board');
   }, [isRequestColumn]);
 
+  const requestColumnList = async () => {
+    setColumnList([]);
+    await BoardService.getColumns(boardId, setColumnList);
+  };
+
   const requestColumn = () => {
+    console.log('requestColumn');
     setIsRequestColumn(!isRequestColumn);
   };
 
@@ -105,6 +112,7 @@ const Board = () => {
                   index={index}
                   dropColumn={updateColumnOrder}
                   updateTitle={updateColumnTitle}
+                  requestBoard={requestColumn}
                 />
               ))
             : null}

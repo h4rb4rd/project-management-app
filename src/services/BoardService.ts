@@ -84,6 +84,22 @@ export default class BoardService {
     }
   }
 
+  static async deleteColumn(boardId: string, columnId: string) {
+    try {
+      const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
+      const result = await axios.delete(`boards/${boardId}/columns/${columnId}`, {
+        baseURL: API_URL,
+        headers: {
+          Authorization: `Bearer ${locToken.value}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   static async getTasks(boardId: string, columnId: string, callback: (result: ITask[]) => void) {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
@@ -131,6 +147,22 @@ export default class BoardService {
           },
         }
       );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  static async deleteTask(boardId: string, columnId: string, taskId: string) {
+    try {
+      const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
+      const result = await axios.delete(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+        baseURL: API_URL,
+        headers: {
+          Authorization: `Bearer ${locToken.value}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
     } catch (err) {
       console.log(err);
     }
