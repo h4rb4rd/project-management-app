@@ -37,3 +37,8 @@ export type AxiosErrorDataType = {
 export type TTitleInput = {
   titleColumn:string;
 }
+
+export type TTaskForm = {
+  titleTask:string;
+  descrTask:string;
+}

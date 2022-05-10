@@ -101,6 +101,7 @@ const Board = () => {
                   title={title}
                   moveListItem={moveListItem}
                   id={id}
+                  boardId={boardId}
                   index={index}
                   dropColumn={updateColumnOrder}
                   updateTitle={updateColumnTitle}

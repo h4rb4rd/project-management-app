@@ -1,13 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { IColumn } from '../../../../models/IColumns';
+import { ITask } from '../../../../models/ITask';
 import BoardService from '../../../../services/BoardService';
+import ModalTaskAdd from '../ModalTaskAdd.tsx';
+import Task from '../Task';
 
 import cl from './Column.module.scss';
 
-type TTaskList = [{ id: number; task: string }] | undefined;
+// type TTaskList = [{ id: number; task: string }] | undefined;
 
 interface IColumnView extends IColumn {
+  boardId: string;
   index: number;
   // startDrag: (column: IColumn) => void;
   moveListItem: (dragId: string, hoverId: string) => void;
@@ -23,6 +27,7 @@ const Column = ({
   id,
   title,
   order,
+  boardId,
   index,
   // startDrag,
   moveListItem,
@@ -31,17 +36,21 @@ const Column = ({
 }: IColumnView) => {
   const [titleCard, setTitle] = useState(title || 'column');
   const [isChangeTitle, setIsChangeTitle] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [taskList, setTaskList] = useState<ITask[]>([]);
+  const [isShowTaskAdd, setIsShowTaskAdd] = useState(false);
+  const [isRequestTask, setIsRequestTask] = useState(false);
   const itemRef = useRef(null);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    BoardService.getTasks(boardId, id, setTaskList);
+  }, [isRequestTask]);
 
   const moveTaskItem = useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      const dragItem = tasks![dragIndex];
-      const hoverItem = tasks![hoverIndex];
+      const dragItem = taskList[dragIndex];
+      const hoverItem = taskList[hoverIndex];
 
-      const tmpTasks = tasks?.slice(0);
+      const tmpTasks = taskList.slice(0);
 
       // if (tmpTasks) {
       //   tmpTasks[dragIndex] = hoverItem;
@@ -49,7 +58,7 @@ const Column = ({
       //   setTasks(tmpTasks ? tmpTasks : undefined);
       // }
     },
-    [tasks]
+    [taskList]
   );
 
   const [{ isDragging }, dragRef] = useDrag({
@@ -112,6 +121,29 @@ const Column = ({
     }
   };
 
+  const handleCloseModal = () => {
+    setIsShowTaskAdd(false);
+  };
+
+  const requestTasks = () => {
+    setIsRequestTask(!isRequestTask);
+  };
+
+  const addTask = async (title: string, descr: string) => {
+    const user = JSON.parse(localStorage.getItem('user') || '');
+
+    if (user) {
+      await BoardService.addTask(boardId, id, title, taskList.length + 1, descr, user.id);
+    }
+
+    setIsShowTaskAdd(false);
+    requestTasks();
+  };
+
+  const showAddTaskDialog = () => {
+    setIsShowTaskAdd(true);
+  };
+
   return (
     <div ref={itemRef} className={isDragging ? `${cl.column} ${cl.hide}` : cl.column}>
       <div className={cl.columnHeader}>
@@ -132,9 +164,28 @@ const Column = ({
             {titleCard}
           </div>
         )}
-        <button className={cl.addButton}>+</button>
       </div>
-      <div className={cl.taskList}></div>
+      <button className={cl.addButton} onClick={showAddTaskDialog}>
+        Добавить задачу
+      </button>
+      <div className={cl.taskList}>
+        {taskList.length
+          ? taskList.map(({ id, description, title }, index) => (
+              <Task
+                key={id}
+                title={title}
+                // moveListItem={moveListItem}
+                id={id}
+                descr={description}
+                // boardId={boardId}
+                // index={index}
+                // dropColumn={updateColumnOrder}
+                // updateTitle={updateColumnTitle}
+              />
+            ))
+          : null}
+      </div>
+      {isShowTaskAdd ? <ModalTaskAdd handleClose={handleCloseModal} addTask={addTask} /> : null}
     </div>
   );
 };

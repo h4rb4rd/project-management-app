@@ -1,7 +1,15 @@
-import React from "react";
+import React from 'react';
 
-const Task = () => {
-    return <div>task</div>
+import cl from './Task.module.scss';
+
+interface ITaskView {
+  id: string;
+  title: string;
+  descr: string;
 }
+
+const Task = ({ id, title, descr }: ITaskView) => {
+  return <div className={cl.itemTask}>{title}</div>;
+};
 
 export default Task;

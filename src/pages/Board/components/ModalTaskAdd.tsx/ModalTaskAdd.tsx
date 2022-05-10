@@ -1,16 +1,16 @@
 import React, { MouseEventHandler, ReactEventHandler, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { TTitleInput } from '../../../../types';
+import { TTaskForm } from '../../../../types';
 
 import cl from '../ModalAdd.module.scss';
 
-interface IModalColumnAdd {
+interface IModalTaskAdd {
   handleClose: () => void;
-  addColumn: (title: string) => void;
+  addTask: (title: string, descr: string) => void;
 }
 
-const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
+const ModalTaskAdd = ({ addTask, handleClose }: IModalTaskAdd) => {
   const rootDiv = document.createElement('div');
 
   const {
@@ -20,10 +20,11 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
     watch,
     formState: { errors, isValid },
     reset,
-  } = useForm<TTitleInput>({
+  } = useForm<TTaskForm>({
     mode: 'onSubmit',
     defaultValues: {
-      titleColumn: '',
+      titleTask: '',
+      descrTask: '',
     },
   });
 
@@ -38,22 +39,29 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
     e.stopPropagation();
   };
 
-  const onSubmit: SubmitHandler<TTitleInput> = ({ titleColumn }) => {
-    addColumn(titleColumn);
+  const onSubmit: SubmitHandler<TTaskForm> = ({ titleTask, descrTask }) => {
+    addTask(titleTask, descrTask);
     reset();
   };
 
   return ReactDOM.createPortal(
     <div className={cl.modal} onClick={handleClose}>
       <div className={cl.formContainer} onClick={(e) => handleClickContainer(e)}>
-        <h2>Введите название колонки</h2>
+        <h2>Введите название задачи</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
-            {...register('titleColumn', {
+            {...register('titleTask', {
               required: 'Поле не может быть пустым',
             })}
             type="text"
-            id="idTitleColumn"
+            id="idTitleTask"
+          />
+          <h2>Введите описание</h2>
+          <textarea
+            {...register('descrTask', {
+              required: 'Поле не может быть пустым',
+            })}
+            id="idDescrTask"
           />
           <div className={cl.btmFormContainer}>
             <button onClick={handleClose} className={`${cl.buttonForm} ${cl.btnCancel}`}>
@@ -68,4 +76,4 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
   );
 };
 
-export default ModalColumnAdd;
+export default ModalTaskAdd;
