@@ -5,18 +5,16 @@ import { IDropTasks, ITask } from '../../../../models/ITask';
 import BoardService from '../../../../services/BoardService';
 import ModalTaskAdd from '../ModalTaskAdd.tsx';
 import Task from '../Task';
-import { ITaskView } from '../Task/Task';
 
 import cl from './Column.module.scss';
-
-// type TTaskList = [{ id: number; task: string }] | undefined;
 
 interface IColumnView extends IColumn {
   boardId: string;
   index: number;
-  // startDrag: (column: IColumn) => void;
+  taskList: ITask[];
+  updateTaskList: (columnId: string, newTaskList: ITask[]) => void;
   moveListItem: (dragId: string, hoverId: string) => void;
-  dropColumn: (column1: IColumn, column2: IColumn) => void;
+  dropColumn: () => void;
   updateTitle: (column: IColumn) => void;
   requestBoard: () => void;
 }
@@ -32,6 +30,8 @@ const Column = ({
   boardId,
   index,
   // startDrag,
+  taskList,
+  updateTaskList,
   moveListItem,
   dropColumn,
   updateTitle,
@@ -39,19 +39,19 @@ const Column = ({
 }: IColumnView) => {
   const [titleCard, setTitle] = useState(title || 'column');
   const [isChangeTitle, setIsChangeTitle] = useState(false);
-  const [taskList, setTaskList] = useState<ITask[]>([]);
+  // const [taskList, setTaskList] = useState<ITask[]>(taskLst || []);
   const [isShowTaskAdd, setIsShowTaskAdd] = useState(false);
   const [isRequestTask, setIsRequestTask] = useState(false);
   const itemRef = useRef(null);
 
-  useEffect(() => {
-    requestTaskList();
-    console.log(id);
-  }, [isRequestTask]);
+  // useEffect(() => {
+  //   // requestTaskList();
+  //   console.log(id);
+  // }, [isRequestTask]);
 
-  const requestTaskList = async () => {
-    await BoardService.getTasks(boardId, id, setTaskList);
-  };
+  // const requestTaskList = async () => {
+  //   await BoardService.getTasks(boardId, id, setTaskList);
+  // };
 
   const moveTaskItem = useCallback(
     (dragId: string, hoverId: string) => {
@@ -65,7 +65,8 @@ const Column = ({
       const copyList = [...taskList];
       copyList[dragIndex] = hoverItem;
       copyList[hoverIndex] = dragItem;
-      setTaskList(copyList);
+      // setTaskList(copyList);
+      updateTaskList(id, copyList);
     },
     [taskList]
   );
@@ -81,22 +82,18 @@ const Column = ({
   const [spec, dropRef] = useDrop({
     accept: 'column',
     hover: (column: IHoverColumn) => {
-      // console.log(index);
       if (column.id !== id) {
         moveListItem(column.id, id);
       }
     },
     drop: (columnDrop: IColumn) => {
-      console.log('drop', columnDrop);
-      dropColumn(columnDrop, { id, title, order });
+      dropColumn();
     },
   });
 
   const [specTask, dropTaskRef] = useDrop({
     accept: 'task',
     drop: (dropenTask: IDropTasks) => {
-      console.log('dropTask', dropenTask);
-      // dropColumn(columnDrop, { id, title, order });
       dropTask(dropenTask);
     },
   });
@@ -148,40 +145,28 @@ const Column = ({
   };
 
   const dropTask = (dropTask: IDropTasks, task?: ITask) => {
-    // if (!taskList.length) {
-    //   await BoardService.addTask(
-    //     boardId,
-    //     id,
-    //     dropTask.title,
-    //     taskList.length + 1,
-    //     dropTask.description,
-    //     dropTask.userId
-    //   );
-    // } else
     if (dropTask.columnId !== id) {
       console.log('!=');
       dropTask.columnId = id;
       dropTask.deleteTask(dropTask.id);
+      dropTask.order = taskList.length + 1;
       taskList.push(dropTask);
-      setTaskList([...taskList]);
+      BoardService.addTask(
+        boardId,
+        id,
+        dropTask.title,
+        dropTask.order,
+        dropTask.description,
+        dropTask.userId
+      );
+      updateTaskList(
+        id,
+        taskList.map((item, index) => {
+          item.order = index + 1;
+          return item;
+        })
+      );
     }
-    if (!task) {
-      // await BoardService.deleteTask(boardId, dropTask.columnId, dropTask.id);
-      // await BoardService.addTask(
-      //   boardId,
-      //   id,
-      //   dropTask.title,
-      //   taskList.length + 1,
-      //   dropTask.description,
-      //   dropTask.userId
-      // );
-      // taskList.push(dropTask);
-      // setTaskList([...taskList]);
-    } else {
-      ///
-    }
-    // requestTaskList();
-    // requestBoard();
   };
 
   const showAddTaskDialog = () => {
@@ -189,12 +174,10 @@ const Column = ({
   };
 
   const deleteTask = async (taskId: string) => {
-    // await BoardService.deleteTask(boardId, id, taskId);
-    // requestBoard();
-    console.log('deleteTask');
+    await BoardService.deleteTask(boardId, id, taskId);
     const listIndex = taskList.findIndex((item) => item.id === taskId);
     taskList.splice(listIndex, 1);
-    setTaskList([...taskList]);
+    updateTaskList(id, [...taskList]);
   };
 
   const deleteColumn = async () => {
@@ -226,7 +209,7 @@ const Column = ({
       <button className={`${cl.columnBtn} ${cl.addButton}`} onClick={showAddTaskDialog}>
         Добавить задачу
       </button>
-      <div className={cl.taskList}>
+      <div className={cl.taskListContainer}>
         {taskList.length
           ? taskList.map(({ id, description, title, order, boardId, columnId, userId }, index) => (
               <Task
@@ -241,9 +224,6 @@ const Column = ({
                 userId={userId}
                 dropTask={dropTask}
                 deleteTask={deleteTask}
-                // index={index}
-                // dropColumn={updateColumnOrder}
-                // updateTitle={updateColumnTitle}
               />
             ))
           : null}

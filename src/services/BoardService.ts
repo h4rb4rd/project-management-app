@@ -1,19 +1,16 @@
 import axios, { AxiosResponse } from 'axios';
 
 import { API_URL } from '../http';
-import { IColumn } from '../models/IColumns';
+import { IBoardColumn } from '../models/IBoard';
 import { ITask } from '../models/ITask';
 
-// type TRespColumn = Promise<AxiosResponse<IColumn[]>>;
-
-//, callback: (result:IColumn[]) => void
 interface IToken {
   expiry: number;
   value: string;
 }
 
 export default class BoardService {
-  static async getColumns(boardId: string, callback: (result: IColumn[]) => void) {
+  static async getColumns(boardId: string, callback: (result: IBoardColumn[]) => void) {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
       const result = await axios.get(`boards/${boardId}/columns`, {
@@ -24,10 +21,25 @@ export default class BoardService {
           'Content-Type': 'application/json',
         },
       });
-      const datalist: IColumn[] = result.data;
+      const datalist: IBoardColumn[] = result.data;
       datalist.sort((column1, column2) => column1.order - column2.order);
+      if (datalist.length) {
+        for (let i = 0; i < datalist.length; i++) {
+          const column = datalist[i];
+          const resultTask = await axios.get(`boards/${boardId}/columns/${column.id}/tasks`, {
+            baseURL: API_URL,
+            headers: {
+              Authorization: `Bearer ${locToken.value}`,
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          });
+          const tasklist: ITask[] = resultTask.data;
+          tasklist.sort((task1, task2) => task1.order - task2.order);
+          datalist[i].tasks = tasklist.slice(0);
+        }
+      }
       callback(datalist);
-      console.log('service', datalist);
     } catch (err) {
       console.log(err);
     }
