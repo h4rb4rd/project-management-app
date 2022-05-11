@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import LocationBar from '../../components/LocationBar';
 
 import Footer from '../../partials/Footer';
 import Header from '../../partials/Header';
@@ -12,6 +13,7 @@ const MainLayout = () => {
       <Header />
       <main className={cl.main}>
         <Outlet />
+        <LocationBar />
       </main>
       <Footer />
     </>

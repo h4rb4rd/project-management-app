@@ -1,0 +1,25 @@
+.modal {
+  position: fixed;
+  bottom: 9.7rem;
+  right: 3.7rem;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 8px 16px -4px rgb(9 30 66 / 25%), 0 0 0 1px rgb(9 30 66 / 8%);
+  padding: 1rem;
+
+  button {
+    align-self: flex-start;
+    background: none;
+    margin-bottom: 1rem;
+    color: #293856;
+    font-size: 1.8rem;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

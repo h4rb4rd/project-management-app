@@ -5,6 +5,7 @@ import Developer from './components/Developer';
 import cl from './Team.module.scss';
 
 import devAva from '../../assets/avatar.jpg';
+import { useTranslation } from 'react-i18next';
 
 const developers = [
   {
@@ -73,9 +74,10 @@ const developers = [
 ];
 
 const Team = () => {
+  const { t } = useTranslation();
   return (
     <div className={cl.team}>
-      <h2 className={cl.title}>Наша команда</h2>
+      <h2 className={cl.title}>{t('home.team.title')}</h2>
       <div className={cl.content}>
         {developers.map(({ id, ...rest }) => {
           return <Developer key={id} {...rest} />;

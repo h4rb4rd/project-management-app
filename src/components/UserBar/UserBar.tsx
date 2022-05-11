@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useClickOutside } from '../../hooks/useClickOutside';
 
 import { userModalSlice } from '../../store/reducers/UserModalSlice';
-import UserModal from '../UserModal';
+import UserModal from './components/UserModal';
 
 import cl from './UserBar.module.scss';
 

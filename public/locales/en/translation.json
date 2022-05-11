@@ -1,0 +1,93 @@
+{
+  "locationBar": {
+    "ru": "RU",
+    "eng": "Eng"
+  },
+  "authBar": {
+    "signIn": "Log in",
+    "signUp": "Sign up"
+  },
+  "home": {
+    "offer": {
+      "title": "helps teams move work forward.",
+      "description": "Collaborate, manage projects, and reach new productivity peaks. From high rises to the home office, the way your team works is unique—accomplish it all with Trello."
+    },
+    "info": {
+      "title": "It’s more than work. It’s a way of working together.",
+      "description": "Start with a Trello board, lists, and cards. Customize and expand with more features as your teamwork grows. Manage projects, organize tasks, and build team spirit—all in one place."
+    },
+    "button": "Start doing",
+    "team": {
+      "title": "Our team"
+    }
+  },
+  "loginForm": {
+    "title": "Log in",
+    "signUpAccount": "Sign up for account",
+    "button": "Log in"
+  },
+  "signUpForm": {
+    "title": "SIgn up for your account",
+    "signInAccount": "Already have an account? Log in",
+    "button": "Sign up"
+  },
+  "accountForm": {
+    "btn": "Save",
+    "confirmText": "Are you sure you want to change your data?"
+  },
+  "loginField": {
+    "label": "User name",
+    "placeholder": "Enter username",
+    "required": "Login is required",
+    "minLength": "Login must be at least 3 characters long",
+    "maxLength": "Login can be max 10 characters long"
+  },
+  "nameField": {
+    "label": "Name",
+    "placeholder": "Enter your name",
+    "required": "Name is required"
+  },
+  "passwordField": {
+    "label": "Password",
+    "placeholder": "Enter password",
+    "confirmPlaceholder": "Confirm password",
+    "doesNotMuch": "Password does not match",
+    "required": "Password is required",
+    "minLength": "Password must be at least 4 characters long",
+    "maxLength": "Password can be max 12 characters long"
+  },
+  "userModal": {
+    "title": "Account",
+    "settings": "Settings",
+    "logOut": "Log out"
+  },
+  "userSettings": {
+    "title": "Manage your personal information",
+    "deleteBtn": "Delete account",
+    "or": "or",
+    "successText": "Your changes have been successfully saved!",
+    "confirmText": "Are you sure you want to delete your account?"
+  },
+  "confirmation": {
+    "yesBtn": "Yes",
+    "noBtn": "No"
+  },
+  "success": {
+    "btn": "Continue"
+  },
+  "navbar": {
+    "main": "Main",
+    "boards": "Boards"
+  },
+  "notFound": {
+    "title": "Oops! 404 - PAGE NOT FOUND",
+    "p1": "The page you are looking for might have been removed",
+    "p2": "had its name changed or temporarily unavailable."
+  },
+  "errorFallback": {
+    "title": "Oops! Something went wrong",
+    "p1": "Brace yourself till we get the error fixed.",
+    "p2": "You may also refresh the page or try again later.",
+    "btn": "Refresh"
+  }
+}

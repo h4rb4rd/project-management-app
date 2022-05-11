@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { updateUserData } from '../../store/thunks';
 
 import cl from './AccountForm.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const AccountForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
@@ -23,6 +24,7 @@ const AccountForm = () => {
   const { setName, setLogin, setPassword } = accountFormSlice.actions;
   const dispatch = useAppDispatch();
   const [isModalActive, setIsModalActive] = useState(false);
+  const { t } = useTranslation();
 
   const {
     formState,
@@ -89,12 +91,12 @@ const AccountForm = () => {
         {isPending ? (
           <img className={cl.preloader} src={preloader} alt="preloader" />
         ) : (
-          <span>Сохранить</span>
+          <span>{t('accountForm.btn')}</span>
         )}
       </button>
       <ModalPortal isActive={isModalActive} close={closeModal}>
         <Confirmation
-          text="Вы действительно хотите изменить данные?"
+          text={t('accountForm.confirmText')}
           confirm={handleConfirm}
           close={closeModal}
         />

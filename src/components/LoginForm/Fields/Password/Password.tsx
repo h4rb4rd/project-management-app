@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { UseFormRegister } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { LoginFormDataType } from '../../../../types';
 
 export type PasswordProps = {
@@ -10,22 +11,24 @@ export type PasswordProps = {
 import cl from './Password.module.scss';
 
 const Password = ({ register }: PasswordProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className={cl.container}>
       <input
         {...register('password', {
-          required: 'Поле пароль не может быть пустым',
+          required: t('passwordField.required'),
           minLength: {
             value: 4,
-            message: 'Пароль должен содержать не менее 4 символов',
+            message: t('passwordField.minLength'),
           },
           maxLength: {
             value: 12,
-            message: 'Пароль должен содержать не более 12 символов',
+            message: t('passwordField.maxLength'),
           },
         })}
         type="password"
-        placeholder="Введите пароль"
+        placeholder={t('passwordField.placeholder')}
       />
     </div>
   );

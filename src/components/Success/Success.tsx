@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import img from '../../assets/success.svg';
 import { useAppDispatch } from '../../hooks/redux';
@@ -12,6 +13,7 @@ interface SuccessProps {
 const Success = ({ text }: SuccessProps) => {
   const { setIsChanged } = authSlice.actions;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const close = () => {
     dispatch(setIsChanged(false));
@@ -21,7 +23,7 @@ const Success = ({ text }: SuccessProps) => {
     <div className={cl.success}>
       <img src={img} alt="success" />
       <h2>{text}</h2>
-      <button onClick={close}>Продолжить</button>
+      <button onClick={close}>{t('success.btn')}</button>
     </div>
   );
 };

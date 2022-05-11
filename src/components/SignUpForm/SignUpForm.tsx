@@ -15,6 +15,7 @@ import { SignUpFormDataType } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './SignUpForm.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const SignUpForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
@@ -23,6 +24,7 @@ const SignUpForm = () => {
   );
   const { setName, setLogin, setPassword, setPasswordConfirm } = signUpFormSlice.actions;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const {
     formState,
@@ -92,11 +94,11 @@ const SignUpForm = () => {
         {isPending ? (
           <img className={cl.preloader} src={preloader} alt="preloader" />
         ) : (
-          <span>Войти</span>
+          <span>{t('signUpForm.button')}</span>
         )}
       </button>
       <hr className={cl.selector} />
-      <Link to="/login">Уже есть аккаунт? Войти</Link>
+      <Link to="/login">{t('signUpForm.signInAccount')}</Link>
       <ToastContainer
         position="bottom-right"
         theme="colored"

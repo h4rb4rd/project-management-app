@@ -10,6 +10,7 @@ interface ModalPortalProps {
   close: () => void;
   children: ReactNode;
 }
+
 const ModalPortal = ({ isActive, close, children }: ModalPortalProps) => {
   return root
     ? ReactDOM.createPortal(

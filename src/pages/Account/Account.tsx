@@ -12,12 +12,13 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { deleteUser } from '../../store/thunks';
 import ModalPortal from '../../Portals/ModalPortal';
 import Confirmation from '../../components/Confirmation';
+import { useTranslation } from 'react-i18next';
 
 const Account = () => {
   const { user, isChanged, isPending, error } = useAppSelector((state) => state.AuthReducer);
   const [isModalActive, setIsModalActive] = useState(false);
-
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const deleteAccount = () => {
     setIsModalActive(true);
@@ -43,21 +44,21 @@ const Account = () => {
     <div className={cl.account}>
       <div className={cl.container}>
         <img className={cl.bg} src={img} alt="form-img" />
-        <h2>Редактировать персональные данные</h2>
+        <h2>{t('userSettings.title')}</h2>
         <hr className={cl.selector} />
-        {!isChanged ? <AccountForm /> : <Success text="Данные были успешно изменены!" />}
-        <p className={cl.or}>или</p>
+        {!isChanged ? <AccountForm /> : <Success text={t('userSettings.successText')} />}
+        <p className={cl.or}>{t('userSettings.or')}</p>
         <button className={cl.delete} disabled={isPending} onClick={deleteAccount}>
           {isPending ? (
             <img className={cl.preloader} src={preloader} alt="preloader" />
           ) : (
-            <span>Удалить аккаунт</span>
+            <span>{t('userSettings.deleteBtn')}</span>
           )}
         </button>
       </div>
       <ModalPortal isActive={isModalActive} close={closeModal}>
         <Confirmation
-          text="Вы действительно хотите удалить аккаунт?"
+          text={t('userSettings.confirmText')}
           confirm={handleConfirm}
           close={closeModal}
         />

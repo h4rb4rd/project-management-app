@@ -1,12 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 
-import { authSlice } from '../../store/reducers/AuthSlice';
-import { RouteNames } from '../AppRouter/types';
-import { userModalSlice } from '../../store/reducers/UserModalSlice';
+import { authSlice } from '../../../../store/reducers/AuthSlice';
+import { RouteNames } from '../../../AppRouter/types';
+import { userModalSlice } from '../../../../store/reducers/UserModalSlice';
 
 import cl from './UserModal.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const UserModal = () => {
   const { user } = useAppSelector((state) => state.AuthReducer);
@@ -15,6 +16,7 @@ const UserModal = () => {
   const { setUser } = authSlice.actions;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const closeModal = () => dispatch(setIsOpen(false));
   const logout = () => {
@@ -33,7 +35,7 @@ const UserModal = () => {
 
   return (
     <div className={cl.modal}>
-      <p className={cl.title}>Учетная запись</p>
+      <p className={cl.title}>{t('userModal.title')}</p>
       <div className={cl.user}>
         <div className={cl.ava}>{user?.name[0]}</div>
         <div className={cl.info}>
@@ -42,10 +44,10 @@ const UserModal = () => {
         </div>
       </div>
       <button className={cl.options} onClick={openOptions}>
-        Настройки
+        {t('userModal.settings')}
       </button>
       <button className={cl.logout} onClick={logout}>
-        Выйти
+        {t('userModal.logOut')}
       </button>
       <button className={cl.close} onClick={closeModal}>
         &#10006;

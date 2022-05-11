@@ -1,5 +1,6 @@
 import React from 'react';
 import { UseFormRegister } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { LoginFormDataType } from '../../../../types';
 
@@ -10,21 +11,23 @@ export type LoginProps = {
 };
 
 const Login = ({ register }: LoginProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className={cl.container}>
       <input
         {...register('login', {
-          required: 'Поле логин не может быть пустым',
+          required: t('loginField.required'),
           minLength: {
             value: 3,
-            message: 'Логин должен содержать не менее 3 символов',
+            message: t('loginField.minLength'),
           },
           maxLength: {
             value: 10,
-            message: 'Логин должен содержать не более 10 символов',
+            message: t('loginField.maxLength'),
           },
         })}
-        placeholder="Введите логин"
+        placeholder={t('loginField.placeholder')}
         type="text"
       />
     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { UseFormRegister } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { SignUpFormDataType } from '../../../../types';
 
@@ -10,13 +11,15 @@ export type NameProps = {
 };
 
 const Name = ({ register }: NameProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className={cl.container}>
       <input
         {...register('name', {
-          required: 'Поле имя не может быть пустым',
+          required: t('nameField.required'),
         })}
-        placeholder="Введите имя"
+        placeholder={t('nameField.placeholder')}
         type="text"
       />
     </div>

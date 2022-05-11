@@ -13,12 +13,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './LoginForm.module.scss';
 import { initialState, loginFormSlice } from '../../store/reducers/LoginFormSlice';
+import { useTranslation } from 'react-i18next';
 
 const LoginForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
   const { login, password } = useAppSelector((state) => state.loginFormReducer);
   const { setLogin, setPassword } = loginFormSlice.actions;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const {
     formState,
@@ -73,11 +75,11 @@ const LoginForm = () => {
         {isPending ? (
           <img className={cl.preloader} src={preloader} alt="preloader" />
         ) : (
-          <span>Войти</span>
+          <span>{t('loginForm.button')}</span>
         )}
       </button>
       <hr className={cl.selector} />
-      <Link to="/signup">Зарегистрировать аккаунт</Link>
+      <Link to="/signup">{t('loginForm.signUpAccount')}</Link>
       <ToastContainer
         position="bottom-right"
         theme="colored"
