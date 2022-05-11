@@ -16,20 +16,14 @@
 
 .titleBoard {
   width: 100%;
+  height: 3rem;
+  display: flex;
+  align-items: center;
   color: #172b4d;
   font-weight: bold;
 }
 
-.inputTitle {
-  border: none;
-  outline: none;
-  background-color: transparent;
-  color: #172b4d;
-  font-weight: bold;
-  width: 100%;
-}
-
-.columnBtn{
+.columnBtn {
   color: #fff;
   padding: 0.8rem 1.8rem;
   width: 100%;
@@ -42,7 +36,7 @@
   background-color: #5aac44;
 }
 
-.deleteButton{
+.deleteButton {
   background-color: #ac4444;
 }
 
@@ -56,4 +50,36 @@
 
 .hide {
   opacity: 0;
+}
+
+.titleChangeContainer {
+  display: flex;
+  width: 100%;
+  .inputTitle {
+    height: 3rem;
+    border: 0.1rem solid #044ac4;
+    outline: none;
+    background-color: transparent;
+    color: #172b4d;
+    font-weight: bold;
+    width: 100%;
+  }
+
+  .changeBtn {
+    width: 3rem;
+    height: 3rem;
+    border: 0.1rem solid #044ac4;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+
+  .changeBtnNo {
+    color: #af1919;
+  }
+
+  .changeBtnOk {
+    color: #2baf19;
+  }
 }

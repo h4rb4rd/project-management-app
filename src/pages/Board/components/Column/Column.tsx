@@ -106,7 +106,7 @@ const Column = ({
     setTitle(e.target.value);
   };
 
-  const handleBlur = () => {
+  const handleOk = () => {
     if (!titleCard.trim()) {
       setTitle(title);
     } else {
@@ -119,11 +119,16 @@ const Column = ({
     setIsChangeTitle(false);
   };
 
-  const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === 'Enter') {
-      handleBlur();
-    }
+  const handleNo = () => {
+    setTitle(title);
+    setIsChangeTitle(false);
   };
+
+  // const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  //   if (e.code === 'Enter') {
+  //     handleBlur();
+  //   }
+  // };
 
   const handleCloseModal = () => {
     setIsShowTaskAdd(false);
@@ -189,17 +194,25 @@ const Column = ({
     <div ref={itemRef} className={isDragging ? `${cl.column} ${cl.hide}` : cl.column}>
       <div className={cl.columnHeader}>
         {isChangeTitle ? (
-          <input
-            type="text"
-            className={cl.inputTitle}
-            value={titleCard}
-            onChange={(e) => {
-              handleChangeTitle(e);
-            }}
-            onBlur={handleBlur}
-            onKeyDown={onKeyDownHandler}
-            autoFocus
-          />
+          <div className={cl.titleChangeContainer}>
+            <input
+              type="text"
+              className={cl.inputTitle}
+              value={titleCard}
+              onChange={(e) => {
+                handleChangeTitle(e);
+              }}
+              // onBlur={handleBlur}
+              // onKeyDown={onKeyDownHandler}
+              autoFocus
+            />
+            <button className={`${cl.changeBtn} ${cl.changeBtnNo}`} onClick={handleNo}>
+              &#10008;
+            </button>
+            <button className={`${cl.changeBtn} ${cl.changeBtnOk}`} onClick={handleOk}>
+              &#10004;
+            </button>
+          </div>
         ) : (
           <div className={cl.titleBoard} onDoubleClick={() => setIsChangeTitle(true)}>
             {titleCard}
