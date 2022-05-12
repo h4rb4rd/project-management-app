@@ -26,17 +26,8 @@ export default class BoardService {
       if (datalist.length) {
         for (let i = 0; i < datalist.length; i++) {
           const column = datalist[i];
-          const resultTask = await axios.get(`boards/${boardId}/columns/${column.id}/tasks`, {
-            baseURL: API_URL,
-            headers: {
-              Authorization: `Bearer ${locToken.value}`,
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          });
-          const tasklist: ITask[] = resultTask.data;
-          tasklist.sort((task1, task2) => task1.order - task2.order);
-          datalist[i].tasks = tasklist.slice(0);
+          const resultTask = await this.getTasks(boardId, column.id);
+          datalist[i].tasks = resultTask?.slice(0) || [];
         }
       }
       callback(datalist);
@@ -111,8 +102,8 @@ export default class BoardService {
       console.log(err);
     }
   }
-
-  static async getTasks(boardId: string, columnId: string, callback: (result: ITask[]) => void) {
+  //, callback: (result: ITask[]) => void
+  static async getTasks(boardId: string, columnId: string): Promise<ITask[] | undefined> {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
       const result = await axios.get(`boards/${boardId}/columns/${columnId}/tasks`, {
@@ -125,8 +116,9 @@ export default class BoardService {
       });
       const datalist: ITask[] = result.data;
       datalist.sort((task1, task2) => task1.order - task2.order);
-      callback(datalist);
-      console.log('service tasks', datalist);
+      return datalist;
+      // callback(datalist);
+      // console.log('service tasks', datalist);
     } catch (err) {
       console.log(err);
     }
@@ -164,6 +156,41 @@ export default class BoardService {
     }
   }
 
+  static async updateTask(
+    boardId: string,
+    columnId: string,
+    taskId: string,
+    title: string,
+    order: number,
+    description: string,
+    userId: string
+  ) {
+    try {
+      const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
+      const result = await axios.put(
+        `boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
+        {
+          title,
+          order,
+          description,
+          userId,
+          boardId,
+          columnId,
+        },
+        {
+          baseURL: API_URL,
+          headers: {
+            Authorization: `Bearer ${locToken.value}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   static async deleteTask(boardId: string, columnId: string, taskId: string) {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
@@ -176,7 +203,7 @@ export default class BoardService {
         },
       });
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   }
 }

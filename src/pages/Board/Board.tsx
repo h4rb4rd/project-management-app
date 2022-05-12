@@ -5,6 +5,7 @@ import { IBoardColumn } from '../../models/IBoard';
 import { IColumn } from '../../models/IColumns';
 import { ITask } from '../../models/ITask';
 import BoardService from '../../services/BoardService';
+import Preloader from '../Preloader';
 
 import cl from './Board.module.scss';
 import Column from './components/Column';
@@ -23,13 +24,53 @@ const Board = () => {
   const boardId = 'aa2c9f91-36f0-4e1c-b177-489c42584bc5';
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
   const [isRequestColumn, setIsRequestColumn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     requestColumnList();
+    // return () => {
+    //   console.log('unmount', columnList);
+    //   saveData();
+    // };
   }, [isRequestColumn]);
 
   const requestColumnList = async () => {
+    setIsLoading(true);
     await BoardService.getColumns(boardId, setColumnList);
+    console.log('mount', columnList);
+    setIsLoading(false);
+  };
+
+  const saveData = async () => {
+    setIsLoading(true);
+    // const copyList = columnList.slice(0);
+    try {
+      const saveList = columnList.slice(0);
+      columnList.forEach(async (item) => {
+        await BoardService.deleteColumn(boardId, item.id);
+      });
+      columnList.forEach(async (item) => {
+        await BoardService.addColumn(boardId, item.title, item.order);
+      });
+      BoardService.getColumns(boardId, setColumnList);
+      columnList.forEach(async (item) => {
+        const saveItem = saveList.find((svItem) => svItem.title === item.title);
+        saveItem?.tasks.forEach(async (taskItem) => {
+          await BoardService.addTask(
+            boardId,
+            item.id,
+            taskItem.title,
+            taskItem.order,
+            taskItem.description,
+            taskItem.userId
+          );
+        });
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const requestColumn = () => {
@@ -37,9 +78,6 @@ const Board = () => {
   };
 
   const updateTaskListColumn = (columnId: string, newTaskList: ITask[]) => {
-    // const copyListColumn = columnList.slice(0);
-    // const columnIndex = copyListColumn.findIndex((item) => item.id === columnId);
-    // copyListColumn[columnIndex].tasks = newTaskList.slice(0);
     const copyListColumn = columnList.map((item) => {
       if (item.id === columnId) {
         item.tasks = newTaskList.slice(0);
@@ -69,6 +107,7 @@ const Board = () => {
     columnList.forEach((item, index) => {
       item.order = index + 1;
     });
+    setColumnList([...columnList]);
   }, [columnList]);
 
   const updateColumnTitle = async (column: IColumn) => {
@@ -93,36 +132,40 @@ const Board = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className={cl.board}>
-        <div className={cl.boardBtnContainer}>
-          <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
-            Column Add
-          </button>
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <div className={cl.board}>
+          <div className={cl.boardBtnContainer}>
+            <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
+              Column Add
+            </button>
+          </div>
+          <div className={cl.boardContainer}>
+            {columnList.length
+              ? columnList.map(({ id, order, title, tasks }, index) => (
+                  <Column
+                    key={id}
+                    order={order}
+                    title={title}
+                    moveListItem={moveListItem}
+                    id={id}
+                    boardId={boardId}
+                    index={index}
+                    taskList={tasks}
+                    updateTaskList={updateTaskListColumn}
+                    dropColumn={updateColumnOrder}
+                    updateTitle={updateColumnTitle}
+                    requestBoard={requestColumn}
+                  />
+                ))
+              : null}
+          </div>
+          {isShowColumnAdd ? (
+            <ModalColumnAdd handleClose={handleCloseModal} addColumn={addColumn} />
+          ) : null}
         </div>
-        <div className={cl.boardContainer}>
-          {columnList.length
-            ? columnList.map(({ id, order, title, tasks }, index) => (
-                <Column
-                  key={id}
-                  order={order}
-                  title={title}
-                  moveListItem={moveListItem}
-                  id={id}
-                  boardId={boardId}
-                  index={index}
-                  taskList={tasks}
-                  updateTaskList={updateTaskListColumn}
-                  dropColumn={updateColumnOrder}
-                  updateTitle={updateColumnTitle}
-                  requestBoard={requestColumn}
-                />
-              ))
-            : null}
-        </div>
-        {isShowColumnAdd ? (
-          <ModalColumnAdd handleClose={handleCloseModal} addColumn={addColumn} />
-        ) : null}
-      </div>
+      )}
     </DndProvider>
   );
 };

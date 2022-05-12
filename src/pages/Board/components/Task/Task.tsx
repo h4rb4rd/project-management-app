@@ -1,6 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { IDropTasks, ITask } from '../../../../models/ITask';
+import BoardService from '../../../../services/BoardService';
+import { ETAskModalMode } from '../../../../types';
+import ModalTask from '../ModalTask';
 
 import cl from './Task.module.scss';
 
@@ -26,6 +29,7 @@ const Task = ({
   deleteTask,
 }: ITaskView) => {
   const taskRef = useRef(null);
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'task',
@@ -38,7 +42,6 @@ const Task = ({
   const [spec, dropRef] = useDrop({
     accept: 'task',
     hover: (task: ITask) => {
-      // console.log(index);
       if (task.columnId !== columnId) {
         console.log('!=');
       }
@@ -48,18 +51,6 @@ const Task = ({
         }
       }
     },
-    // drop: (taskDrop: ITask) => {
-    //   console.log('drop', taskDrop);
-    //   dropTask(taskDrop, {
-    //     id,
-    //     title,
-    //     order,
-    //     description,
-    //     userId,
-    //     boardId,
-    //     columnId,
-    //   });
-    // },
   });
 
   dragRef(taskRef);
@@ -69,12 +60,41 @@ const Task = ({
     deleteTask(id);
   };
 
+  const updateTask = async (titleEdit: string, descrEdit: string) => {
+    title = titleEdit;
+    description = descrEdit;
+    await BoardService.updateTask(boardId, columnId, id, titleEdit, order, descrEdit, userId);
+    closeModal();
+  };
+
+  const closeModal = () => {
+    setIsUpdate(false);
+  };
+
+  const showModal = () => {
+    setIsUpdate(true);
+  };
+
   return (
     <div ref={taskRef} className={isDragging ? `${cl.itemTask} ${cl.hide}` : cl.itemTask}>
-      <div>{title}</div>
-      <button className={cl.deleteTask} onClick={handleDeleteTask}>
-        X
-      </button>
+      <div className={cl.taskTitle}>{title}</div>
+      <div className={cl.taskBtnContainer}>
+        <button className={cl.editTask} onClick={showModal}>
+          &#9998;
+        </button>
+        <button className={cl.deleteTask} onClick={handleDeleteTask}>
+          &#10008;
+        </button>
+      </div>
+      {isUpdate ? (
+        <ModalTask
+          mode={ETAskModalMode.UPDATE}
+          handleClose={closeModal}
+          updateTask={updateTask}
+          valueDescr={description}
+          valueTitle={title}
+        />
+      ) : null}
     </div>
   );
 };

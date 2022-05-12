@@ -35,10 +35,15 @@ export type AxiosErrorDataType = {
 };
 
 export type TTitleInput = {
-  titleColumn:string;
-}
+  titleColumn: string;
+};
 
 export type TTaskForm = {
-  titleTask:string;
-  descrTask:string;
+  titleTask: string;
+  descrTask: string;
+};
+
+export enum ETAskModalMode {
+  ADD = 'add',
+  UPDATE = 'update',
 }

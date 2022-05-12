@@ -3,7 +3,8 @@ import { useDrag, useDrop } from 'react-dnd';
 import { IColumn } from '../../../../models/IColumns';
 import { IDropTasks, ITask } from '../../../../models/ITask';
 import BoardService from '../../../../services/BoardService';
-import ModalTaskAdd from '../ModalTaskAdd.tsx';
+import { ETAskModalMode } from '../../../../types';
+import ModalTaskAdd from '../ModalTask';
 import Task from '../Task';
 
 import cl from './Column.module.scss';
@@ -124,12 +125,6 @@ const Column = ({
     setIsChangeTitle(false);
   };
 
-  // const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.code === 'Enter') {
-  //     handleBlur();
-  //   }
-  // };
-
   const handleCloseModal = () => {
     setIsShowTaskAdd(false);
   };
@@ -142,7 +137,12 @@ const Column = ({
     const user = JSON.parse(localStorage.getItem('user') || '');
 
     if (user) {
-      await BoardService.addTask(boardId, id, title, taskList.length + 1, descr, user.id);
+      BoardService.addTask(boardId, id, title, taskList.length + 1, descr, user.id).then(
+        async (data) => {
+          const responseTasks = await BoardService.getTasks(boardId, id);
+          updateTaskList(id, responseTasks || taskList);
+        }
+      );
     }
 
     setIsShowTaskAdd(false);
@@ -151,26 +151,25 @@ const Column = ({
 
   const dropTask = (dropTask: IDropTasks, task?: ITask) => {
     if (dropTask.columnId !== id) {
-      console.log('!=');
       dropTask.columnId = id;
-      dropTask.deleteTask(dropTask.id);
       dropTask.order = taskList.length + 1;
       taskList.push(dropTask);
-      BoardService.addTask(
-        boardId,
-        id,
-        dropTask.title,
-        dropTask.order,
-        dropTask.description,
-        dropTask.userId
-      );
-      updateTaskList(
-        id,
-        taskList.map((item, index) => {
-          item.order = index + 1;
-          return item;
-        })
-      );
+      // updateTaskList(
+      //   id,
+      //   taskList.map((item, index) => {
+      //     item.order = index + 1;
+      //     return item;
+      //   })
+      // );
+      // BoardService.addTask(
+      //   boardId,
+      //   id,
+      //   dropTask.title,
+      //   dropTask.order,
+      //   dropTask.description,
+      //   dropTask.userId
+      // );
+      dropTask.deleteTask(dropTask.id);
     }
   };
 
@@ -179,10 +178,16 @@ const Column = ({
   };
 
   const deleteTask = async (taskId: string) => {
-    await BoardService.deleteTask(boardId, id, taskId);
     const listIndex = taskList.findIndex((item) => item.id === taskId);
     taskList.splice(listIndex, 1);
-    updateTaskList(id, [...taskList]);
+    updateTaskList(
+      id,
+      taskList.map((item, index) => {
+        item.order = index + 1;
+        return item;
+      })
+    );
+    // await BoardService.deleteTask(boardId, id, taskId);
   };
 
   const deleteColumn = async () => {
@@ -202,8 +207,6 @@ const Column = ({
               onChange={(e) => {
                 handleChangeTitle(e);
               }}
-              // onBlur={handleBlur}
-              // onKeyDown={onKeyDownHandler}
               autoFocus
             />
             <button className={`${cl.changeBtn} ${cl.changeBtnNo}`} onClick={handleNo}>
@@ -244,7 +247,9 @@ const Column = ({
       <button className={`${cl.columnBtn} ${cl.deleteButton}`} onClick={deleteColumn}>
         Удалить колонку
       </button>
-      {isShowTaskAdd ? <ModalTaskAdd handleClose={handleCloseModal} addTask={addTask} /> : null}
+      {isShowTaskAdd ? (
+        <ModalTaskAdd mode={ETAskModalMode.ADD} handleClose={handleCloseModal} addTask={addTask} />
+      ) : null}
     </div>
   );
 };

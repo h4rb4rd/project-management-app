@@ -1,16 +1,27 @@
 import React, { MouseEventHandler, ReactEventHandler, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { TTaskForm } from '../../../../types';
+import { ETAskModalMode, TTaskForm } from '../../../../types';
 
 import cl from '../ModalAdd.module.scss';
 
 interface IModalTaskAdd {
   handleClose: () => void;
-  addTask: (title: string, descr: string) => void;
+  mode: ETAskModalMode;
+  valueTitle?: string;
+  valueDescr?: string;
+  addTask?: (title: string, descr: string) => void;
+  updateTask?: (title: string, descr: string) => void;
 }
 
-const ModalTaskAdd = ({ addTask, handleClose }: IModalTaskAdd) => {
+const ModalTask = ({
+  addTask,
+  handleClose,
+  mode,
+  updateTask,
+  valueDescr,
+  valueTitle,
+}: IModalTaskAdd) => {
   const rootDiv = document.createElement('div');
 
   const {
@@ -23,8 +34,8 @@ const ModalTaskAdd = ({ addTask, handleClose }: IModalTaskAdd) => {
   } = useForm<TTaskForm>({
     mode: 'onSubmit',
     defaultValues: {
-      titleTask: '',
-      descrTask: '',
+      titleTask: valueTitle,
+      descrTask: valueDescr,
     },
   });
 
@@ -40,8 +51,17 @@ const ModalTaskAdd = ({ addTask, handleClose }: IModalTaskAdd) => {
   };
 
   const onSubmit: SubmitHandler<TTaskForm> = ({ titleTask, descrTask }) => {
-    addTask(titleTask, descrTask);
-    reset();
+    // addTask?(titleTask, descrTask);
+    if (mode === ETAskModalMode.ADD) {
+      addTask?.call(null, titleTask, descrTask);
+    } else {
+      updateTask?.call(null, titleTask, descrTask);
+    }
+
+    reset({
+      titleTask: '',
+      descrTask: '',
+    });
   };
 
   return ReactDOM.createPortal(
@@ -76,4 +96,4 @@ const ModalTaskAdd = ({ addTask, handleClose }: IModalTaskAdd) => {
   );
 };
 
-export default ModalTaskAdd;
+export default ModalTask;
