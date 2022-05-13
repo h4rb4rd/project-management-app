@@ -6,6 +6,7 @@ import AuthService from '../../services/AuthService';
 import { AxiosErrorDataType, TokenDataType } from '../../types';
 import { getValueWithExpiry, setValueWithExpiry } from '../../utils/storage';
 import UserService from '../../services/UserService';
+import BoardsService from '../../services/BoardsService';
 
 export const signIn = createAsyncThunk(
   'auth/signIn',
@@ -90,3 +91,69 @@ export const checkIsAuth = createAsyncThunk('auth/check', async (_, thunkAPI) =>
     return null;
   }
 });
+
+export const getBoards = createAsyncThunk('boards/getBoards', async (_, thunkAPI) => {
+  try {
+    const response = await BoardsService.getBoards();
+    return response.data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response) {
+      const data = err.response.data as AxiosErrorDataType;
+      return thunkAPI.rejectWithValue(data.message);
+    }
+  }
+});
+
+export const createBoard = createAsyncThunk('boards/getBoards', async (title: string, thunkAPI) => {
+  try {
+    await BoardsService.createBoard(title);
+    const response = await BoardsService.getBoards();
+    return response.data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response) {
+      const data = err.response.data as AxiosErrorDataType;
+      return thunkAPI.rejectWithValue(data.message);
+    }
+  }
+});
+
+export const getBoard = createAsyncThunk('boards/getBoard', async (id: string, thunkAPI) => {
+  try {
+    const response = await BoardsService.getBoard(id);
+    return response.data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response) {
+      const data = err.response.data as AxiosErrorDataType;
+      return thunkAPI.rejectWithValue(data.message);
+    }
+  }
+});
+
+export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (id: string, thunkAPI) => {
+  try {
+    await BoardsService.deleteBoard(id);
+    const response = await BoardsService.getBoards();
+    return response.data;
+  } catch (err) {
+    if (axios.isAxiosError(err) && err.response) {
+      const data = err.response.data as AxiosErrorDataType;
+      return thunkAPI.rejectWithValue(data.message);
+    }
+  }
+});
+
+export const updateBoard = createAsyncThunk(
+  'boards/updateBoard',
+  async (payload: { id: string; title: string }, thunkAPI) => {
+    try {
+      await BoardsService.updateBoard(payload.id, payload.title);
+      const response = await BoardsService.getBoards();
+      return response.data;
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        const data = err.response.data as AxiosErrorDataType;
+        return thunkAPI.rejectWithValue(data.message);
+      }
+    }
+  }
+);

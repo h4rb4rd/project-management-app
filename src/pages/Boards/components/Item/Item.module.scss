@@ -1,0 +1,58 @@
+.item {
+  position: relative;
+  width: 19.4rem;
+  height: 9.6rem;
+  border-radius: 3px;
+  color: #fff;
+  background-color: rgb(137, 96, 158);
+  transition: background-color 0.2s ease 0s;
+  padding: 0.8rem;
+  overflow: hidden;
+  cursor: pointer;
+
+  h2 {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  &:hover {
+    background-color: rgb(114, 71, 136);
+    .delete {
+      right: 0.5rem;
+    }
+  }
+}
+
+.delete {
+  position: absolute;
+  right: -100%;
+  bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: #eb5a46;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 500;
+
+  font-size: 1.6rem;
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+
+  span {
+    padding: 0.8rem 1.8rem;
+  }
+
+  &:hover {
+    background-color: #d34a38;
+  }
+
+  &:disabled {
+    pointer-events: none;
+  }
+}

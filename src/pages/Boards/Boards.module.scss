@@ -1,2 +1,107 @@
 .boards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 10rem 0 10rem 0;
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.title {
+  align-self: flex-start;
+  font-size: 2rem;
+  text-transform: uppercase;
+  color: #5e6c84;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  gap: 2rem;
+}
+
+.create {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 19.4rem;
+  height: 9.6rem;
+  background-color: #091e420a;
+  border-radius: 3px;
+  color: #5e6c84;
+  font-size: 1.4rem;
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease 0s;
+
+  &:hover {
+    background-color: #07193814;
+  }
+
+  &:disabled {
+    pointer-events: none;
+  }
+}
+
+.preloader {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  input {
+    background-color: rgba(0, 101, 255, 0.1);
+    border: 1px solid rgba(0, 101, 255, 0.2);
+    border-radius: 3px;
+    box-shadow: none;
+    color: #5e6c84;
+    font-size: 1.4rem;
+    padding: 0.6rem 0.6rem 0.6rem 2.7rem;
+    text-decoration: none;
+
+    &:focus {
+      background-color: rgba(0, 101, 255, 0.2);
+    }
+  }
+
+  label {
+    position: absolute;
+    left: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .title {
+    margin-bottom: 1rem;
+  }
+}
+@media screen and (max-width: 479.98px) {
+  .container {
+    justify-content: center;
+    align-items: center;
+  }
 }

@@ -4,11 +4,11 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import App from './components/App';
+import Preloader from './pages/Preloader';
 import { setupStore } from './store/store';
 
 import './i18next';
 import './styles/index.scss';
-import Preloader from './pages/Preloader';
 
 export const store = setupStore();
 

@@ -35,7 +35,14 @@ const AppRouter = () => {
             </PrivateRoute>
           }
         />
-
+        <Route
+          path={RouteNames.BOARDS + '/:id'}
+          element={
+            <PrivateRoute>
+              <Board />
+            </PrivateRoute>
+          }
+        />
         <Route
           path={RouteNames.ACCOUNT}
           element={

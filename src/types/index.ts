@@ -2,6 +2,10 @@ import { FieldError } from 'react-hook-form';
 
 export type FieldErrorType = FieldError | undefined;
 
+export type CreateFormDataType = {
+  title: string;
+};
+
 export type SignUpFormDataType = {
   name: string;
   login: string;
