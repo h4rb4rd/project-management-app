@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
-import AuthBar from '../../components/AuthBar';
-import Logo from '../../components/Logo';
-import NavBar from '../../components/NavBar';
-import UserBar from '../../components/UserBar';
+import DesktopBars from './components/DesktopBars';
 import { useAppSelector } from '../../hooks/redux';
 
 import cl from './Header.module.scss';
+import Burger from './components/Burger';
+import UserBar from '../../components/UserBar';
+import AuthBar from '../../components/AuthBar';
 
 const Header = () => {
   const { user } = useAppSelector((state) => state.AuthReducer);
@@ -35,14 +35,9 @@ const Header = () => {
         user && isScrolled && `${cl.blue} ${cl.shadow}`
       )}
     >
-      <Logo />
-      {!user && <AuthBar />}
-      {user && (
-        <>
-          <NavBar />
-          <UserBar />
-        </>
-      )}
+      <DesktopBars />
+      <Burger />
+      {user && <UserBar />}
     </header>
   );
 };

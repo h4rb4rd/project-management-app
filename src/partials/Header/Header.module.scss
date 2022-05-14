@@ -6,11 +6,10 @@
   z-index: 200;
 
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   min-height: 6.5rem;
   background-color: #fff;
-
   padding: 1.5rem;
   background-color: transparent;
   box-shadow: transparent;
@@ -33,11 +32,4 @@
 .settings {
   display: flex;
   align-items: center;
-}
-
-@media screen and (max-width: 479.98px) {
-  .header {
-    flex-direction: column;
-    justify-content: center;
-  }
 }
