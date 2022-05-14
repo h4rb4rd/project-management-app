@@ -44,6 +44,6 @@ export type TTaskForm = {
 };
 
 export enum ETAskModalMode {
-  ADD = 'add',
-  UPDATE = 'update',
+  ADD = 'Добавить',
+  UPDATE = 'Изменить',
 }

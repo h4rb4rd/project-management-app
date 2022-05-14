@@ -87,7 +87,7 @@ const ModalTask = ({
             <button onClick={handleClose} className={`${cl.buttonForm} ${cl.btnCancel}`}>
               Отмена
             </button>
-            <button className={`${cl.buttonForm} ${cl.btnOk}`}>Добавить</button>
+            <button className={`${cl.buttonForm} ${cl.btnOk}`}>{mode}</button>
           </div>
         </form>
       </div>
