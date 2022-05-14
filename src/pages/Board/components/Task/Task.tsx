@@ -9,6 +9,10 @@ import ModalTask from '../ModalTask';
 
 import cl from './Task.module.scss';
 
+interface ITaskView extends IDropTasks {
+  reorderTask: () => void;
+}
+
 const Task = ({
   id,
   title,
@@ -18,7 +22,8 @@ const Task = ({
   boardId,
   columnId,
   deleteTask,
-}: IDropTasks) => {
+  reorderTask,
+}: ITaskView) => {
   const dispatch = useDispatch<AppDispatch>();
   const taskRef = useRef(null);
   const [isUpdate, setIsUpdate] = useState(false);
@@ -34,9 +39,6 @@ const Task = ({
   const [spec, dropRef] = useDrop({
     accept: 'task',
     hover: (task: ITask) => {
-      if (task.columnId !== columnId) {
-        return;
-      }
       if (task.columnId == columnId) {
         if (task.id !== id) {
           const dragId = task.id;
@@ -47,6 +49,11 @@ const Task = ({
           };
           dispatch(moveTaskItem(moveItem));
         }
+      }
+    },
+    drop: (task: ITask) => {
+      if (task.columnId === columnId) {
+        reorderTask();
       }
     },
   });
@@ -86,10 +93,10 @@ const Task = ({
     <div ref={taskRef} className={isDragging ? `${cl.itemTask} ${cl.hide}` : cl.itemTask}>
       <div className={cl.taskTitle}>{title}</div>
       <div className={cl.taskBtnContainer}>
-        <button className={cl.editTask} onClick={showModal}>
+        <button className={`${cl.buttonTask} ${cl.editTask}`} onClick={showModal}>
           &#9998;
         </button>
-        <button className={cl.deleteTask} onClick={handleDeleteTask}>
+        <button className={`${cl.buttonTask} ${cl.deleteTask}`} onClick={handleDeleteTask}>
           &#10008;
         </button>
       </div>

@@ -28,6 +28,7 @@ interface ITransferTaskItem {
   fromColumnId: string;
   toColumnId: string;
   taskId: string;
+  newOrder: number;
 }
 
 interface IDeleteTaskItem {
@@ -57,7 +58,7 @@ export const boardSlice = createSlice({
       state.columns[dragIndex] = hoverItem;
       state.columns[hoverIndex] = dragItem;
       state.columns.forEach((item, index) => {
-        const order = getNewOrder(index + 1);
+        const order = getNewOrder(index);
         console.log('moveColumn', order);
         item.order = order;
       });
@@ -91,18 +92,18 @@ export const boardSlice = createSlice({
       state.columns[columnIndex].tasks[dragIndex] = hoverItem;
       state.columns[columnIndex].tasks[hoverIndex] = dragItem;
       state.columns[columnIndex].tasks.forEach((item, index) => {
-        item.order = getNewOrder(index + 1);
+        item.order = getNewOrder(index);
       });
     },
     transferTask(state, action: PayloadAction<ITransferTaskItem>) {
       const fromColumn = state.columns.findIndex((item) => item.id === action.payload.fromColumnId);
       const toColumn = state.columns.findIndex((item) => item.id === action.payload.toColumnId);
-      const indexTask =
-        state.columns[fromColumn].tasks.findIndex((item) => item.id === action.payload.taskId) ||
-        -1;
+      const indexTask = state.columns[fromColumn].tasks.findIndex(
+        (item) => item.id === action.payload.taskId
+      );
       const task = state.columns[fromColumn].tasks[indexTask];
       task.columnId = action.payload.toColumnId;
-      task.order = getNewOrder(state.columns[toColumn].tasks.length + 1);
+      task.order = action.payload.newOrder;
       state.columns[toColumn].tasks.push(task);
       state.columns[fromColumn].tasks.splice(indexTask, 1);
     },

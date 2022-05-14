@@ -13,8 +13,19 @@
   height: 100%;
   column-gap: 5px;
   background-color: #0000003d;
-  padding-top: 1rem;
-  padding-left: 1rem;
+  padding: 1rem;
+  overflow-x: scroll;
+}
+
+.boardContainer::-webkit-scrollbar {
+  width: 100%;
+  background-color: rgba(20, 47, 104, 0.5);
+  height: 1.5rem;
+}
+
+.boardContainer::-webkit-scrollbar-thumb {
+  background-color: #237e8f;
+  cursor: pointer;
 }
 
 .boardColumns {

@@ -1,8 +1,9 @@
 .itemTask {
   width: 100%;
   padding: 0.5rem;
-  border: 0.1rem solid #000;
-  border-radius: 0.5rem;
+  // border: 0.1rem solid #000;
+  background-color: #a9cbfd;
+  // border-radius: 0.5rem;
 }
 
 .hide {
@@ -15,11 +16,23 @@
 
 .taskBtnContainer{
   display: flex;
+  column-gap: 1rem;
+}
+
+.buttonTask{
+  width: 2rem;
+  height: 2rem;
+  border: 0.1rem solid #a9fdf9;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .deleteTask {
   color: red;
-  cursor: pointer;
+}
+
+.editTask {
+  color: #0065ff;
 }
 
 

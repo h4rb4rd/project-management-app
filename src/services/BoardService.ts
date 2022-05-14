@@ -199,6 +199,43 @@ export default class BoardService {
     }
   }
 
+  static async transferTask(
+    boardId: string,
+    columnId: string,
+    toColumnId: string,
+    taskId: string,
+    title: string,
+    order: number,
+    description: string,
+    userId: string
+  ): Promise<AxiosResponse | undefined> {
+    try {
+      const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
+      const result = await axios.put(
+        `boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
+        {
+          title,
+          order,
+          description,
+          userId,
+          boardId,
+          columnId: toColumnId,
+        },
+        {
+          baseURL: API_URL,
+          headers: {
+            Authorization: `Bearer ${locToken.value}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      return result;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   static async deleteTask(
     boardId: string,
     columnId: string,

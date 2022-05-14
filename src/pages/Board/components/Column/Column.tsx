@@ -14,6 +14,7 @@ import {
   updateColumnItem,
 } from '../../../../store/store';
 import { ETAskModalMode } from '../../../../types';
+import { getNewOrder } from '../../../../utils/board';
 import ModalTaskAdd from '../ModalTask';
 import Task from '../Task';
 
@@ -129,16 +130,45 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
         dispatch(addTaskItem(item));
       }
     }
+    setIsShowTaskAdd(false);
   };
 
-  const dropTask = (dropTask: ITask) => {
+  const requestReorderTask = async () => {
+    taskList.forEach((item) => {
+      BoardService.updateTask(
+        boardId,
+        id,
+        item.id,
+        item.title,
+        item.order,
+        item.description,
+        item.userId
+      );
+    });
+  };
+
+  const dropTask = async (dropTask: ITask) => {
     if (dropTask.columnId !== id) {
+      const order = getNewOrder(taskList.length);
       const transferItem = {
         fromColumnId: dropTask.columnId,
         toColumnId: id,
         taskId: dropTask.id,
+        newOrder: order,
       };
-      dispatch(transferTask(transferItem));
+      const result = await BoardService.transferTask(
+        boardId,
+        dropTask.columnId,
+        id,
+        dropTask.id,
+        dropTask.title,
+        order,
+        dropTask.description,
+        dropTask.userId
+      );
+      if (result?.status === 200) {
+        dispatch(transferTask(transferItem));
+      }
     }
   };
 
@@ -207,6 +237,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
                 columnId={columnId}
                 userId={userId}
                 deleteTask={deleteTask}
+                reorderTask={requestReorderTask}
               />
             ))
           : null}
