@@ -1,26 +1,21 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { IBoardColumn } from '../../models/IBoard';
-import { IColumn } from '../../models/IColumns';
-import { ITask } from '../../models/ITask';
 import BoardService from '../../services/BoardService';
+import { addColumnItem, addItems, AppDispatch, clearStore, RootState } from '../../store/store';
+import { getNewOrder } from '../../utils/board';
 import Preloader from '../Preloader';
 
 import cl from './Board.module.scss';
 import Column from './components/Column';
 import ModalColumnAdd from './components/ModalColumnAdd';
 
-{
-  /* <Route path="board" element={<Board />} /> */
-  //   {
-  //     "title": "Homework tasks",
-  //     "id": "aa2c9f91-36f0-4e1c-b177-489c42584bc5"
-  // }
-}
-
 const Board = () => {
-  const [columnList, setColumnList] = useState<IBoardColumn[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const columnList = useSelector(({ boardReducer }: RootState) => boardReducer.columns);
   const boardId = 'aa2c9f91-36f0-4e1c-b177-489c42584bc5';
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
   const [isRequestColumn, setIsRequestColumn] = useState(false);
@@ -28,91 +23,15 @@ const Board = () => {
 
   useEffect(() => {
     requestColumnList();
-    // return () => {
-    //   console.log('unmount', columnList);
-    //   saveData();
-    // };
-  }, [isRequestColumn]);
+  }, []);
 
   const requestColumnList = async () => {
     setIsLoading(true);
-    await BoardService.getColumns(boardId, setColumnList);
-    console.log('mount', columnList);
-    setIsLoading(false);
-  };
-
-  const saveData = async () => {
-    setIsLoading(true);
-    // const copyList = columnList.slice(0);
-    try {
-      const saveList = columnList.slice(0);
-      columnList.forEach(async (item) => {
-        await BoardService.deleteColumn(boardId, item.id);
-      });
-      columnList.forEach(async (item) => {
-        await BoardService.addColumn(boardId, item.title, item.order);
-      });
-      BoardService.getColumns(boardId, setColumnList);
-      columnList.forEach(async (item) => {
-        const saveItem = saveList.find((svItem) => svItem.title === item.title);
-        saveItem?.tasks.forEach(async (taskItem) => {
-          await BoardService.addTask(
-            boardId,
-            item.id,
-            taskItem.title,
-            taskItem.order,
-            taskItem.description,
-            taskItem.userId
-          );
-        });
-      });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
+    const columns = await BoardService.getColumns(boardId);
+    if (columns) {
+      dispatch(addItems(columns));
     }
-  };
-
-  const requestColumn = () => {
-    setIsRequestColumn(!isRequestColumn);
-  };
-
-  const updateTaskListColumn = (columnId: string, newTaskList: ITask[]) => {
-    const copyListColumn = columnList.map((item) => {
-      if (item.id === columnId) {
-        item.tasks = newTaskList.slice(0);
-      }
-      return item;
-    });
-    setColumnList([...copyListColumn]);
-  };
-
-  const moveListItem = useCallback(
-    (dragId: string, hoverId: string) => {
-      const dragIndex = columnList.findIndex((item) => item.id === dragId);
-      const hoverIndex = columnList.findIndex((item) => item.id === hoverId);
-      const dragItem = columnList[dragIndex];
-      const hoverItem = columnList[hoverIndex];
-
-      const copyList = [...columnList];
-      copyList[dragIndex] = hoverItem;
-      copyList[hoverIndex] = dragItem;
-      copyList.forEach((item, index) => (item.order = index + 1));
-      setColumnList(copyList);
-    },
-    [columnList]
-  );
-
-  const updateColumnOrder = useCallback(() => {
-    columnList.forEach((item, index) => {
-      item.order = index + 1;
-    });
-    setColumnList([...columnList]);
-  }, [columnList]);
-
-  const updateColumnTitle = async (column: IColumn) => {
-    await BoardService.updateColumn(boardId, column.id, column.title, column.order);
-    requestColumn();
+    setIsLoading(false);
   };
 
   const handleCloseModal = () => {
@@ -120,14 +39,27 @@ const Board = () => {
   };
 
   const addColumn = async (title: string) => {
-    await BoardService.addColumn(boardId, title, columnList.length + 1);
-    await BoardService.getColumns(boardId, setColumnList);
+    const result = await BoardService.addColumn(boardId, title, getNewOrder(columnList.length + 1));
+    if (result?.status == 201) {
+      const item: IBoardColumn = {
+        id: result.data.id,
+        title: result.data.title,
+        order: result.data.order,
+        tasks: [],
+      };
+      dispatch(addColumnItem(item));
+    }
     setIsShowColumnAdd(false);
-    requestColumn();
   };
 
   const showAddColumnDialog = () => {
     setIsShowColumnAdd(true);
+  };
+
+  const requestReorderColumn = async () => {
+    columnList.forEach((item) => {
+      BoardService.updateColumn(boardId, item.id, item.title, item.order);
+    });
   };
 
   return (
@@ -148,15 +80,11 @@ const Board = () => {
                     key={id}
                     order={order}
                     title={title}
-                    moveListItem={moveListItem}
                     id={id}
                     boardId={boardId}
                     index={index}
                     taskList={tasks}
-                    updateTaskList={updateTaskListColumn}
-                    dropColumn={updateColumnOrder}
-                    updateTitle={updateColumnTitle}
-                    requestBoard={requestColumn}
+                    reorderColumn={requestReorderColumn}
                   />
                 ))
               : null}

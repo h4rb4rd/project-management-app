@@ -1,20 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import { useDispatch } from 'react-redux';
 import { IDropTasks, ITask } from '../../../../models/ITask';
 import BoardService from '../../../../services/BoardService';
+import { AppDispatch, moveTaskItem, updateTaskItem } from '../../../../store/store';
 import { ETAskModalMode } from '../../../../types';
 import ModalTask from '../ModalTask';
 
 import cl from './Task.module.scss';
-
-export interface ITaskView extends IDropTasks {
-  moveTaskItem: (dragId: string, hoverId: string) => void;
-  dropTask: (dropTask: IDropTasks, task: ITask) => void;
-}
-
-interface IHoverTask {
-  id: string;
-}
 
 const Task = ({
   id,
@@ -24,10 +17,9 @@ const Task = ({
   userId,
   boardId,
   columnId,
-  moveTaskItem,
-  dropTask,
   deleteTask,
-}: ITaskView) => {
+}: IDropTasks) => {
+  const dispatch = useDispatch<AppDispatch>();
   const taskRef = useRef(null);
   const [isUpdate, setIsUpdate] = useState(false);
 
@@ -43,11 +35,17 @@ const Task = ({
     accept: 'task',
     hover: (task: ITask) => {
       if (task.columnId !== columnId) {
-        console.log('!=');
+        return;
       }
       if (task.columnId == columnId) {
         if (task.id !== id) {
-          moveTaskItem(task.id, id);
+          const dragId = task.id;
+          const moveItem = {
+            columnId: columnId,
+            dragId: dragId,
+            hoverId: id,
+          };
+          dispatch(moveTaskItem(moveItem));
         }
       }
     },
@@ -61,9 +59,18 @@ const Task = ({
   };
 
   const updateTask = async (titleEdit: string, descrEdit: string) => {
-    title = titleEdit;
-    description = descrEdit;
-    await BoardService.updateTask(boardId, columnId, id, titleEdit, order, descrEdit, userId);
+    const result = await BoardService.updateTask(
+      boardId,
+      columnId,
+      id,
+      titleEdit,
+      order,
+      descrEdit,
+      userId
+    );
+    if (result?.status === 200) {
+      dispatch(updateTaskItem(result.data));
+    }
     closeModal();
   };
 

@@ -8,9 +8,9 @@ interface IToken {
   expiry: number;
   value: string;
 }
-
+//, callback: (result: IBoardColumn[]) => void
 export default class BoardService {
-  static async getColumns(boardId: string, callback: (result: IBoardColumn[]) => void) {
+  static async getColumns(boardId: string): Promise<IBoardColumn[] | undefined> {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
       const result = await axios.get(`boards/${boardId}/columns`, {
@@ -30,13 +30,17 @@ export default class BoardService {
           datalist[i].tasks = resultTask?.slice(0) || [];
         }
       }
-      callback(datalist);
+      return datalist;
     } catch (err) {
       console.log(err);
     }
   }
 
-  static async addColumn(boardId: string, titleColumn: string, orderColumn: number) {
+  static async addColumn(
+    boardId: string,
+    titleColumn: string,
+    orderColumn: number
+  ): Promise<AxiosResponse | undefined> {
     const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
     try {
       const result = await axios.post(
@@ -54,6 +58,8 @@ export default class BoardService {
           },
         }
       );
+      return result;
+      console.log('addColumn', result);
     } catch (err) {
       console.log(err);
     }
@@ -64,7 +70,7 @@ export default class BoardService {
     columnId: string,
     titleColumn: string,
     orderColumn: number
-  ) {
+  ): Promise<AxiosResponse | undefined> {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
       const result = await axios.put(
@@ -82,12 +88,13 @@ export default class BoardService {
           },
         }
       );
+      return result;
     } catch (err) {
       console.log([orderColumn, err]);
     }
   }
 
-  static async deleteColumn(boardId: string, columnId: string) {
+  static async deleteColumn(boardId: string, columnId: string): Promise<AxiosResponse | undefined> {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
       const result = await axios.delete(`boards/${boardId}/columns/${columnId}`, {
@@ -98,11 +105,12 @@ export default class BoardService {
           'Content-Type': 'application/json',
         },
       });
+      return result;
     } catch (err) {
       console.log(err);
     }
   }
-  //, callback: (result: ITask[]) => void
+
   static async getTasks(boardId: string, columnId: string): Promise<ITask[] | undefined> {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
@@ -117,8 +125,6 @@ export default class BoardService {
       const datalist: ITask[] = result.data;
       datalist.sort((task1, task2) => task1.order - task2.order);
       return datalist;
-      // callback(datalist);
-      // console.log('service tasks', datalist);
     } catch (err) {
       console.log(err);
     }
@@ -131,7 +137,7 @@ export default class BoardService {
     order: number,
     description: string,
     userId: string
-  ) {
+  ): Promise<AxiosResponse | undefined> {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
       const result = await axios.post(
@@ -151,6 +157,7 @@ export default class BoardService {
           },
         }
       );
+      return result;
     } catch (err) {
       console.log(err);
     }
@@ -164,7 +171,7 @@ export default class BoardService {
     order: number,
     description: string,
     userId: string
-  ) {
+  ): Promise<AxiosResponse | undefined> {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
       const result = await axios.put(
@@ -186,12 +193,17 @@ export default class BoardService {
           },
         }
       );
+      return result;
     } catch (err) {
       console.log(err);
     }
   }
 
-  static async deleteTask(boardId: string, columnId: string, taskId: string) {
+  static async deleteTask(
+    boardId: string,
+    columnId: string,
+    taskId: string
+  ): Promise<AxiosResponse | undefined> {
     try {
       const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
       const result = await axios.delete(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
@@ -202,6 +214,7 @@ export default class BoardService {
           'Content-Type': 'application/json',
         },
       });
+      return result;
     } catch (err) {
       throw err;
     }
