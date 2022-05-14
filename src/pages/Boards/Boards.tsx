@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { boardsSlice } from '../../store/reducers/BoardsSlice';
@@ -9,12 +10,11 @@ import Item from './components/Item';
 import ModalPortal from '../../Portals/ModalPortal';
 import preloader from '../../assets/buttonPreloader.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-
+import { useSearchParams } from 'react-router-dom';
+import { useDebounce } from '../../hooks/useDebounce';
 import searchImg from '../../assets/search.svg';
 
 import cl from './Boards.module.scss';
-import { useSearchParams } from 'react-router-dom';
-import { useDebounce } from '../../hooks/useDebounce';
 
 const Boards = () => {
   const { boards, isModalOpen, searchValue, isPending, error } = useAppSelector(
@@ -26,6 +26,8 @@ const Boards = () => {
   const searchQuery = searchParams.get('search') || '';
   const debouncedSearchValue = useDebounce(searchQuery, 1000);
   const [filteredBoards, setFilteredBoards] = useState(boards);
+
+  const { t } = useTranslation();
 
   const createBoard = () => {
     dispatch(setIsModalOpen(true));
@@ -52,7 +54,7 @@ const Boards = () => {
     } else {
       setFilteredBoards(boards);
     }
-  }, [debouncedSearchValue]);
+  }, [debouncedSearchValue, boards]);
 
   useEffect(() => {
     searchValue ? setSearchParams({ search: searchValue }) : setSearchParams({ search: '' });
@@ -67,7 +69,7 @@ const Boards = () => {
   return (
     <div className={cl.boards}>
       <div className={cl.heading}>
-        <h2 className={cl.title}>Ваши рабочие пространства</h2>
+        <h2 className={cl.title}>{t('boards.title')}</h2>
         <div className={cl.search}>
           <label htmlFor="searchId">
             <img src={searchImg} alt="search-icon" />
@@ -82,7 +84,7 @@ const Boards = () => {
           {isPending ? (
             <img className={cl.preloader} src={preloader} alt="preloader" />
           ) : (
-            <span>Создать доску</span>
+            <span>{t('boards.createBoardBtn')}</span>
           )}
         </button>
       </div>

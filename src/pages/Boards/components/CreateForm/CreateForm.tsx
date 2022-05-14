@@ -49,11 +49,11 @@ const CreateForm = () => {
 
   return (
     <form className={cl.form} onSubmit={handleSubmit(onSubmit)}>
-      <h2 className={cl.title}>Создать доску</h2>
+      <h2 className={cl.title}>{t('createForm.title')}</h2>
       <hr className={cl.selector} />
       <Title register={register} />
       <button className={cl.submit}>
-        <span>Создать</span>
+        <span>{t('createForm.btn')}</span>
       </button>
       <ToastContainer
         position="bottom-right"

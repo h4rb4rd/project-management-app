@@ -15,20 +15,20 @@ const Title = ({ register }: TitleProps) => {
 
   return (
     <div className={cl.container}>
-      <label htmlFor="titleFieldId">Заголовок доски</label>
+      <label htmlFor="titleFieldId">{t('titleField.label')}</label>
       <input
         {...register('title', {
-          required: 'Поле заголовок обязательно для заполнения',
+          required: t('titleField.required'),
           minLength: {
             value: 3,
-            message: 'Минимальная длина заголовка 3 символа',
+            message: t('titleField.minLength'),
           },
           maxLength: {
             value: 20,
-            message: 'Максимальная длина заголовка 20 символов',
+            message: t('titleField.maxLength'),
           },
         })}
-        placeholder="Укажите название доски"
+        placeholder={t('titleField.placeholder')}
         type="text"
         id="titleFieldId"
       />

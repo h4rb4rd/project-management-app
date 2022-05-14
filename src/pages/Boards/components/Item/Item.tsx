@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import cl from './Item.module.scss';
+import { useTranslation } from 'react-i18next';
 
 interface ItemProps {
   title: string;
@@ -21,6 +22,7 @@ const Item = ({ title, id }: ItemProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { t } = useTranslation();
 
   const deleteHandler = () => {
     setIsModalActive(true);
@@ -46,14 +48,16 @@ const Item = ({ title, id }: ItemProps) => {
   }, [error]);
 
   return (
-    <div className={cl.item} key={title} onClick={openBoard}>
-      <h2>{title}</h2>
+    <div className={cl.item} key={title}>
+      <div className={cl.content} onClick={openBoard}>
+        <h2>{title}</h2>
+      </div>
       <button className={cl.delete} onClick={deleteHandler} disabled={isPending}>
         &#10006;
       </button>
       <ModalPortal isActive={isModalActive} close={closeModal}>
         <Confirmation
-          text={'Вы действительно хотите удалить доску?'}
+          text={t('boardsItem.confirmation')}
           confirm={handleConfirm}
           close={closeModal}
         />

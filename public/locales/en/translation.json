@@ -35,6 +35,10 @@
     "btn": "Save",
     "confirmText": "Are you sure you want to change your data?"
   },
+  "createForm": {
+    "title": "Create board",
+    "btn": "Create"
+  },
   "loginField": {
     "label": "User name",
     "placeholder": "Enter username",
@@ -55,6 +59,13 @@
     "required": "Password is required",
     "minLength": "Password must be at least 4 characters long",
     "maxLength": "Password can be max 12 characters long"
+  },
+  "titleField": {
+    "label": "Board title",
+    "placeholder": "Enter board title",
+    "required": "Board title is required",
+    "minLength": "Board title must be at least 3 characters long",
+    "maxLength": "Board title can be max 20 characters long"
   },
   "userModal": {
     "title": "Account",
@@ -89,5 +100,12 @@
     "p1": "Brace yourself till we get the error fixed.",
     "p2": "You may also refresh the page or try again later.",
     "btn": "Refresh"
+  },
+  "boards": {
+    "title": "Your workspaces",
+    "createBoardBtn": "Create new board"
+  },
+  "boardsItem": {
+    "confirmation": "Are you sure you want to delete this board?"
   }
 }
