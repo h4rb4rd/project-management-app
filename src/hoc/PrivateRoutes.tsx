@@ -1,14 +1,10 @@
 import React, { ReactNode } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { useAppSelector } from '../hooks/redux';
 
 import { RouteNames } from '../components/AppRouter/types';
 
-interface RequireAuthProps {
-  children: ReactNode;
-}
-
-const PrivateRoute = ({ children }: RequireAuthProps) => {
+const PrivateRoutes = () => {
   const location = useLocation();
 
   const { user } = useAppSelector((state) => state.AuthReducer);
@@ -17,7 +13,7 @@ const PrivateRoute = ({ children }: RequireAuthProps) => {
     return <Navigate to={RouteNames.HOME} state={{ from: location }} />;
   }
 
-  return <>{children}</>;
+  return <Outlet />;
 };
 
-export default PrivateRoute;
+export default PrivateRoutes;
