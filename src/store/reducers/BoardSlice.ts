@@ -59,7 +59,6 @@ export const boardSlice = createSlice({
       state.columns[hoverIndex] = dragItem;
       state.columns.forEach((item, index) => {
         const order = getNewOrder(index);
-        console.log('moveColumn', order);
         item.order = order;
       });
     },

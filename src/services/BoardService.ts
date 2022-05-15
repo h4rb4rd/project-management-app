@@ -59,7 +59,6 @@ export default class BoardService {
         }
       );
       return result;
-      console.log('addColumn', result);
     } catch (err) {
       console.log(err);
     }
