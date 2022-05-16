@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '../../hooks/redux';
 import img from '../../assets/home.png';
 import Team from '../../partials/Team';
 
 import cl from './Home.module.scss';
-import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   const { user } = useAppSelector((state) => state.AuthReducer);

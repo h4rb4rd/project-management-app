@@ -7,7 +7,6 @@ import { useAppSelector } from '../../hooks/redux';
 import cl from './Header.module.scss';
 import Burger from './components/Burger';
 import UserBar from '../../components/UserBar';
-import AuthBar from '../../components/AuthBar';
 
 const Header = () => {
   const { user } = useAppSelector((state) => state.AuthReducer);

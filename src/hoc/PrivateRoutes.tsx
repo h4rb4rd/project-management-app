@@ -1,16 +1,15 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import { useAppSelector } from '../hooks/redux';
 
 import { RouteNames } from '../components/AppRouter/types';
+import { getValueWithExpiry } from '../utils/storage';
 
 const PrivateRoutes = () => {
   const location = useLocation();
+  const token = getValueWithExpiry('token');
 
-  const { user } = useAppSelector((state) => state.AuthReducer);
-
-  if (!user) {
-    return <Navigate to={RouteNames.HOME} state={{ from: location }} />;
+  if (!token) {
+    return <Navigate to={RouteNames.BOARDS} state={{ from: location }} />;
   }
 
   return <Outlet />;
