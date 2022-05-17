@@ -93,11 +93,11 @@ const Task = ({
     <div ref={taskRef} className={isDragging ? `${cl.itemTask} ${cl.hide}` : cl.itemTask}>
       <div className={cl.taskTitle}>{title}</div>
       <div className={cl.taskBtnContainer}>
-        <button className={`${cl.buttonTask} ${cl.editTask}`} onClick={showModal}>
-          &#9998;
-        </button>
         <button className={`${cl.buttonTask} ${cl.deleteTask}`} onClick={handleDeleteTask}>
           &#10008;
+        </button>
+        <button className={`${cl.buttonTask} ${cl.editTask}`} onClick={showModal}>
+          &#9998;
         </button>
       </div>
       {isUpdate ? (

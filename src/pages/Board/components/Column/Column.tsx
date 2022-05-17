@@ -218,12 +218,13 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
         ) : (
           <div className={cl.titleBoard} onDoubleClick={() => setIsChangeTitle(true)}>
             {titleCard}
+            <button className={`${cl.deleteButton}`} onClick={deleteColumn}>
+              &#10006;
+            </button>
           </div>
         )}
       </div>
-      <button className={`${cl.columnBtn} ${cl.addButton}`} onClick={showAddTaskDialog}>
-        Добавить задачу
-      </button>
+
       <div className={cl.taskListContainer}>
         {taskList.length
           ? taskList.map(({ id, description, title, order, boardId, columnId, userId }, index) => (
@@ -242,9 +243,13 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
             ))
           : null}
       </div>
-      <button className={`${cl.columnBtn} ${cl.deleteButton}`} onClick={deleteColumn}>
-        Удалить колонку
+      <button className={`${cl.btnTaskAdd}`} onClick={showAddTaskDialog}>
+        <span className={cl.iconAdd}>+</span>
+        <span>Добавить задачу</span>
       </button>
+      {/* <button className={`${cl.columnBtn} ${cl.deleteButton}`} onClick={deleteColumn}>
+        Удалить колонку
+      </button> */}
       {isShowTaskAdd ? (
         <ModalTaskAdd mode={ETAskModalMode.ADD} handleClose={handleCloseModal} addTask={addTask} />
       ) : null}

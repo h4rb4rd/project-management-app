@@ -68,11 +68,6 @@ const Board = () => {
         <Preloader />
       ) : (
         <div className={cl.board}>
-          <div className={cl.boardBtnContainer}>
-            <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
-              Column Add
-            </button>
-          </div>
           <div className={cl.boardContainer}>
             {columnList.length
               ? columnList.map(({ id, order, title, tasks }, index) => (
@@ -88,6 +83,10 @@ const Board = () => {
                   />
                 ))
               : null}
+            <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
+              <span className={cl.iconAdd}>+</span>
+              <span>Добавить колонку</span>
+            </button>
           </div>
           {isShowColumnAdd ? (
             <ModalColumnAdd handleClose={handleCloseModal} addColumn={addColumn} />

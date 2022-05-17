@@ -67,8 +67,12 @@ const ModalTask = ({
   return ReactDOM.createPortal(
     <div className={cl.modal} onClick={handleClose}>
       <div className={cl.formContainer} onClick={(e) => handleClickContainer(e)}>
-        <h2>Введите название задачи</h2>
+        <button onClick={handleClose} className={`${cl.buttonForm} ${cl.btnCancel}`}>
+          &#10006;
+        </button>
+
         <form onSubmit={handleSubmit(onSubmit)}>
+          <h2>Введите название задачи</h2>
           <input
             {...register('titleTask', {
               required: 'Поле не может быть пустым',
@@ -84,9 +88,6 @@ const ModalTask = ({
             id="idDescrTask"
           />
           <div className={cl.btmFormContainer}>
-            <button onClick={handleClose} className={`${cl.buttonForm} ${cl.btnCancel}`}>
-              Отмена
-            </button>
             <button className={`${cl.buttonForm} ${cl.btnOk}`}>{mode}</button>
           </div>
         </form>

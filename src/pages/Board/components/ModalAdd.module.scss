@@ -8,7 +8,7 @@
   left: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.8);
-  padding: 10px;
+  padding: 1rem;
   z-index: 1040;
 }
 
@@ -21,9 +21,10 @@
   max-width: 40rem;
   width: 100%;
   background-color: #fff;
-  box-shadow: rgb(0 0 0 / 10%) 0 0 10px;
-  border-radius: 3px;
+  box-shadow: rgb(0 0 0 / 10%) 0 0 1rem;
+  border-radius: 0.3rem;
   padding: 2.5rem 4rem;
+  position: relative;
 
   form {
     display: flex;
@@ -32,21 +33,22 @@
     row-gap: 1.5rem;
   }
 
-  input, textarea{
+  input,
+  textarea {
     font-size: 1.4rem;
     background-color: #fafbfc;
-    border: 2px solid #dfe1e6;
-    border-radius: 3px;
+    border: 0.2rem solid #dfe1e6;
+    border-radius: 0.3rem;
     height: 4.4rem;
     width: 32rem;
     padding: 0.5rem 1rem;
 
     &:focus {
-      border: 2px solid #4c9aff;
+      border: 0.2rem solid #4c9aff;
     }
   }
 
-  textarea{
+  textarea {
     height: 10rem;
   }
 }
@@ -58,19 +60,36 @@
 }
 
 .buttonForm {
-  width: 50%;
-  background-color: #5aac44;
-  color: #fff;
-  padding: 0.8rem 1.8rem;
-  border-radius: 3px;
+  
   cursor: pointer;
   transition: background-color 0.3s ease 0s;
 }
 
 .btnOk {
-  background-color: #5aac44;
+  width: 100%;
+  padding: 0.8rem 1.8rem;
+  border-radius: 0.3rem;
+  color: #fff;
+  background-color: #0065ff;
 }
 
 .btnCancel {
-  background-color: #ac4444;
+  color: #ac4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.3rem;
+  background-color: #fff;
+  width: 3rem;
+  height: 3rem;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  transition: all 0.5s ease;
+
+  &:hover{
+    background-color: #ac4444;
+    color:#ebecf0;
+  }
+  position: absolute;
 }

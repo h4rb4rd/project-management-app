@@ -12,20 +12,21 @@
 .boardContainer {
   display: flex;
   height: 100%;
-  column-gap: 5px;
+  column-gap: 0.5rem;
   background-color: #0000003d;
-  padding: 1rem;
+  padding: 1rem 0.5rem;
   overflow-x: scroll;
 }
 
 .boardContainer::-webkit-scrollbar {
   width: 100%;
-  background-color: rgba(20, 47, 104, 0.5);
-  height: 1.5rem;
+  // background-color: rgba(20, 47, 104, 0.5);
+  height: 1rem;
 }
 
 .boardContainer::-webkit-scrollbar-thumb {
-  background-color: #237e8f;
+  background-color: #5f6869;
+  border-radius: 3rem;
   cursor: pointer;
 }
 
@@ -39,10 +40,27 @@
 }
 
 .btnColumnAdd {
-  background-color: #5aac44;
+  // background-color: #5aac44;
+  background-color: #ffffff3d;
   color: #fff;
   padding: 0.8rem 1.8rem;
   border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.3s ease 0s;
+  height: fit-content;
+  width: 27.2rem;
+  min-width: 27.2rem;
+  text-align: left;
+  font-size: 1.7rem;
+  font-weight: 400;
+  line-height: 20px;
+
+  .iconAdd {
+    margin-right: 0.5rem;
+    line-height: 2rem;
+  }
+
+  &:hover {
+    background-color: #ffffff52;
+  }
 }

@@ -46,6 +46,9 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
   return ReactDOM.createPortal(
     <div className={cl.modal} onClick={handleClose}>
       <div className={cl.formContainer} onClick={(e) => handleClickContainer(e)}>
+        <button onClick={handleClose} className={`${cl.buttonForm} ${cl.btnCancel}`}>
+          &#10006;
+        </button>
         <h2>Введите название колонки</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
@@ -56,9 +59,6 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
             id="idTitleColumn"
           />
           <div className={cl.btmFormContainer}>
-            <button onClick={handleClose} className={`${cl.buttonForm} ${cl.btnCancel}`}>
-              Отмена
-            </button>
             <button className={`${cl.buttonForm} ${cl.btnOk}`}>Добавить</button>
           </div>
         </form>
