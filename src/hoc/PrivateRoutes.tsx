@@ -9,7 +9,7 @@ const PrivateRoutes = () => {
   const token = getValueWithExpiry('token');
 
   if (!token) {
-    return <Navigate to={RouteNames.BOARDS} state={{ from: location }} />;
+    return <Navigate to={RouteNames.HOME} state={{ from: location }} />;
   }
 
   return <Outlet />;
