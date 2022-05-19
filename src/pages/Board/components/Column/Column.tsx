@@ -5,14 +5,20 @@ import { IColumn } from '../../../../models/IColumns';
 import { IDropTasks, ITask } from '../../../../models/ITask';
 import BoardService from '../../../../services/BoardService';
 import {
-  addTaskItem,
+  // addTaskItem,
   AppDispatch,
+  // deleteTaskItem,
+  moveColumnItem,
+  // transferTask,
+  // updateColumnItem,
+} from '../../../../store/store';
+import {
+  addTaskItem,
   deleteColumnItem,
   deleteTaskItem,
-  moveColumnItem,
-  transferTask,
+  transferTaskItem,
   updateColumnItem,
-} from '../../../../store/store';
+} from '../../../../store/thunks';
 import { ETAskModalMode } from '../../../../types';
 import { getNewOrder } from '../../../../utils/board';
 import ModalTaskAdd from '../ModalTask';
@@ -86,9 +92,10 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
       if (result?.status === 200) {
         dispatch(
           updateColumnItem({
-            id,
-            title: titleCard,
-            order,
+            boardId,
+            columnId: id,
+            titleColumn: titleCard,
+            orderColumn: order,
           })
         );
       }
@@ -109,26 +116,16 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
     const user = JSON.parse(localStorage.getItem('user') || '');
 
     if (user) {
-      const result = await BoardService.addTask(
-        boardId,
-        id,
-        title,
-        taskList.length + 1,
-        descr,
-        user.id
+      dispatch(
+        addTaskItem({
+          boardId,
+          columnId: id,
+          title,
+          order: taskList.length + 1,
+          description: descr,
+          userId: user.id,
+        })
       );
-      if (result?.status === 201) {
-        const item: ITask = {
-          id: result.data.id,
-          title: result.data.title,
-          order: result.data.order,
-          boardId: result.data.boardId,
-          columnId: result.data.columnId,
-          description: result.data.description,
-          userId: result.data.userId,
-        };
-        dispatch(addTaskItem(item));
-      }
     }
     setIsShowTaskAdd(false);
   };
@@ -147,28 +144,21 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
     });
   };
 
-  const dropTask = async (dropTask: ITask) => {
+  const dropTask = (dropTask: ITask) => {
     if (dropTask.columnId !== id) {
       const order = getNewOrder(taskList.length);
-      const transferItem = {
-        fromColumnId: dropTask.columnId,
-        toColumnId: id,
-        taskId: dropTask.id,
-        newOrder: order,
-      };
-      const result = await BoardService.transferTask(
-        boardId,
-        dropTask.columnId,
-        id,
-        dropTask.id,
-        dropTask.title,
-        order,
-        dropTask.description,
-        dropTask.userId
+      dispatch(
+        transferTaskItem({
+          boardId: boardId,
+          columnId: dropTask.columnId,
+          toColumnId: id,
+          taskId: dropTask.id,
+          title: dropTask.title,
+          order: order,
+          description: dropTask.description,
+          userId: dropTask.userId,
+        })
       );
-      if (result?.status === 200) {
-        dispatch(transferTask(transferItem));
-      }
     }
   };
 
@@ -177,21 +167,11 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
   };
 
   const deleteTask = async (taskId: string) => {
-    const result = await BoardService.deleteTask(boardId, id, taskId);
-    if (result?.status === 204) {
-      const deletedTask = {
-        columnId: id,
-        taskId: taskId,
-      };
-      dispatch(deleteTaskItem(deletedTask));
-    }
+    dispatch(deleteTaskItem({ boardId, columnId: id, taskId }));
   };
 
-  const deleteColumn = async () => {
-    const result = await BoardService.deleteColumn(boardId, id);
-    if (result?.status === 204) {
-      dispatch(deleteColumnItem(id));
-    }
+  const deleteColumn = () => {
+    dispatch(deleteColumnItem({ boardId, columnId: id }));
   };
 
   return (

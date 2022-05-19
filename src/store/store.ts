@@ -30,16 +30,4 @@ export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];
 
-export const {
-  clearStore,
-  addItems,
-  moveColumnItem,
-  addColumnItem,
-  deleteColumnItem,
-  updateColumnItem,
-  moveTaskItem,
-  transferTask,
-  deleteTaskItem,
-  addTaskItem,
-  updateTaskItem,
-} = boardSlice.actions;
+export const { moveColumnItem, moveTaskItem } = boardSlice.actions;

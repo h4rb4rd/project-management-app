@@ -4,13 +4,27 @@ import { IBoardColumn } from '../../models/IBoard';
 import { IColumn } from '../../models/IColumns';
 import { ITask } from '../../models/ITask';
 import { getNewOrder } from '../../utils/board';
+import {
+  addColumnItem,
+  addTaskItem,
+  deleteColumnItem,
+  deleteTaskItem,
+  getColumns,
+  transferTaskItem,
+  updateColumnItem,
+  updateTaskItem,
+} from '../thunks';
 
 interface IInitStateBoard {
-  columns: IBoardColumn[];
+  columnList: IBoardColumn[];
+  isLoading: boolean;
+  error: string;
 }
 
 export const initialStateBoard: IInitStateBoard = {
-  columns: [],
+  columnList: [],
+  isLoading: false,
+  error: '',
 };
 
 interface IMoveColumnItem {
@@ -40,86 +54,147 @@ export const boardSlice = createSlice({
   name: 'board',
   initialState: initialStateBoard,
   reducers: {
-    clearStore(state) {
-      state.columns.slice(0);
-    },
-    addItems(state, action: PayloadAction<IBoardColumn[]>) {
-      state.columns = [];
-      action.payload.forEach((item) => {
-        state.columns.push(item);
-      });
-    },
     moveColumnItem(state, action: PayloadAction<IMoveColumnItem>) {
-      const dragIndex = state.columns.findIndex((item) => item.id === action.payload.dragId);
-      const hoverIndex = state.columns.findIndex((item) => item.id === action.payload.hoverId);
-      const dragItem = state.columns[dragIndex];
-      const hoverItem = state.columns[hoverIndex];
+      const dragIndex = state.columnList.findIndex((item) => item.id === action.payload.dragId);
+      const hoverIndex = state.columnList.findIndex((item) => item.id === action.payload.hoverId);
+      const dragItem = state.columnList[dragIndex];
+      const hoverItem = state.columnList[hoverIndex];
 
-      state.columns[dragIndex] = hoverItem;
-      state.columns[hoverIndex] = dragItem;
-      state.columns.forEach((item, index) => {
+      state.columnList[dragIndex] = hoverItem;
+      state.columnList[hoverIndex] = dragItem;
+      state.columnList.forEach((item, index) => {
         const order = getNewOrder(index);
         item.order = order;
       });
     },
-    deleteColumnItem(state, action: PayloadAction<string>) {
-      const deleteIndex = state.columns.findIndex((item) => item.id === action.payload);
-      state.columns.splice(deleteIndex, 1);
-    },
-    addColumnItem(state, action: PayloadAction<IBoardColumn>) {
-      state.columns.push(action.payload);
-    },
-    updateColumnItem(state, action: PayloadAction<IColumn>) {
-      const columnIndex = state.columns.findIndex((item) => item.id === action.payload.id);
-      state.columns[columnIndex].title = action.payload.title;
-    },
-    addTaskItem(state, action: PayloadAction<ITask>) {
-      const columnIndex = state.columns.findIndex((item) => item.id === action.payload.columnId);
-      state.columns[columnIndex].tasks.push(action.payload);
-    },
+
     moveTaskItem(state, action: PayloadAction<IMoveTaskItem>) {
-      const columnIndex = state.columns.findIndex((item) => item.id === action.payload.columnId);
-      const dragIndex = state.columns[columnIndex].tasks.findIndex(
+      const columnIndex = state.columnList.findIndex((item) => item.id === action.payload.columnId);
+      const dragIndex = state.columnList[columnIndex].tasks.findIndex(
         (item) => item.id === action.payload.dragId
       );
-      const hoverIndex = state.columns[columnIndex].tasks.findIndex(
+      const hoverIndex = state.columnList[columnIndex].tasks.findIndex(
         (item) => item.id === action.payload.hoverId
       );
-      const dragItem = state.columns[columnIndex].tasks[dragIndex];
-      const hoverItem = state.columns[columnIndex].tasks[hoverIndex];
+      const dragItem = state.columnList[columnIndex].tasks[dragIndex];
+      const hoverItem = state.columnList[columnIndex].tasks[hoverIndex];
 
-      state.columns[columnIndex].tasks[dragIndex] = hoverItem;
-      state.columns[columnIndex].tasks[hoverIndex] = dragItem;
-      state.columns[columnIndex].tasks.forEach((item, index) => {
+      state.columnList[columnIndex].tasks[dragIndex] = hoverItem;
+      state.columnList[columnIndex].tasks[hoverIndex] = dragItem;
+      state.columnList[columnIndex].tasks.forEach((item, index) => {
         item.order = getNewOrder(index);
       });
     },
-    transferTask(state, action: PayloadAction<ITransferTaskItem>) {
-      const fromColumn = state.columns.findIndex((item) => item.id === action.payload.fromColumnId);
-      const toColumn = state.columns.findIndex((item) => item.id === action.payload.toColumnId);
-      const indexTask = state.columns[fromColumn].tasks.findIndex(
-        (item) => item.id === action.payload.taskId
-      );
-      const task = state.columns[fromColumn].tasks[indexTask];
-      task.columnId = action.payload.toColumnId;
-      task.order = action.payload.newOrder;
-      state.columns[toColumn].tasks.push(task);
-      state.columns[fromColumn].tasks.splice(indexTask, 1);
+  },
+  extraReducers: {
+    [getColumns.pending.type]: (state) => {
+      state.isLoading = true;
     },
-    deleteTaskItem(state, action: PayloadAction<IDeleteTaskItem>) {
-      const columnIndex = state.columns.findIndex((item) => item.id === action.payload.columnId);
-      const taskIndex = state.columns[columnIndex].tasks.findIndex(
-        (item) => item.id === action.payload.taskId
-      );
-      state.columns[columnIndex].tasks.splice(taskIndex, 1);
+    [getColumns.fulfilled.type]: (state, action: PayloadAction<IBoardColumn[]>) => {
+      state.columnList = action.payload;
+      state.isLoading = false;
+      state.error = '';
     },
-    updateTaskItem(state, action: PayloadAction<ITask>) {
-      const columnIndex = state.columns.findIndex((item) => item.id === action.payload.columnId);
-      const indexTask = state.columns[columnIndex].tasks.findIndex(
+    [getColumns.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    [addColumnItem.pending.type]: (state) => {
+      state.error = '';
+    },
+    [addColumnItem.fulfilled.type]: (state, action: PayloadAction<IBoardColumn>) => {
+      state.columnList.push({ ...action.payload, tasks: [] });
+    },
+    [addColumnItem.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+
+    [deleteColumnItem.pending.type]: (state) => {
+      state.error = '';
+    },
+    [deleteColumnItem.fulfilled.type]: (state, action: PayloadAction<string>) => {
+      const deleteIndex = state.columnList.findIndex((item) => item.id === action.payload);
+      state.columnList.splice(deleteIndex, 1);
+    },
+    [deleteColumnItem.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+
+    [updateColumnItem.pending.type]: (state) => {
+      state.error = '';
+    },
+    [updateColumnItem.fulfilled.type]: (state, action: PayloadAction<IColumn>) => {
+      const columnIndex = state.columnList.findIndex((item) => item.id === action.payload.id);
+      state.columnList[columnIndex].title = action.payload.title;
+    },
+    [updateColumnItem.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+
+    [addTaskItem.pending.type]: (state) => {
+      state.error = '';
+    },
+    [addTaskItem.fulfilled.type]: (state, action: PayloadAction<ITask>) => {
+      const columnIndex = state.columnList.findIndex((item) => item.id === action.payload.columnId);
+      state.columnList[columnIndex].tasks.push(action.payload);
+    },
+    [addTaskItem.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+
+    [updateTaskItem.pending.type]: (state) => {
+      state.error = '';
+    },
+    [updateTaskItem.fulfilled.type]: (state, action: PayloadAction<ITask>) => {
+      const columnIndex = state.columnList.findIndex((item) => item.id === action.payload.columnId);
+      const indexTask = state.columnList[columnIndex].tasks.findIndex(
         (item) => item.id === action.payload.id
       );
-      state.columns[columnIndex].tasks[indexTask].title = action.payload.title;
-      state.columns[columnIndex].tasks[indexTask].description = action.payload.description;
+      state.columnList[columnIndex].tasks[indexTask].title = action.payload.title;
+      state.columnList[columnIndex].tasks[indexTask].description = action.payload.description;
+      state.error = '';
+    },
+    [updateTaskItem.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    [deleteTaskItem.pending.type]: (state) => {
+      state.error = '';
+    },
+    [deleteTaskItem.fulfilled.type]: (state, action: PayloadAction<IDeleteTaskItem>) => {
+      const columnIndex = state.columnList.findIndex((item) => item.id === action.payload.columnId);
+      const taskIndex = state.columnList[columnIndex].tasks.findIndex(
+        (item) => item.id === action.payload.taskId
+      );
+      state.columnList[columnIndex].tasks.splice(taskIndex, 1);
+    },
+    [deleteTaskItem.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    [transferTaskItem.pending.type]: (state) => {
+      state.error = '';
+    },
+    [transferTaskItem.fulfilled.type]: (state, action: PayloadAction<ITransferTaskItem>) => {
+      const fromColumn = state.columnList.findIndex(
+        (item) => item.id === action.payload.fromColumnId
+      );
+      const toColumn = state.columnList.findIndex((item) => item.id === action.payload.toColumnId);
+      const indexTask = state.columnList[fromColumn].tasks.findIndex(
+        (item) => item.id === action.payload.taskId
+      );
+      const task = state.columnList[fromColumn].tasks[indexTask];
+      task.columnId = action.payload.toColumnId;
+      task.order = action.payload.newOrder;
+      state.columnList[toColumn].tasks.push(task);
+      state.columnList[fromColumn].tasks.splice(indexTask, 1);
+    },
+    [transferTaskItem.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });

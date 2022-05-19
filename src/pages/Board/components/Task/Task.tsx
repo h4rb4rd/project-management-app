@@ -3,7 +3,8 @@ import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { IDropTasks, ITask } from '../../../../models/ITask';
 import BoardService from '../../../../services/BoardService';
-import { AppDispatch, moveTaskItem, updateTaskItem } from '../../../../store/store';
+import { AppDispatch, moveTaskItem } from '../../../../store/store';
+import { updateTaskItem } from '../../../../store/thunks';
 import { ETAskModalMode } from '../../../../types';
 import ModalTask from '../ModalTask';
 
@@ -65,19 +66,18 @@ const Task = ({
     deleteTask(id);
   };
 
-  const updateTask = async (titleEdit: string, descrEdit: string) => {
-    const result = await BoardService.updateTask(
-      boardId,
-      columnId,
-      id,
-      titleEdit,
-      order,
-      descrEdit,
-      userId
+  const updateTask = (titleEdit: string, descrEdit: string) => {
+    dispatch(
+      updateTaskItem({
+        boardId,
+        columnId,
+        taskId: id,
+        title: titleEdit,
+        order,
+        description: descrEdit,
+        userId,
+      })
     );
-    if (result?.status === 200) {
-      dispatch(updateTaskItem(result.data));
-    }
     closeModal();
   };
 
