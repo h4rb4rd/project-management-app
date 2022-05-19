@@ -7,7 +7,3 @@ export interface ITask {
     boardId: string;
     columnId: string;
 }
-
-export interface ITasks {
-    columns: ITask[];
-}

@@ -4,10 +4,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
-import { IBoardColumn } from '../../models/IBoard';
-import BoardService from '../../services/BoardService';
 import { AppDispatch, RootState } from '../../store/store';
-//addColumnItem,
 import { addColumnItem, getColumns, updateColumnItem } from '../../store/thunks';
 import { getNewOrder } from '../../utils/board';
 import Preloader from '../Preloader';
@@ -44,16 +41,6 @@ const Board = () => {
         orderColumn: getNewOrder(columnList.length + 1),
       })
     );
-    //const result =
-    // if (result?.status == 201) {
-    //   const item: IBoardColumn = {
-    //     id: result.data.id,
-    //     title: result.data.title,
-    //     order: result.data.order,
-    //     tasks: [],
-    //   };
-    //   dispatch(addColumnItem(item));
-    // }
     setIsShowColumnAdd(false);
   };
 
@@ -63,7 +50,6 @@ const Board = () => {
 
   const requestReorderColumn = () => {
     columnList.forEach((item) => {
-      // BoardService.updateColumn(boardId, item.id, item.title, item.order);
       dispatch(
         updateColumnItem({
           boardId,

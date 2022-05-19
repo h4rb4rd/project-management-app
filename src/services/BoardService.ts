@@ -9,7 +9,7 @@ interface IToken {
   expiry: number;
   value: string;
 }
-//, callback: (result: IBoardColumn[]) => void
+
 export default class BoardService {
   static async getColumns(boardId: string): Promise<AxiosResponse<IBoardColumn[]>> {
     const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');

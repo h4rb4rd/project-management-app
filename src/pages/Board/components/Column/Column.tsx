@@ -1,17 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
+import Confirmation from '../../../../components/Confirmation';
 import { IColumn } from '../../../../models/IColumns';
-import { IDropTasks, ITask } from '../../../../models/ITask';
+import { ITask } from '../../../../models/ITask';
+import ModalPortal from '../../../../Portals/ModalPortal';
 import BoardService from '../../../../services/BoardService';
-import {
-  // addTaskItem,
-  AppDispatch,
-  // deleteTaskItem,
-  moveColumnItem,
-  // transferTask,
-  // updateColumnItem,
-} from '../../../../store/store';
+import { AppDispatch, moveColumnItem } from '../../../../store/store';
 import {
   addTaskItem,
   deleteColumnItem,
@@ -42,6 +37,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
   const [titleCard, setTitle] = useState(title || 'column');
   const [isChangeTitle, setIsChangeTitle] = useState(false);
   const [isShowTaskAdd, setIsShowTaskAdd] = useState(false);
+  const [isShowConfirm, setIsShowConfirm] = useState(false);
   const itemRef = useRef(null);
 
   const [{ isDragging }, dragRef] = useDrag({
@@ -71,7 +67,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
 
   const [specTask, dropTaskRef] = useDrop({
     accept: 'task',
-    drop: (dropenTask: IDropTasks) => {
+    drop: (dropenTask: ITask) => {
       dropTask(dropenTask);
     },
   });
@@ -166,12 +162,13 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
     setIsShowTaskAdd(true);
   };
 
-  const deleteTask = async (taskId: string) => {
+  const deleteTask = (taskId: string) => {
     dispatch(deleteTaskItem({ boardId, columnId: id, taskId }));
   };
 
   const deleteColumn = () => {
     dispatch(deleteColumnItem({ boardId, columnId: id }));
+    setIsShowConfirm(false);
   };
 
   return (
@@ -198,7 +195,12 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
         ) : (
           <div className={cl.titleBoard} onDoubleClick={() => setIsChangeTitle(true)}>
             {titleCard}
-            <button className={`${cl.deleteButton}`} onClick={deleteColumn}>
+            <button
+              className={`${cl.deleteButton}`}
+              onClick={() => {
+                setIsShowConfirm(true);
+              }}
+            >
               &#10006;
             </button>
           </div>
@@ -217,7 +219,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
                 boardId={boardId}
                 columnId={columnId}
                 userId={userId}
-                deleteTask={deleteTask}
+                // deleteTask={deleteTask}
                 reorderTask={requestReorderTask}
               />
             ))
@@ -227,12 +229,24 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
         <span className={cl.iconAdd}>+</span>
         <span>Добавить задачу</span>
       </button>
-      {/* <button className={`${cl.columnBtn} ${cl.deleteButton}`} onClick={deleteColumn}>
-        Удалить колонку
-      </button> */}
       {isShowTaskAdd ? (
         <ModalTaskAdd mode={ETAskModalMode.ADD} handleClose={handleCloseModal} addTask={addTask} />
       ) : null}
+
+      <ModalPortal
+        isActive={isShowConfirm}
+        close={() => {
+          setIsShowConfirm(false);
+        }}
+      >
+        <Confirmation
+          text={`Удалить колонку ${title}?`}
+          confirm={deleteColumn}
+          close={() => {
+            setIsShowConfirm(false);
+          }}
+        />
+      </ModalPortal>
     </div>
   );
 };
