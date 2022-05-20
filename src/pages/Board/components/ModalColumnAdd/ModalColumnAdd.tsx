@@ -1,6 +1,7 @@
 import React, { MouseEventHandler, ReactEventHandler, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast, ToastContainer } from 'react-toastify';
 import { TTitleInput } from '../../../../types';
 
 import cl from '../ModalAdd.module.scss';
@@ -43,6 +44,12 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
     reset();
   };
 
+  useEffect(() => {
+    if (errors.titleColumn) {
+      toast.error(errors.titleColumn.message);
+    }
+  }, [errors]);
+
   return ReactDOM.createPortal(
     <div className={cl.modal} onClick={handleClose}>
       <div className={cl.formContainer} onClick={(e) => handleClickContainer(e)}>
@@ -53,7 +60,7 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             {...register('titleColumn', {
-              required: 'Поле не может быть пустым',
+              required: 'Название не может быть пустым',
             })}
             type="text"
             id="idTitleColumn"
@@ -63,6 +70,18 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
           </div>
         </form>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        theme="colored"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+      />
     </div>,
     rootDiv
   );

@@ -1,6 +1,7 @@
 import React, { MouseEventHandler, ReactEventHandler, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast, ToastContainer } from 'react-toastify';
 import { ETAskModalMode, TTaskForm } from '../../../../types';
 
 import cl from '../ModalAdd.module.scss';
@@ -64,6 +65,15 @@ const ModalTask = ({
     });
   };
 
+  useEffect(() => {
+    if (errors.descrTask) {
+      toast.error(errors.descrTask.message);
+    }
+    if (errors.titleTask) {
+      toast.error(errors.titleTask.message);
+    }
+  }, [errors]);
+
   return ReactDOM.createPortal(
     <div className={cl.modal} onClick={handleClose}>
       <div className={cl.formContainer} onClick={(e) => handleClickContainer(e)}>
@@ -75,7 +85,7 @@ const ModalTask = ({
           <h2>Введите название задачи</h2>
           <input
             {...register('titleTask', {
-              required: 'Поле не может быть пустым',
+              required: 'Название не может быть пустым',
             })}
             type="text"
             id="idTitleTask"
@@ -83,7 +93,7 @@ const ModalTask = ({
           <h2>Введите описание</h2>
           <textarea
             {...register('descrTask', {
-              required: 'Поле не может быть пустым',
+              required: 'Описание не может быть пустым',
             })}
             id="idDescrTask"
           />
@@ -92,6 +102,18 @@ const ModalTask = ({
           </div>
         </form>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        theme="colored"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+      />
     </div>,
     rootDiv
   );
