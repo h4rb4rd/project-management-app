@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 import Confirmation from '../../../../components/Confirmation';
 import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../Portals/ModalPortal';
-import { AppDispatch, moveTaskItem } from '../../../../store/store';
+import { boardSlice } from '../../../../store/reducers/BoardSlice';
+import { AppDispatch } from '../../../../store/store';
 import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks';
 import { ETAskModalMode } from '../../../../types';
 import ModalTask from '../ModalTask';
@@ -29,6 +30,7 @@ const Task = ({
   const taskRef = useRef(null);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);
+  const { moveTaskItem } = boardSlice.actions;
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'task',

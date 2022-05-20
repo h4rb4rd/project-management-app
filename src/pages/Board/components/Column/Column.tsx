@@ -6,11 +6,11 @@ import { IColumn } from '../../../../models/IColumns';
 import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../Portals/ModalPortal';
 import BoardService from '../../../../services/BoardService';
-import { AppDispatch, moveColumnItem } from '../../../../store/store';
+import { boardSlice } from '../../../../store/reducers/BoardSlice';
+import { AppDispatch } from '../../../../store/store';
 import {
   addTaskItem,
   deleteColumnItem,
-  deleteTaskItem,
   transferTaskItem,
   updateColumnItem,
 } from '../../../../store/thunks';
@@ -39,6 +39,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
   const [isShowTaskAdd, setIsShowTaskAdd] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const itemRef = useRef(null);
+  const { moveColumnItem } = boardSlice.actions;
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'column',
@@ -162,10 +163,6 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
     setIsShowTaskAdd(true);
   };
 
-  const deleteTask = (taskId: string) => {
-    dispatch(deleteTaskItem({ boardId, columnId: id, taskId }));
-  };
-
   const deleteColumn = () => {
     dispatch(deleteColumnItem({ boardId, columnId: id }));
     setIsShowConfirm(false);
@@ -209,7 +206,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
 
       <div className={cl.taskListContainer}>
         {taskList.length
-          ? taskList.map(({ id, description, title, order, boardId, columnId, userId }, index) => (
+          ? taskList.map(({ id, description, title, order, boardId, columnId, userId }) => (
               <Task
                 key={id}
                 title={title}
