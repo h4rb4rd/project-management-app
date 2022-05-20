@@ -3,6 +3,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { AppDispatch, RootState } from '../../store/store';
 import { addColumnItem, getColumns, updateColumnItem } from '../../store/thunks';
@@ -16,7 +17,8 @@ import ModalColumnAdd from './components/ModalColumnAdd';
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { error, isLoading, columnList } = useSelector((state: RootState) => state.boardReducer);
-  const boardId = 'aa2c9f91-36f0-4e1c-b177-489c42584bc5';
+  const params = useParams();
+  const boardId = params.id || '';
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
 
   useEffect(() => {
@@ -68,25 +70,27 @@ const Board = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={cl.board}>
-        <div className={cl.boardContainer}>
-          {columnList.length
-            ? columnList.map(({ id, order, title, tasks }, index) => (
-                <Column
-                  key={id}
-                  order={order}
-                  title={title}
-                  id={id}
-                  boardId={boardId}
-                  index={index}
-                  taskList={tasks}
-                  reorderColumn={requestReorderColumn}
-                />
-              ))
-            : null}
-          <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
-            <span className={cl.iconAdd}>+</span>
-            <span>Добавить колонку</span>
-          </button>
+        <div className={cl.wrapperBoard}>
+          <div className={cl.boardContainer}>
+            {columnList.length
+              ? columnList.map(({ id, order, title, tasks }, index) => (
+                  <Column
+                    key={id}
+                    order={order}
+                    title={title}
+                    id={id}
+                    boardId={boardId}
+                    index={index}
+                    taskList={tasks}
+                    reorderColumn={requestReorderColumn}
+                  />
+                ))
+              : null}
+            <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
+              <span className={cl.iconAdd}>+</span>
+              <span>Добавить колонку</span>
+            </button>
+          </div>
         </div>
         {isShowColumnAdd ? (
           <ModalColumnAdd handleClose={handleCloseModal} addColumn={addColumn} />

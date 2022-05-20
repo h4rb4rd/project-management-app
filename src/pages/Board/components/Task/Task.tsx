@@ -123,7 +123,7 @@ const Task = ({
         }}
       >
         <Confirmation
-          text={`Удалить задачу ${title}?`}
+          text={`Удалить задачу "${title}"?`}
           confirm={deleteTask}
           close={() => {
             setIsShowConfirm(false);

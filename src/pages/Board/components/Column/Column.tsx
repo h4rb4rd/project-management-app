@@ -145,7 +145,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
       const order = getNewOrder(taskList.length);
       dispatch(
         transferTaskItem({
-          boardId: boardId,
+          boardId,
           columnId: dropTask.columnId,
           toColumnId: id,
           taskId: dropTask.id,
@@ -240,7 +240,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
         }}
       >
         <Confirmation
-          text={`Удалить колонку ${title}?`}
+          text={`Удалить колонку "${title}"?`}
           confirm={deleteColumn}
           close={() => {
             setIsShowConfirm(false);

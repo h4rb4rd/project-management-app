@@ -1,12 +1,11 @@
 .column {
-  // height: 100%;
   border-radius: 0.3rem;
   min-width: 27.2rem;
   max-width: 27.2rem;
-  overflow: hidden;
   background-color: #ebecf0;
-  height: fit-content;
+  height: 100%;
   max-height: 100%;
+  background-color: transparent;
 }
 
 .columnHeader {
@@ -15,7 +14,6 @@
   padding-left: 1rem;
   column-gap: 0.1rem;
   align-items: center;
-  overflow: hidden;
   padding: 0.5rem;
 }
 
@@ -65,14 +63,12 @@
   background-color: #ebecf0;
   padding: 0.5rem;
   row-gap: 0.5rem;
-  // height: 28.2rem;
   max-height: 31rem;
   overflow-y: scroll;
 }
 
 .taskListContainer::-webkit-scrollbar {
   width: 0.7rem;
-  // background-color: rgba(20, 47, 104, 0.5);
   height: 100%;
 }
 
@@ -120,7 +116,6 @@
 }
 
 .btnTaskAdd {
-  // background-color: #5aac44;
   background-color: #ffffff3d;
   color: #5e6c84;
   padding: 0.8rem 1.8rem;
