@@ -33,3 +33,17 @@ export type AxiosErrorDataType = {
   message: string;
   statusCode: number;
 };
+
+export type TTitleInput = {
+  titleColumn: string;
+};
+
+export type TTaskForm = {
+  titleTask: string;
+  descrTask: string;
+};
+
+export enum ETAskModalMode {
+  ADD = 'Добавить',
+  UPDATE = 'Изменить',
+}

@@ -1,0 +1,142 @@
+.column {
+  border-radius: 0.3rem;
+  min-width: 27.2rem;
+  max-width: 27.2rem;
+  background-color: #ebecf0;
+  height: 100%;
+  max-height: 100%;
+  background-color: transparent;
+}
+
+.columnHeader {
+  display: flex;
+  background-color: #ebecf0;
+  padding-left: 1rem;
+  column-gap: 0.1rem;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.titleBoard {
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #172b4d;
+  font-weight: bold;
+}
+
+.columnBtn {
+  color: #fff;
+  padding: 0.8rem 1.8rem;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease 0s;
+}
+
+.addButton {
+  background-color: #5aac44;
+}
+
+.deleteButton {
+  color: #ac4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  transition: all 0.5s ease;
+
+  &:hover{
+    background-color: #ac4444;
+    color:#ebecf0;
+  }
+
+}
+
+.taskListContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #ebecf0;
+  padding: 0.5rem;
+  row-gap: 0.5rem;
+  max-height: 31rem;
+  overflow-y: scroll;
+}
+
+.taskListContainer::-webkit-scrollbar {
+  width: 0.7rem;
+  height: 100%;
+}
+
+.taskListContainer::-webkit-scrollbar-thumb {
+  background-color: #939499;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.hide {
+  opacity: 0;
+}
+
+.titleChangeContainer {
+  display: flex;
+  width: 100%;
+  .inputTitle {
+    height: 3rem;
+    border: 0.1rem solid #044ac4;
+    outline: none;
+    background-color: transparent;
+    color: #172b4d;
+    font-weight: bold;
+    width: 100%;
+    padding-left: 1rem;
+  }
+
+  .changeBtn {
+    width: 3rem;
+    height: 3rem;
+    border: 0.1rem solid #044ac4;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.6rem;
+    font-weight: bold;
+  }
+
+  .changeBtnNo {
+    color: #af1919;
+  }
+
+  .changeBtnOk {
+    color: #2baf19;
+  }
+}
+
+.btnTaskAdd {
+  background-color: #ffffff3d;
+  color: #5e6c84;
+  padding: 0.8rem 1.8rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease 0s;
+  height: fit-content;
+  width: 27.2rem;
+  min-width: 27.2rem;
+  text-align: left;
+  font-size: 1.7rem;
+  font-weight: 400;
+  line-height: 20px;
+
+  .iconAdd {
+    margin-right: 0.5rem;
+    line-height: 2rem;
+  }
+
+  &:hover {
+    background-color: #091e4214;
+    color: #172b4d;
+  }
+}
