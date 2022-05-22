@@ -60,7 +60,6 @@
 }
 
 .buttonForm {
-  
   cursor: pointer;
   transition: background-color 0.3s ease 0s;
 }
@@ -87,9 +86,9 @@
   cursor: pointer;
   transition: all 0.5s ease;
 
-  &:hover{
+  &:hover {
     background-color: #ac4444;
-    color:#ebecf0;
+    color: #ebecf0;
   }
   position: absolute;
 }

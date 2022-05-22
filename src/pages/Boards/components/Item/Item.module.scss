@@ -13,21 +13,15 @@
   width: 19.4rem;
   height: 9.6rem;
   border-radius: 3px;
-  color: #fff;
-  background-color: rgb(137, 96, 158);
-  transition: background-color 0.2s ease 0s;
   padding: 0.8rem;
   cursor: pointer;
 
   h2 {
+    color: #fff;
     text-align: center;
     font-size: 1.6rem;
     font-weight: 500;
     margin-bottom: 0.5rem;
-  }
-
-  &:hover {
-    background-color: rgb(114, 71, 136);
   }
 }
 

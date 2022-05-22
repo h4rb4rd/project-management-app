@@ -67,6 +67,9 @@
     "minLength": "Board title must be at least 3 characters long",
     "maxLength": "Board title can be max 20 characters long"
   },
+  "colorField": {
+    "label": "Color"
+  },
   "userModal": {
     "title": "Account",
     "settings": "Settings",
@@ -107,5 +110,8 @@
   },
   "boardsItem": {
     "confirmation": "Are you sure you want to delete this board?"
+  },
+  "board": {
+    "breadcrumbs": "Boards"
   }
 }

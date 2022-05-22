@@ -1,11 +1,12 @@
 .column {
   border-radius: 0.3rem;
-  min-width: 27.2rem;
-  max-width: 27.2rem;
+  width: 100%;
+  max-width: 30rem;
   background-color: #ebecf0;
-  height: 100%;
-  max-height: 100%;
-  background-color: transparent;
+  border-radius: 3px;
+  box-shadow: rgb(0 0 0 / 10%) 0 0 10px;
+  align-self: flex-start;
+  padding: 0 0.5rem;
 }
 
 .columnHeader {
@@ -24,7 +25,10 @@
   align-items: center;
   justify-content: space-between;
   color: #172b4d;
-  font-weight: bold;
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  padding: 0 0.5rem;
 }
 
 .columnBtn {
@@ -40,42 +44,43 @@
 }
 
 .deleteButton {
-  color: #ac4444;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
+  font-size: 1.2rem;
+  background: none;
+  color: #b3bac5;
   cursor: pointer;
-  transition: all 0.5s ease;
-
-  &:hover{
-    background-color: #ac4444;
-    color:#ebecf0;
-  }
-
 }
 
 .taskListContainer {
   display: flex;
   flex-direction: column;
-  background-color: #ebecf0;
-  padding: 0.5rem;
   row-gap: 0.5rem;
-  max-height: 31rem;
-  overflow-y: scroll;
+  width: 100%;
+  max-height: calc(100vh - 50rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem;
+  min-height: 5rem;
 }
 
 .taskListContainer::-webkit-scrollbar {
   width: 0.7rem;
-  height: 100%;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.taskListContainer::-webkit-scrollbar-track {
+  width: 0.8rem;
+  border-radius: 3px;
+  background-color: #dadbe2;
+  margin: 0.5rem;
+  padding: 0.5rem;
 }
 
 .taskListContainer::-webkit-scrollbar-thumb {
-  background-color: #939499;
-  border-radius: 0.3rem;
-  cursor: pointer;
+  border-radius: 3px;
+  background-color: #bfc4ce;
+  margin: 0.5rem;
+  padding: 0.5rem;
 }
 
 .hide {
@@ -116,23 +121,24 @@
 }
 
 .btnTaskAdd {
-  background-color: #ffffff3d;
-  color: #5e6c84;
-  padding: 0.8rem 1.8rem;
+  display: flex;
+  align-items: center;
+  width: 25rem;
+  background: none;
   border-radius: 3px;
+  color: #5e6c84;
   cursor: pointer;
   transition: background-color 0.3s ease 0s;
-  height: fit-content;
-  width: 27.2rem;
-  min-width: 27.2rem;
   text-align: left;
-  font-size: 1.7rem;
-  font-weight: 400;
-  line-height: 20px;
+  font-size: 1.4rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
 
   .iconAdd {
     margin-right: 0.5rem;
-    line-height: 2rem;
+    font-size: 1.6rem;
+    font-weight: 300;
   }
 
   &:hover {

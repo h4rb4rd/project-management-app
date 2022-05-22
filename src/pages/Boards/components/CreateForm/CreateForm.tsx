@@ -7,7 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { boardsSlice } from '../../../../store/reducers/BoardsSlice';
 import { createBoard } from '../../../../store/thunks';
 import { CreateFormDataType } from '../../../../types';
+import Color from './Fields/Color';
 import Title from './Fields/Title';
+
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 
 import cl from './CreateForm.module.scss';
@@ -27,10 +29,13 @@ const CreateForm = () => {
     reset,
   } = useForm<CreateFormDataType>({
     mode: 'onSubmit',
+    defaultValues: {
+      color: '#0079bf',
+    },
   });
 
-  const onSubmit: SubmitHandler<CreateFormDataType> = ({ title }) => {
-    dispatch(createBoard(title));
+  const onSubmit: SubmitHandler<CreateFormDataType> = ({ title, color }) => {
+    dispatch(createBoard(`${title},${color}`));
     dispatch(setIsModalOpen(false));
     reset();
   };
@@ -52,6 +57,7 @@ const CreateForm = () => {
       <h2 className={cl.title}>{t('createForm.title')}</h2>
       <hr className={cl.selector} />
       <Title register={register} />
+      <Color register={register} />
       <button className={cl.submit}>
         <span>{t('createForm.btn')}</span>
       </button>

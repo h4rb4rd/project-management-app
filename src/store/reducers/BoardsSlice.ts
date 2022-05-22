@@ -60,10 +60,10 @@ export const boardsSlice = createSlice({
     [deleteBoard.pending.type]: (state) => {
       state.isPending = true;
     },
-    [deleteBoard.fulfilled.type]: (state, action: PayloadAction<IBoard[]>) => {
+    [deleteBoard.fulfilled.type]: (state, action: PayloadAction<string>) => {
       state.isPending = false;
       state.error = '';
-      state.boards = action.payload;
+      state.boards = state.boards.filter((board) => board.id !== action.payload);
     },
     [deleteBoard.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isPending = false;

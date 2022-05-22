@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { IBoardColumn } from '../../models/IBoard';
+import { IBoard, IBoardColumn } from '../../models/IBoard';
 import { IColumn } from '../../models/IColumns';
 import { ITask } from '../../models/ITask';
 import { getNewOrder } from '../../utils/board';
@@ -9,6 +9,7 @@ import {
   addTaskItem,
   deleteColumnItem,
   deleteTaskItem,
+  getBoard,
   getColumns,
   transferTaskItem,
   updateColumnItem,
@@ -16,12 +17,14 @@ import {
 } from '../thunks';
 
 interface IInitStateBoard {
+  board: IBoard | null;
   columnList: IBoardColumn[];
   isLoading: boolean;
   error: string;
 }
 
 export const initialStateBoard: IInitStateBoard = {
+  board: null,
   columnList: [],
   isLoading: false,
   error: '',
@@ -114,8 +117,7 @@ export const boardSlice = createSlice({
       state.error = '';
     },
     [deleteColumnItem.fulfilled.type]: (state, action: PayloadAction<string>) => {
-      const deleteIndex = state.columnList.findIndex((item) => item.id === action.payload);
-      state.columnList.splice(deleteIndex, 1);
+      state.columnList = state.columnList.filter((item) => item.id !== action.payload);
     },
     [deleteColumnItem.rejected.type]: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
@@ -165,10 +167,9 @@ export const boardSlice = createSlice({
     },
     [deleteTaskItem.fulfilled.type]: (state, action: PayloadAction<IDeleteTaskItem>) => {
       const columnIndex = state.columnList.findIndex((item) => item.id === action.payload.columnId);
-      const taskIndex = state.columnList[columnIndex].tasks.findIndex(
-        (item) => item.id === action.payload.taskId
+      state.columnList[columnIndex].tasks = state.columnList[columnIndex].tasks.filter(
+        (item) => item.id !== action.payload.taskId
       );
-      state.columnList[columnIndex].tasks.splice(taskIndex, 1);
     },
     [deleteTaskItem.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
@@ -193,6 +194,18 @@ export const boardSlice = createSlice({
       state.columnList[fromColumn].tasks.splice(indexTask, 1);
     },
     [transferTaskItem.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [getBoard.pending.type]: (state) => {
+      state.isLoading = true;
+    },
+    [getBoard.fulfilled.type]: (state, action: PayloadAction<IBoard>) => {
+      state.board = action.payload;
+      state.isLoading = false;
+      state.error = '';
+    },
+    [getBoard.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },

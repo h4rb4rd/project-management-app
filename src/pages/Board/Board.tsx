@@ -3,12 +3,12 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
+import { RouteNames } from '../../components/AppRouter/types';
 import { AppDispatch, RootState } from '../../store/store';
-import { addColumnItem, getColumns, updateColumnItem } from '../../store/thunks';
+import { addColumnItem, getBoard, getColumns, updateColumnItem } from '../../store/thunks';
 import { getNewOrder } from '../../utils/board';
-import Preloader from '../Preloader';
 
 import cl from './Board.module.scss';
 import Column from './components/Column';
@@ -16,12 +16,15 @@ import ModalColumnAdd from './components/ModalColumnAdd';
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { error, isLoading, columnList } = useSelector((state: RootState) => state.boardReducer);
+  const { error, isLoading, columnList, board } = useSelector(
+    (state: RootState) => state.boardReducer
+  );
   const params = useParams();
   const boardId = params.id || '';
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
 
   useEffect(() => {
+    dispatch(getBoard(boardId));
     dispatch(getColumns(boardId));
   }, []);
 
@@ -63,35 +66,42 @@ const Board = () => {
     });
   };
 
-  if (isLoading) {
-    return <Preloader />;
-  }
-
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={cl.board}>
-        <div className={cl.wrapperBoard}>
-          <div className={cl.boardContainer}>
-            {columnList.length
-              ? columnList.map(({ id, order, title, tasks }, index) => (
-                  <Column
-                    key={id}
-                    order={order}
-                    title={title}
-                    id={id}
-                    boardId={boardId}
-                    index={index}
-                    taskList={tasks}
-                    reorderColumn={requestReorderColumn}
-                  />
-                ))
-              : null}
-            <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
-              <span className={cl.iconAdd}>+</span>
-              <span>Добавить колонку</span>
-            </button>
+        <div className={cl.heading}>
+          <div className={cl.breadcrumbs}>
+            <Link to={RouteNames.BOARDS}>Доски</Link>
+            <span>&#62;</span>
+            <h2 className={cl.title}>{board?.title.split(',')?.[0]}</h2>
           </div>
+          <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
+            <span className={cl.iconAdd}>+</span>
+            <span>Добавить список</span>
+          </button>
         </div>
+        <div
+          className={cl.boardContainer}
+          style={{ backgroundColor: board?.title.split(',')?.[1] }}
+        >
+          {columnList.length ? (
+            columnList.map(({ id, order, title, tasks }, index) => (
+              <Column
+                key={id}
+                order={order}
+                title={title}
+                id={id}
+                boardId={boardId}
+                index={index}
+                taskList={tasks}
+                reorderColumn={requestReorderColumn}
+              />
+            ))
+          ) : (
+            <span className={cl.placeholder}>Вы пока не добавили ни одного списка</span>
+          )}
+        </div>
+
         {isShowColumnAdd ? (
           <ModalColumnAdd handleClose={handleCloseModal} addColumn={addColumn} />
         ) : null}

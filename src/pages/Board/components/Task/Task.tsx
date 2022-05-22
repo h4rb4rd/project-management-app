@@ -9,6 +9,9 @@ import { AppDispatch } from '../../../../store/store';
 import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks';
 import { ETAskModalMode } from '../../../../types';
 import ModalTask from '../ModalTask';
+import deleteImg from '../../../../assets/delete.svg';
+import editImg from '../../../../assets/edit.svg';
+import TaskDetails from '../TaskDetails';
 
 import cl from './Task.module.scss';
 
@@ -30,6 +33,7 @@ const Task = ({
   const taskRef = useRef(null);
   const [isUpdate, setIsUpdate] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);
+  const [isTaskDetails, setIsTaskDetails] = useState(false);
   const { moveTaskItem } = boardSlice.actions;
 
   const [{ isDragging }, dragRef] = useDrag({
@@ -95,18 +99,20 @@ const Task = ({
 
   return (
     <div ref={taskRef} className={isDragging ? `${cl.itemTask} ${cl.hide}` : cl.itemTask}>
-      <div className={cl.taskTitle}>{title}</div>
+      <div className={cl.taskTitle} onClick={() => setIsTaskDetails(true)}>
+        {title}
+      </div>
       <div className={cl.taskBtnContainer}>
+        <button className={cl.buttonTask} onClick={showModal}>
+          <img src={editImg} alt="edit" />
+        </button>
         <button
-          className={`${cl.buttonTask} ${cl.deleteTask}`}
+          className={cl.buttonTask}
           onClick={() => {
             setIsShowConfirm(true);
           }}
         >
-          &#10008;
-        </button>
-        <button className={`${cl.buttonTask} ${cl.editTask}`} onClick={showModal}>
-          &#9998;
+          <img src={deleteImg} alt="delete" />
         </button>
       </div>
       {isUpdate ? (
@@ -129,6 +135,20 @@ const Task = ({
           confirm={deleteTask}
           close={() => {
             setIsShowConfirm(false);
+          }}
+        />
+      </ModalPortal>
+      <ModalPortal
+        isActive={isTaskDetails}
+        close={() => {
+          setIsTaskDetails(false);
+        }}
+      >
+        <TaskDetails
+          title={title}
+          description={description}
+          close={() => {
+            setIsTaskDetails(false);
           }}
         />
       </ModalPortal>

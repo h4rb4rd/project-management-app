@@ -4,6 +4,7 @@ export type FieldErrorType = FieldError | undefined;
 
 export type CreateFormDataType = {
   title: string;
+  color: string;
 };
 
 export type SignUpFormDataType = {

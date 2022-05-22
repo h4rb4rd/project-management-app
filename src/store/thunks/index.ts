@@ -50,8 +50,12 @@ export const updateUserData = createAsyncThunk(
   'auth/updateData',
   async (payload: { id: string; name: string; login: string; password: string }, thunkAPI) => {
     try {
-      await UserService.updateUser(payload.id, payload.name, payload.login, payload.password);
-      const response = await UserService.getUser(payload.id);
+      const response = await UserService.updateUser(
+        payload.id,
+        payload.name,
+        payload.login,
+        payload.password
+      );
       return response.data;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
@@ -133,8 +137,7 @@ export const getBoard = createAsyncThunk('boards/getBoard', async (id: string, t
 export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (id: string, thunkAPI) => {
   try {
     await BoardsService.deleteBoard(id);
-    const response = await BoardsService.getBoards();
-    return response.data;
+    return id;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
       const data = err.response.data as AxiosErrorDataType;
@@ -147,8 +150,7 @@ export const updateBoard = createAsyncThunk(
   'boards/updateBoard',
   async (payload: { id: string; title: string }, thunkAPI) => {
     try {
-      await BoardsService.updateBoard(payload.id, payload.title);
-      const response = await BoardsService.getBoards();
+      const response = await BoardsService.updateBoard(payload.id, payload.title);
       return response.data;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
@@ -208,7 +210,7 @@ export const deleteColumnItem = createAsyncThunk(
   'board/deleteColumn',
   async (payload: { boardId: string; columnId: string }, thunkAPI) => {
     try {
-      const result = await BoardService.deleteColumn(payload.boardId, payload.columnId);
+      await BoardService.deleteColumn(payload.boardId, payload.columnId);
       return payload.columnId;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
@@ -319,12 +321,7 @@ export const deleteTaskItem = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const result = await BoardService.deleteTask(
-        payload.boardId,
-        payload.columnId,
-        payload.taskId
-      );
-
+      await BoardService.deleteTask(payload.boardId, payload.columnId, payload.taskId);
       return { columnId: payload.columnId, taskId: payload.taskId };
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
@@ -351,7 +348,7 @@ export const transferTaskItem = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const result = await BoardService.transferTask(
+      await BoardService.transferTask(
         payload.boardId,
         payload.columnId,
         payload.toColumnId,

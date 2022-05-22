@@ -79,7 +79,9 @@ const Boards = () => {
       </div>
       <div className={cl.container}>
         {filteredBoards &&
-          filteredBoards.map(({ title, id }) => <Item key={id} title={title} id={id} />)}
+          filteredBoards.map(({ title, id }) => (
+            <Item key={id} boardData={title.split(',')} id={id} />
+          ))}
         <button className={cl.create} onClick={createBoard} disabled={isPending}>
           {isPending ? (
             <img className={cl.preloader} src={preloader} alt="preloader" />

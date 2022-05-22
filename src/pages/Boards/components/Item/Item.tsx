@@ -12,11 +12,11 @@ import cl from './Item.module.scss';
 import { useTranslation } from 'react-i18next';
 
 interface ItemProps {
-  title: string;
+  boardData: string[];
   id: string;
 }
 
-const Item = ({ title, id }: ItemProps) => {
+const Item = ({ boardData, id }: ItemProps) => {
   const [isModalActive, setIsModalActive] = useState(false);
   const { isPending, error } = useAppSelector((state) => state.BoardsReducer);
   const dispatch = useAppDispatch();
@@ -48,9 +48,9 @@ const Item = ({ title, id }: ItemProps) => {
   }, [error]);
 
   return (
-    <div className={cl.item} key={title}>
-      <div className={cl.content} onClick={openBoard}>
-        <h2>{title}</h2>
+    <div className={cl.item} key={boardData[0]}>
+      <div className={cl.content} onClick={openBoard} style={{ backgroundColor: boardData[1] }}>
+        <h2>{boardData[0]}</h2>
       </div>
       <button className={cl.delete} onClick={deleteHandler} disabled={isPending}>
         &#10006;

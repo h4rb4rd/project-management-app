@@ -7,7 +7,7 @@ import locationReducer from './reducers/LocationSlice';
 import loginFormReducer from './reducers/LoginFormSlice';
 import signUpFormReducer from './reducers/SignUpFormSlice';
 import userModalReducer from './reducers/UserModalSlice';
-import boardReducer, { boardSlice } from './reducers/BoardSlice';
+import boardReducer from './reducers/BoardSlice';
 
 const rootReducer = combineReducers({
   AuthReducer,

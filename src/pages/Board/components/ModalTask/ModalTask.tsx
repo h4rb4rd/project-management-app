@@ -1,10 +1,10 @@
-import React, { MouseEventHandler, ReactEventHandler, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import { ETAskModalMode, TTaskForm } from '../../../../types';
 
-import cl from '../ModalAdd.module.scss';
+import cl from './ModalTask.module.scss';
 
 interface IModalTaskAdd {
   handleClose: () => void;
@@ -47,12 +47,7 @@ const ModalTask = ({
     };
   });
 
-  const handleClickContainer = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
   const onSubmit: SubmitHandler<TTaskForm> = ({ titleTask, descrTask }) => {
-    // addTask?(titleTask, descrTask);
     if (mode === ETAskModalMode.ADD) {
       addTask?.call(null, titleTask, descrTask);
     } else {
@@ -76,8 +71,8 @@ const ModalTask = ({
 
   return ReactDOM.createPortal(
     <div className={cl.modal} onClick={handleClose}>
-      <div className={cl.formContainer} onClick={(e) => handleClickContainer(e)}>
-        <button onClick={handleClose} className={`${cl.buttonForm} ${cl.btnCancel}`}>
+      <div className={cl.formContainer} onClick={(e) => e.stopPropagation()}>
+        <button onClick={handleClose} className={cl.btnCancel}>
           &#10006;
         </button>
 
@@ -98,7 +93,7 @@ const ModalTask = ({
             id="idDescrTask"
           />
           <div className={cl.btmFormContainer}>
-            <button className={`${cl.buttonForm} ${cl.btnOk}`}>{mode}</button>
+            <button className={cl.btnOk}>{mode}</button>
           </div>
         </form>
       </div>

@@ -1,34 +1,76 @@
 .board {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  padding: 3rem 0 0 0.5rem;
+  padding: 10rem 0 0 0.5rem;
 }
 
-.wrapperBoard {
-  height: 45rem;
+.heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  color: #5e6c84;
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+
+  a {
+    color: #5e6c84;
+    margin: 0;
+    padding: 0;
+  }
+
+  span {
+    margin: 0 0.5rem;
+  }
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 500;
 }
 
 .boardContainer {
+  position: relative;
   display: flex;
-  height: 100%;
-  column-gap: 0.5rem;
-  background-color: #0000003d;
-  padding: 1rem 0.5rem;
-  overflow-x: scroll;
+  width: 100%;
+  column-gap: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem;
+  height: calc(100vh - 40rem);
+  min-height: 15rem;
 }
 
 .boardContainer::-webkit-scrollbar {
-  width: 100%;
-  background-color: transparent;
-  height: 1rem;
+  height: 0.7rem;
+  margin-left: 1rem;
+  padding-left: 1rem;
+}
+
+.boardContainer::-webkit-scrollbar-track {
+  height: 0.8rem;
+  border-radius: 3px;
+  background-color: #dadbe2;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .boardContainer::-webkit-scrollbar-thumb {
-  background-color: #5f6869;
-  border-radius: 3rem;
-  cursor: pointer;
+  border-radius: 3px;
+  background-color: #bfc4ce;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .boardColumns {
@@ -41,19 +83,18 @@
 }
 
 .btnColumnAdd {
-  background-color: #ffffff3d;
-  color: #fff;
-  padding: 0.8rem 1.8rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 101, 255, 0.1);
+  border: 1px solid rgba(0, 101, 255, 0.2);
   border-radius: 3px;
+  box-shadow: none;
+  color: #5e6c84;
+  font-size: 1.4rem;
+  padding: 0.6rem 2rem 0.6rem 1rem;
+  text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.3s ease 0s;
-  height: fit-content;
-  width: 27.2rem;
-  min-width: 27.2rem;
-  text-align: left;
-  font-size: 1.7rem;
-  font-weight: 400;
-  line-height: 20px;
 
   .iconAdd {
     margin-right: 0.5rem;
@@ -61,6 +102,22 @@
   }
 
   &:hover {
-    background-color: #ffffff52;
+    background-color: rgba(0, 101, 255, 0.2);
+  }
+}
+
+.placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-weight: 500;
+  font-size: 2.5rem;
+}
+
+@media screen and (max-width: 479.98px) {
+  .breadcrumbs {
+    margin-bottom: 1rem;
   }
 }

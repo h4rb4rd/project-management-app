@@ -16,6 +16,7 @@ import {
 } from '../../../../store/thunks';
 import { ETAskModalMode } from '../../../../types';
 import { getNewOrder } from '../../../../utils/board';
+import { getValueWithExpiry } from '../../../../utils/storage';
 import ModalTaskAdd from '../ModalTask';
 import Task from '../Task';
 
@@ -110,20 +111,18 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
   };
 
   const addTask = async (title: string, descr: string) => {
-    const user = JSON.parse(localStorage.getItem('user') || '');
+    const userId = getValueWithExpiry('userId');
 
-    if (user) {
-      dispatch(
-        addTaskItem({
-          boardId,
-          columnId: id,
-          title,
-          order: taskList.length + 1,
-          description: descr,
-          userId: user.id,
-        })
-      );
-    }
+    dispatch(
+      addTaskItem({
+        boardId,
+        columnId: id,
+        title,
+        order: taskList.length + 1,
+        description: descr,
+        userId,
+      })
+    );
     setIsShowTaskAdd(false);
   };
 
@@ -216,7 +215,6 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
                 boardId={boardId}
                 columnId={columnId}
                 userId={userId}
-                // deleteTask={deleteTask}
                 reorderTask={requestReorderTask}
               />
             ))
