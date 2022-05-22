@@ -1,13 +1,13 @@
 import { AxiosResponse } from 'axios';
 
 import $api from '../http';
+import { Endpoints } from './types';
 import { IBoardColumn } from '../models/IBoard';
-
 import { ITask } from '../models/ITask';
 
 export default class BoardService {
   static async getColumns(boardId: string): Promise<AxiosResponse<IBoardColumn[]>> {
-    return await $api.get<IBoardColumn[]>(`boards/${boardId}/columns`);
+    return await $api.get<IBoardColumn[]>(`${Endpoints.BOARDS}/${boardId}/${Endpoints.COLUMNS}`);
   }
 
   static async addColumn(
@@ -15,7 +15,7 @@ export default class BoardService {
     titleColumn: string,
     orderColumn: number
   ): Promise<AxiosResponse> {
-    return await $api.post(`boards/${boardId}/columns`, {
+    return await $api.post(`${Endpoints.BOARDS}/${boardId}/${Endpoints.COLUMNS}`, {
       title: titleColumn,
       order: orderColumn,
     });
@@ -27,18 +27,20 @@ export default class BoardService {
     titleColumn: string,
     orderColumn: number
   ): Promise<AxiosResponse> {
-    return await $api.put(`boards/${boardId}/columns/${columnId}`, {
+    return await $api.put(`${Endpoints.BOARDS}/${boardId}/${Endpoints.COLUMNS}/${columnId}`, {
       title: titleColumn,
       order: orderColumn,
     });
   }
 
   static async deleteColumn(boardId: string, columnId: string): Promise<AxiosResponse> {
-    return await $api.delete(`boards/${boardId}/columns/${columnId}`);
+    return await $api.delete(`${Endpoints.BOARDS}/${boardId}/${Endpoints.COLUMNS}/${columnId}`);
   }
 
   static async getTasks(boardId: string, columnId: string): Promise<AxiosResponse<ITask[]>> {
-    return await $api.get<ITask[]>(`boards/${boardId}/columns/${columnId}/tasks`);
+    return await $api.get<ITask[]>(
+      `${Endpoints.BOARDS}/${boardId}/${Endpoints.COLUMNS}/${columnId}/${Endpoints.TASKS}`
+    );
   }
 
   static async addTask(
@@ -49,12 +51,15 @@ export default class BoardService {
     description: string,
     userId: string
   ): Promise<AxiosResponse> {
-    return await $api.post(`boards/${boardId}/columns/${columnId}/tasks`, {
-      title,
-      order,
-      description,
-      userId,
-    });
+    return await $api.post(
+      `${Endpoints.BOARDS}/${boardId}/${Endpoints.COLUMNS}/${columnId}/${Endpoints.TASKS}`,
+      {
+        title,
+        order,
+        description,
+        userId,
+      }
+    );
   }
 
   static async updateTask(
@@ -66,14 +71,17 @@ export default class BoardService {
     description: string,
     userId: string
   ): Promise<AxiosResponse> {
-    return await $api.put(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
-      title,
-      order,
-      description,
-      userId,
-      boardId,
-      columnId,
-    });
+    return await $api.put(
+      `${Endpoints.BOARDS}/${boardId}/${Endpoints.COLUMNS}/${columnId}/${Endpoints.TASKS}/${taskId}`,
+      {
+        title,
+        order,
+        description,
+        userId,
+        boardId,
+        columnId,
+      }
+    );
   }
 
   static async transferTask(
@@ -86,14 +94,17 @@ export default class BoardService {
     description: string,
     userId: string
   ): Promise<AxiosResponse | undefined> {
-    return await $api.put(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
-      title,
-      order,
-      description,
-      userId,
-      boardId,
-      columnId: toColumnId,
-    });
+    return await $api.put(
+      `${Endpoints.BOARDS}/${boardId}/${Endpoints.COLUMNS}/${columnId}/${Endpoints.TASKS}/${taskId}`,
+      {
+        title,
+        order,
+        description,
+        userId,
+        boardId,
+        columnId: toColumnId,
+      }
+    );
   }
 
   static async deleteTask(
@@ -101,6 +112,8 @@ export default class BoardService {
     columnId: string,
     taskId: string
   ): Promise<AxiosResponse> {
-    return await $api.delete(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
+    return await $api.delete(
+      `${Endpoints.BOARDS}/${boardId}/${Endpoints.COLUMNS}/${columnId}/${Endpoints.TASKS}/${taskId}`
+    );
   }
 }
