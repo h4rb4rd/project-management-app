@@ -12,12 +12,7 @@ import Column from './components/Column';
 import { getNewOrder } from '../../utils/board';
 import ModalColumnAdd from './components/ModalColumnAdd';
 import { RouteNames } from '../../components/AppRouter/types';
-import {
-  addColumnItem,
-  getBoard,
-  getColumns,
-  updateColumnItem,
-} from '../../store/thunks/BoardThunks';
+import { addColumnItem, getBoard, updateColumnItem } from '../../store/thunks/BoardThunks';
 
 import cl from './Board.module.scss';
 
@@ -25,13 +20,13 @@ const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { error, columnList, board } = useSelector((state: RootState) => state.BoardReducer);
   const params = useParams();
-  const boardId = params.id || '';
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
   const { t } = useTranslation();
 
+  const boardId = params.id || '';
+
   useEffect(() => {
     dispatch(getBoard(boardId));
-    dispatch(getColumns(boardId));
   }, []);
 
   useEffect(() => {

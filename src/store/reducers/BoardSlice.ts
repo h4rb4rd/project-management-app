@@ -10,7 +10,6 @@ import {
   deleteColumnItem,
   deleteTaskItem,
   getBoard,
-  getColumns,
   transferTaskItem,
   updateColumnItem,
   updateTaskItem,
@@ -90,15 +89,19 @@ export const boardSlice = createSlice({
     },
   },
   extraReducers: {
-    [getColumns.pending.type]: (state) => {
+    [getBoard.pending.type]: (state) => {
       state.isLoading = true;
     },
-    [getColumns.fulfilled.type]: (state, action: PayloadAction<IBoardColumn[]>) => {
-      state.columnList = action.payload;
+    [getBoard.fulfilled.type]: (
+      state,
+      action: PayloadAction<{ board: IBoard; columns: IBoardColumn[] }>
+    ) => {
+      state.board = action.payload.board;
+      state.columnList = action.payload.columns;
       state.isLoading = false;
       state.error = '';
     },
-    [getColumns.rejected.type]: (state, action: PayloadAction<string>) => {
+    [getBoard.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
@@ -194,18 +197,6 @@ export const boardSlice = createSlice({
       state.columnList[fromColumn].tasks.splice(indexTask, 1);
     },
     [transferTaskItem.rejected.type]: (state, action: PayloadAction<string>) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    [getBoard.pending.type]: (state) => {
-      state.isLoading = true;
-    },
-    [getBoard.fulfilled.type]: (state, action: PayloadAction<IBoard>) => {
-      state.board = action.payload;
-      state.isLoading = false;
-      state.error = '';
-    },
-    [getBoard.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },
