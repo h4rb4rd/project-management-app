@@ -1,17 +1,19 @@
 import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import Confirmation from '../../../../components/Confirmation';
-import { ITask } from '../../../../models/ITask';
-import ModalPortal from '../../../../Portals/ModalPortal';
-import { boardSlice } from '../../../../store/reducers/BoardSlice';
+import { useTranslation } from 'react-i18next';
+
 import { AppDispatch } from '../../../../store/store';
-import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks';
-import { ETAskModalMode } from '../../../../types';
-import ModalTask from '../ModalTask';
+import { boardSlice } from '../../../../store/reducers/BoardSlice';
+import Confirmation from '../../../../components/Confirmation';
 import deleteImg from '../../../../assets/delete.svg';
 import editImg from '../../../../assets/edit.svg';
+import { ETAskModalMode } from '../../../../types';
+import { ITask } from '../../../../models/ITask';
+import ModalPortal from '../../../../Portals/ModalPortal';
+import ModalTask from '../ModalTask';
 import TaskDetails from '../TaskDetails';
+import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks';
 
 import cl from './Task.module.scss';
 
@@ -35,6 +37,7 @@ const Task = ({
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const [isTaskDetails, setIsTaskDetails] = useState(false);
   const { moveTaskItem } = boardSlice.actions;
+  const { t } = useTranslation();
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'task',
@@ -131,7 +134,7 @@ const Task = ({
         }}
       >
         <Confirmation
-          text={`Удалить задачу "${title}"?`}
+          text={t('task.confirmation')}
           confirm={deleteTask}
           close={() => {
             setIsShowConfirm(false);

@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
+
 import { ETAskModalMode, TTaskForm } from '../../../../types';
 
 import cl from './ModalTask.module.scss';
@@ -40,6 +42,8 @@ const ModalTask = ({
     },
   });
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     document.body.append(rootDiv);
     return () => {
@@ -77,18 +81,18 @@ const ModalTask = ({
         </button>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <h2>Введите название задачи</h2>
+          <h2>{t('modalTask.title')}</h2>
           <input
             {...register('titleTask', {
-              required: 'Название не может быть пустым',
+              required: t('modalTask.titleRequired'),
             })}
             type="text"
             id="idTitleTask"
           />
-          <h2>Введите описание</h2>
+          <h2>{t('modalTask.description')}</h2>
           <textarea
             {...register('descrTask', {
-              required: 'Описание не может быть пустым',
+              required: t('modalTask.descriptionRequired'),
             })}
             id="idDescrTask"
           />

@@ -1,24 +1,26 @@
 import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+
+import { AppDispatch } from '../../../../store/store';
+import BoardService from '../../../../services/BoardService';
+import { boardSlice } from '../../../../store/reducers/BoardSlice';
 import Confirmation from '../../../../components/Confirmation';
+import { ETAskModalMode } from '../../../../types';
+import { getNewOrder } from '../../../../utils/board';
+import { getValueWithExpiry } from '../../../../utils/storage';
 import { IColumn } from '../../../../models/IColumns';
 import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../Portals/ModalPortal';
-import BoardService from '../../../../services/BoardService';
-import { boardSlice } from '../../../../store/reducers/BoardSlice';
-import { AppDispatch } from '../../../../store/store';
+import ModalTaskAdd from '../ModalTask';
+import Task from '../Task';
 import {
   addTaskItem,
   deleteColumnItem,
   transferTaskItem,
   updateColumnItem,
 } from '../../../../store/thunks';
-import { ETAskModalMode } from '../../../../types';
-import { getNewOrder } from '../../../../utils/board';
-import { getValueWithExpiry } from '../../../../utils/storage';
-import ModalTaskAdd from '../ModalTask';
-import Task from '../Task';
 
 import cl from './Column.module.scss';
 
@@ -41,6 +43,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const itemRef = useRef(null);
   const { moveColumnItem } = boardSlice.actions;
+  const { t } = useTranslation();
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'column',
@@ -222,7 +225,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
       </div>
       <button className={`${cl.btnTaskAdd}`} onClick={showAddTaskDialog}>
         <span className={cl.iconAdd}>+</span>
-        <span>Добавить задачу</span>
+        <span>{t('column.btnAdd')}</span>
       </button>
       {isShowTaskAdd ? (
         <ModalTaskAdd mode={ETAskModalMode.ADD} handleClose={handleCloseModal} addTask={addTask} />
@@ -235,7 +238,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
         }}
       >
         <Confirmation
-          text={`Удалить колонку "${title}"?`}
+          text={`${t('column.confirmation')}`}
           confirm={deleteColumn}
           close={() => {
             setIsShowConfirm(false);

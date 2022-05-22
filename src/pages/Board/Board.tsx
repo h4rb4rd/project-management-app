@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
-import { RouteNames } from '../../components/AppRouter/types';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+
 import { AppDispatch, RootState } from '../../store/store';
-import { addColumnItem, getBoard, getColumns, updateColumnItem } from '../../store/thunks';
+import Column from './components/Column';
 import { getNewOrder } from '../../utils/board';
+import ModalColumnAdd from './components/ModalColumnAdd';
+import { addColumnItem, getBoard, getColumns, updateColumnItem } from '../../store/thunks';
+import { RouteNames } from '../../components/AppRouter/types';
 
 import cl from './Board.module.scss';
-import Column from './components/Column';
-import ModalColumnAdd from './components/ModalColumnAdd';
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,6 +24,7 @@ const Board = () => {
   const params = useParams();
   const boardId = params.id || '';
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(getBoard(boardId));
@@ -71,13 +74,13 @@ const Board = () => {
       <div className={cl.board}>
         <div className={cl.heading}>
           <div className={cl.breadcrumbs}>
-            <Link to={RouteNames.BOARDS}>Доски</Link>
+            <Link to={RouteNames.BOARDS}>{t('board.breadcrumbs')}</Link>
             <span>&#62;</span>
             <h2 className={cl.title}>{board?.title.split(',')?.[0]}</h2>
           </div>
           <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
             <span className={cl.iconAdd}>+</span>
-            <span>Добавить список</span>
+            <span>{t('board.btnAdd')}</span>
           </button>
         </div>
         <div
@@ -98,7 +101,7 @@ const Board = () => {
               />
             ))
           ) : (
-            <span className={cl.placeholder}>Вы пока не добавили ни одного списка</span>
+            <span className={cl.placeholder}>{t('board.placeholder')}</span>
           )}
         </div>
 

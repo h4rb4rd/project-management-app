@@ -112,6 +112,22 @@
     "confirmation": "Are you sure you want to delete this board?"
   },
   "board": {
-    "breadcrumbs": "Boards"
+    "breadcrumbs": "Boards",
+    "btnAdd": "Add another list",
+    "placeholder": "No lists have been added yet!"
+  },
+  "column": {
+    "btnAdd": "Add a card",
+    "confirmation": "Are you sure you want to delete this list?"
+  },
+  "modalTask": {
+    "title": "Enter title",
+    "description": "Enter description",
+    "titleRequired": "Title is required",
+    "descriptionRequired": "Description is required"
+  },
+  "task": {
+    "confirmation": "Are you sure you want to delete this card?",
+    "detailsBtn": "Close"
   }
 }
