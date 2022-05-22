@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Logo from '../../components/Logo';
-import SignUpBg from '../../partials/SignUpBg';
+import SignUpBg from '../../components/SignUpBg';
 import SignUpForm from '../../components/SignUpForm';
 
 import cl from './SignUp.module.scss';

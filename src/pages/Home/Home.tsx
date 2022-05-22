@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '../../hooks/redux';
 import img from '../../assets/home.png';
-import Team from '../../partials/Team';
+import Team from '../../components/Team';
 
 import cl from './Home.module.scss';
 

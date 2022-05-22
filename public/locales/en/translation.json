@@ -114,7 +114,11 @@
   "board": {
     "breadcrumbs": "Boards",
     "btnAdd": "Add another list",
-    "placeholder": "No lists have been added yet!"
+    "placeholder": "No lists have been added yet!",
+    "modalAdd": {
+      "title": "List title",
+      "button": "Add"
+    }
   },
   "column": {
     "btnAdd": "Add a card",

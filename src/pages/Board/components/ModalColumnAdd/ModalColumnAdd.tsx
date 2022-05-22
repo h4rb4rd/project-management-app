@@ -1,10 +1,12 @@
-import React, { MouseEventHandler, ReactEventHandler, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast, ToastContainer } from 'react-toastify';
+
 import { TTitleInput } from '../../../../types';
 
-import cl from '../ModalAdd.module.scss';
+import cl from './ModalColumnAdd.module.scss';
 
 interface IModalColumnAdd {
   handleClose: () => void;
@@ -13,13 +15,13 @@ interface IModalColumnAdd {
 
 const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
   const rootDiv = document.createElement('div');
+  const { t } = useTranslation();
 
   const {
-    formState,
     register,
     handleSubmit,
-    watch,
-    formState: { errors, isValid },
+
+    formState: { errors },
     reset,
   } = useForm<TTitleInput>({
     mode: 'onSubmit',
@@ -53,10 +55,10 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
   return ReactDOM.createPortal(
     <div className={cl.modal} onClick={handleClose}>
       <div className={cl.formContainer} onClick={(e) => handleClickContainer(e)}>
-        <button onClick={handleClose} className={`${cl.buttonForm} ${cl.btnCancel}`}>
+        <button onClick={handleClose} className={cl.btnCancel}>
           &#10006;
         </button>
-        <h2>Введите название колонки</h2>
+        <h2>{t('board.modalAdd.title')}</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             {...register('titleColumn', {
@@ -66,7 +68,7 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
             id="idTitleColumn"
           />
           <div className={cl.btmFormContainer}>
-            <button className={`${cl.buttonForm} ${cl.btnOk}`}>Добавить</button>
+            <button className={cl.btnOk}>{t('board.modalAdd.button')}</button>
           </div>
         </form>
       </div>

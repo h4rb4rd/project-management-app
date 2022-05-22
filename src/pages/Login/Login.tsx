@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import LoginForm from '../../components/LoginForm';
 import Logo from '../../components/Logo';
-import SignUpBg from '../../partials/SignUpBg';
+import SignUpBg from '../../components/SignUpBg';
 
 import cl from './Login.module.scss';
 

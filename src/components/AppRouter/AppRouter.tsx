@@ -23,7 +23,6 @@ const AppRouter = () => {
         <Route element={<PrivateRoutes />}>
           <Route path={RouteNames.BOARDS} element={<Boards />} />
           <Route path={RouteNames.BOARDS + '/:id'} element={<Board />} />
-          <Route path={RouteNames.BOARD} element={<Board />} />
           <Route path={RouteNames.ACCOUNT} element={<Account />} />
         </Route>
       </Route>
