@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast, ToastContainer } from 'react-toastify';
 
-import { TTitleInput } from '../../../../types';
+import { TitleInputType } from '../../types';
 
 import cl from './ModalColumnAdd.module.scss';
 
@@ -23,7 +23,7 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
 
     formState: { errors },
     reset,
-  } = useForm<TTitleInput>({
+  } = useForm<TitleInputType>({
     mode: 'onSubmit',
     defaultValues: {
       titleColumn: '',
@@ -41,7 +41,7 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
     e.stopPropagation();
   };
 
-  const onSubmit: SubmitHandler<TTitleInput> = ({ titleColumn }) => {
+  const onSubmit: SubmitHandler<TitleInputType> = ({ titleColumn }) => {
     addColumn(titleColumn);
     reset();
   };

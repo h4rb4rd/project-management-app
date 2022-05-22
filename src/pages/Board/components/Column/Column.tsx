@@ -7,7 +7,7 @@ import { AppDispatch } from '../../../../store/store';
 import BoardService from '../../../../services/BoardService';
 import { boardSlice } from '../../../../store/reducers/BoardSlice';
 import Confirmation from '../../../../components/Confirmation';
-import { ETAskModalMode } from '../../../../types';
+import { TAskModalMode } from '../../types';
 import { getNewOrder } from '../../../../utils/board';
 import { getValueWithExpiry } from '../../../../utils/storage';
 import { IColumn } from '../../../../models/IColumns';
@@ -228,7 +228,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
         <span>{t('column.btnAdd')}</span>
       </button>
       {isShowTaskAdd ? (
-        <ModalTaskAdd mode={ETAskModalMode.ADD} handleClose={handleCloseModal} addTask={addTask} />
+        <ModalTaskAdd mode={TAskModalMode.ADD} handleClose={handleCloseModal} addTask={addTask} />
       ) : null}
 
       <ModalPortal

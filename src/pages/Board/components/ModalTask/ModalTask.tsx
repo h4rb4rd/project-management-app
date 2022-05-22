@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 
-import { ETAskModalMode, TTaskForm } from '../../../../types';
+import { TAskModalMode, TaskFormType } from '../../types';
 
 import cl from './ModalTask.module.scss';
 
 interface IModalTaskAdd {
   handleClose: () => void;
-  mode: ETAskModalMode;
+  mode: TAskModalMode;
   valueTitle?: string;
   valueDescr?: string;
   addTask?: (title: string, descr: string) => void;
@@ -34,7 +34,7 @@ const ModalTask = ({
     watch,
     formState: { errors, isValid },
     reset,
-  } = useForm<TTaskForm>({
+  } = useForm<TaskFormType>({
     mode: 'onSubmit',
     defaultValues: {
       titleTask: valueTitle,
@@ -51,8 +51,8 @@ const ModalTask = ({
     };
   });
 
-  const onSubmit: SubmitHandler<TTaskForm> = ({ titleTask, descrTask }) => {
-    if (mode === ETAskModalMode.ADD) {
+  const onSubmit: SubmitHandler<TaskFormType> = ({ titleTask, descrTask }) => {
+    if (mode === TAskModalMode.ADD) {
       addTask?.call(null, titleTask, descrTask);
     } else {
       updateTask?.call(null, titleTask, descrTask);

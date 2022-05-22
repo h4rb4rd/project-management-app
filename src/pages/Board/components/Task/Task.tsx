@@ -8,7 +8,7 @@ import { boardSlice } from '../../../../store/reducers/BoardSlice';
 import Confirmation from '../../../../components/Confirmation';
 import deleteImg from '../../../../assets/delete.svg';
 import editImg from '../../../../assets/edit.svg';
-import { ETAskModalMode } from '../../../../types';
+import { TAskModalMode } from '../../types';
 import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../Portals/ModalPortal';
 import ModalTask from '../ModalTask';
@@ -120,7 +120,7 @@ const Task = ({
       </div>
       {isUpdate ? (
         <ModalTask
-          mode={ETAskModalMode.UPDATE}
+          mode={TAskModalMode.UPDATE}
           handleClose={closeModal}
           updateTask={updateTask}
           valueDescr={description}
