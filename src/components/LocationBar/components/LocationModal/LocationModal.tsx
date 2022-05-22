@@ -5,7 +5,7 @@ import { useAppSelector } from '../../../../hooks/redux';
 import cl from './LocationModal.module.scss';
 
 const LocationModal = () => {
-  const { isModalOpen } = useAppSelector((state) => state.locationReducer);
+  const { isModalOpen } = useAppSelector((state) => state.LocationReducer);
   const { t, i18n } = useTranslation();
 
   const setEnLang = () => {

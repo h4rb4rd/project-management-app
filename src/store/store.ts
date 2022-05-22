@@ -3,21 +3,21 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import AccountFormReducer from './reducers/AccountFormSlice';
 import AuthReducer from './reducers/AuthSlice';
 import BoardsReducer from './reducers/BoardsSlice';
-import locationReducer from './reducers/LocationSlice';
-import loginFormReducer from './reducers/LoginFormSlice';
-import signUpFormReducer from './reducers/SignUpFormSlice';
-import userModalReducer from './reducers/UserModalSlice';
-import boardReducer from './reducers/BoardSlice';
+import LocationReducer from './reducers/LocationSlice';
+import LoginFormReducer from './reducers/LoginFormSlice';
+import SignUpFormReducer from './reducers/SignUpFormSlice';
+import UserModalReducer from './reducers/UserModalSlice';
+import BoardReducer from './reducers/BoardSlice';
 
 const rootReducer = combineReducers({
   AuthReducer,
   AccountFormReducer,
   BoardsReducer,
-  loginFormReducer,
-  locationReducer,
-  signUpFormReducer,
-  userModalReducer,
-  boardReducer,
+  LocationReducer,
+  LoginFormReducer,
+  SignUpFormReducer,
+  UserModalReducer,
+  BoardReducer,
 });
 
 export const setupStore = () => {

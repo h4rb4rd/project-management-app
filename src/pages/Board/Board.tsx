@@ -18,7 +18,7 @@ import cl from './Board.module.scss';
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { error, columnList, board } = useSelector((state: RootState) => state.boardReducer);
+  const { error, columnList, board } = useSelector((state: RootState) => state.BoardReducer);
   const params = useParams();
   const boardId = params.id || '';
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);

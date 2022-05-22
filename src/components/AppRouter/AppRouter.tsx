@@ -6,7 +6,7 @@ import Boards from '../../pages/Boards';
 import Board from '../../pages/Board';
 import Home from '../../pages/Home';
 import Login from '../../pages/Login';
-import MainLayout from '../../Layouts/MainLayout';
+import MainLayout from '../../layouts/MainLayout';
 import NotFound from '../../pages/NotFound';
 import PrivateRoutes from '../../hoc/PrivateRoutes';
 import OnlyPublicRoutes from '../../hoc/OnlyPublicRoutes';

@@ -8,7 +8,7 @@ import LocationModal from './components/LocationModal';
 import cl from './LocationBar.module.scss';
 
 const LocationBar = () => {
-  const { location, isModalOpen } = useAppSelector((state) => state.locationReducer);
+  const { location, isModalOpen } = useAppSelector((state) => state.LocationReducer);
   const { setIsModalOpen } = locationSlice.actions;
   const dispatch = useAppDispatch();
   const barRef = useRef(null);

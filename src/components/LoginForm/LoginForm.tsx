@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 const LoginForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
-  const { login, password } = useAppSelector((state) => state.loginFormReducer);
+  const { login, password } = useAppSelector((state) => state.LoginFormReducer);
   const { setLogin, setPassword } = loginFormSlice.actions;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();

@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 const SignUpForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
   const { name, login, password, passwordConfirm } = useAppSelector(
-    (state) => state.signUpFormReducer
+    (state) => state.SignUpFormReducer
   );
   const { setName, setLogin, setPassword, setPasswordConfirm } = signUpFormSlice.actions;
   const dispatch = useAppDispatch();
