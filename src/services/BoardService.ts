@@ -1,28 +1,13 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 
-import { API_URL } from '../http';
+import $api from '../http';
 import { IBoardColumn } from '../models/IBoard';
-import { IColumn } from '../models/IColumns';
-import { ITask } from '../models/ITask';
 
-interface IToken {
-  expiry: number;
-  value: string;
-}
+import { ITask } from '../models/ITask';
 
 export default class BoardService {
   static async getColumns(boardId: string): Promise<AxiosResponse<IBoardColumn[]>> {
-    const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
-    const result = await axios.get(`boards/${boardId}/columns`, {
-      baseURL: API_URL,
-      headers: {
-        Authorization: `Bearer ${locToken.value}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    return result;
+    return await $api.get<IBoardColumn[]>(`boards/${boardId}/columns`);
   }
 
   static async addColumn(
@@ -30,23 +15,10 @@ export default class BoardService {
     titleColumn: string,
     orderColumn: number
   ): Promise<AxiosResponse> {
-    const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
-    const result = await axios.post(
-      `boards/${boardId}/columns`,
-      {
-        title: titleColumn,
-        order: orderColumn,
-      },
-      {
-        baseURL: API_URL,
-        headers: {
-          Authorization: `Bearer ${locToken.value}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return result;
+    return await $api.post(`boards/${boardId}/columns`, {
+      title: titleColumn,
+      order: orderColumn,
+    });
   }
 
   static async updateColumn(
@@ -55,49 +27,18 @@ export default class BoardService {
     titleColumn: string,
     orderColumn: number
   ): Promise<AxiosResponse> {
-    const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
-    const result = await axios.put(
-      `boards/${boardId}/columns/${columnId}`,
-      {
-        title: titleColumn,
-        order: orderColumn,
-      },
-      {
-        baseURL: API_URL,
-        headers: {
-          Authorization: `Bearer ${locToken.value}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return result;
+    return await $api.put(`boards/${boardId}/columns/${columnId}`, {
+      title: titleColumn,
+      order: orderColumn,
+    });
   }
 
   static async deleteColumn(boardId: string, columnId: string): Promise<AxiosResponse> {
-    const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
-    const result = await axios.delete(`boards/${boardId}/columns/${columnId}`, {
-      baseURL: API_URL,
-      headers: {
-        Authorization: `Bearer ${locToken.value}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-    return result;
+    return await $api.delete(`boards/${boardId}/columns/${columnId}`);
   }
 
   static async getTasks(boardId: string, columnId: string): Promise<AxiosResponse<ITask[]>> {
-    const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
-    const result = await axios.get(`boards/${boardId}/columns/${columnId}/tasks`, {
-      baseURL: API_URL,
-      headers: {
-        Authorization: `Bearer ${locToken.value}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-    return result;
+    return await $api.get<ITask[]>(`boards/${boardId}/columns/${columnId}/tasks`);
   }
 
   static async addTask(
@@ -108,25 +49,12 @@ export default class BoardService {
     description: string,
     userId: string
   ): Promise<AxiosResponse> {
-    const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
-    const result = await axios.post(
-      `boards/${boardId}/columns/${columnId}/tasks`,
-      {
-        title,
-        order,
-        description,
-        userId,
-      },
-      {
-        baseURL: API_URL,
-        headers: {
-          Authorization: `Bearer ${locToken.value}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return result;
+    return await $api.post(`boards/${boardId}/columns/${columnId}/tasks`, {
+      title,
+      order,
+      description,
+      userId,
+    });
   }
 
   static async updateTask(
@@ -138,27 +66,14 @@ export default class BoardService {
     description: string,
     userId: string
   ): Promise<AxiosResponse> {
-    const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
-    const result = await axios.put(
-      `boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
-      {
-        title,
-        order,
-        description,
-        userId,
-        boardId,
-        columnId,
-      },
-      {
-        baseURL: API_URL,
-        headers: {
-          Authorization: `Bearer ${locToken.value}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return result;
+    return await $api.put(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+      title,
+      order,
+      description,
+      userId,
+      boardId,
+      columnId,
+    });
   }
 
   static async transferTask(
@@ -171,27 +86,14 @@ export default class BoardService {
     description: string,
     userId: string
   ): Promise<AxiosResponse | undefined> {
-    const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
-    const result = await axios.put(
-      `boards/${boardId}/columns/${columnId}/tasks/${taskId}`,
-      {
-        title,
-        order,
-        description,
-        userId,
-        boardId,
-        columnId: toColumnId,
-      },
-      {
-        baseURL: API_URL,
-        headers: {
-          Authorization: `Bearer ${locToken.value}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return result;
+    return await $api.put(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
+      title,
+      order,
+      description,
+      userId,
+      boardId,
+      columnId: toColumnId,
+    });
   }
 
   static async deleteTask(
@@ -199,15 +101,6 @@ export default class BoardService {
     columnId: string,
     taskId: string
   ): Promise<AxiosResponse> {
-    const locToken: IToken = JSON.parse(localStorage.getItem('token') || '');
-    const result = await axios.delete(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`, {
-      baseURL: API_URL,
-      headers: {
-        Authorization: `Bearer ${locToken.value}`,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-    return result;
+    return await $api.delete(`boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
   }
 }
