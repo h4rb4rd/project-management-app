@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { withErrorBoundary } from 'react-error-boundary';
 
 import AppRouter from '../AppRouter';
-import { checkIsAuth } from '../../store/thunks';
+import { checkIsAuth } from '../../store/thunks/AuthThunks';
 import ErrorFallback from '../ErrorFallback';
 import Preloader from '../../pages/Preloader';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';

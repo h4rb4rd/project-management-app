@@ -12,10 +12,10 @@ import Name from './Fields/Name';
 import Password from './Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { updateUserData } from '../../store/thunks';
 
 import cl from './AccountForm.module.scss';
 import { useTranslation } from 'react-i18next';
+import { updateUserData } from '../../store/thunks/AuthThunks';
 
 const AccountForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);

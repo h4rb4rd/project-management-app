@@ -5,11 +5,11 @@ import { useTranslation } from 'react-i18next';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { boardsSlice } from '../../../../store/reducers/BoardsSlice';
-import { createBoard } from '../../../../store/thunks';
+
 import { CreateFormDataType } from '../../../../types';
 import Color from './Fields/Color';
 import Title from './Fields/Title';
-
+import { createBoard } from '../../../../store/thunks/BoardsThunks';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 
 import cl from './CreateForm.module.scss';

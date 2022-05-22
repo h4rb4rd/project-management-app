@@ -13,9 +13,9 @@ import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../Portals/ModalPortal';
 import ModalTask from '../ModalTask';
 import TaskDetails from '../TaskDetails';
-import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks';
 
 import cl from './Task.module.scss';
+import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks/BoardThunks';
 
 interface ITaskView extends ITask {
   reorderTask: () => void;

@@ -8,7 +8,7 @@ import { LoginFormDataType } from '../../types';
 import Login from './Fields/Login';
 import Password from './Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
-import { signIn } from '../../store/thunks';
+import { signIn } from '../../store/thunks/AuthThunks';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './LoginForm.module.scss';

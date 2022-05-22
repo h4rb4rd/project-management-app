@@ -3,13 +3,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Confirmation from '../../../../components/Confirmation';
-import { deleteBoard } from '../../../../store/thunks';
+import { deleteBoard } from '../../../../store/thunks/BoardsThunks';
 import ModalPortal from '../../../../Portals/ModalPortal';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import cl from './Item.module.scss';
-import { useTranslation } from 'react-i18next';
 
 interface ItemProps {
   boardData: string[];

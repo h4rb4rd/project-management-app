@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IBoard } from '../../models/IBoard';
-import { createBoard, deleteBoard, getBoards } from '../thunks';
+import { createBoard, deleteBoard, getBoards } from '../thunks/BoardsThunks';
 
 interface boardsSlice {
   isModalOpen: boolean;

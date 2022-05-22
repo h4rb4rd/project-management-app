@@ -14,7 +14,7 @@ import {
   transferTaskItem,
   updateColumnItem,
   updateTaskItem,
-} from '../thunks';
+} from '../thunks/BoardThunks';
 
 interface IInitStateBoard {
   board: IBoard | null;

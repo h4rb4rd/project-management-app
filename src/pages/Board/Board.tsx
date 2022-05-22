@@ -11,8 +11,13 @@ import { AppDispatch, RootState } from '../../store/store';
 import Column from './components/Column';
 import { getNewOrder } from '../../utils/board';
 import ModalColumnAdd from './components/ModalColumnAdd';
-import { addColumnItem, getBoard, getColumns, updateColumnItem } from '../../store/thunks';
 import { RouteNames } from '../../components/AppRouter/types';
+import {
+  addColumnItem,
+  getBoard,
+  getColumns,
+  updateColumnItem,
+} from '../../store/thunks/BoardThunks';
 
 import cl from './Board.module.scss';
 

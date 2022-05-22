@@ -20,7 +20,7 @@ import {
   deleteColumnItem,
   transferTaskItem,
   updateColumnItem,
-} from '../../../../store/thunks';
+} from '../../../../store/thunks/BoardThunks';
 
 import cl from './Column.module.scss';
 

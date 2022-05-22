@@ -10,7 +10,7 @@ import Name from './Fields/Name';
 import Password from './Fields/Password';
 import PasswordConfirm from './Fields/PasswordConfirm';
 import preloader from '../../assets/buttonPreloader.svg';
-import { signUp } from '../../store/thunks';
+import { signUp } from '../../store/thunks/AuthThunks';
 import { SignUpFormDataType } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 

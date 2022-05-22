@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { boardsSlice } from '../../store/reducers/BoardsSlice';
 import CreateForm from './components/CreateForm';
-import { getBoards } from '../../store/thunks';
+
 import Item from './components/Item';
 import ModalPortal from '../../Portals/ModalPortal';
 import preloader from '../../assets/buttonPreloader.svg';
@@ -15,6 +15,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 import searchImg from '../../assets/search.svg';
 
 import cl from './Boards.module.scss';
+import { getBoards } from '../../store/thunks/BoardsThunks';
 
 const Boards = () => {
   const { boards, isModalOpen, searchValue, isPending, error } = useAppSelector(
