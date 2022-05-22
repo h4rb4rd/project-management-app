@@ -5,7 +5,6 @@ import { createBoard, deleteBoard, getBoards } from '../thunks/BoardsThunks';
 interface boardsSlice {
   isModalOpen: boolean;
   boards: IBoard[];
-  searchValue: string;
   isPending: boolean;
   error: string;
 }
@@ -13,7 +12,6 @@ interface boardsSlice {
 const initialState: boardsSlice = {
   isModalOpen: false,
   boards: [],
-  searchValue: '',
   isPending: false,
   error: '',
 };
@@ -27,9 +25,6 @@ export const boardsSlice = createSlice({
     },
     setIsModalOpen(state, action: PayloadAction<boolean>) {
       state.isModalOpen = action.payload;
-    },
-    setSearchValue(state, action: PayloadAction<string>) {
-      state.searchValue = action.payload;
     },
   },
   extraReducers: {

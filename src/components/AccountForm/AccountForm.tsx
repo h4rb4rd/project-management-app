@@ -3,13 +3,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { AccountFormDataType } from '../../types';
 import Confirmation from '../Confirmation';
+import { FormDataType } from '../FormUI/types';
 import { initialState, accountFormSlice } from '../../store/reducers/AccountFormSlice';
-import Login from './Fields/Login';
 import ModalPortal from '../../Portals/ModalPortal';
-import Name from './Fields/Name';
-import Password from './Fields/Password';
+import Name from '../FormUI/Fields/Name';
+import Login from '../FormUI/Fields/Login';
+import Password from '../FormUI/Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
@@ -31,9 +31,9 @@ const AccountForm = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
-  } = useForm<AccountFormDataType>({
+  } = useForm<FormDataType>({
     mode: 'onSubmit',
     defaultValues: {
       name: user?.name,
@@ -41,7 +41,7 @@ const AccountForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<AccountFormDataType> = () => {
+  const onSubmit: SubmitHandler<FormDataType> = () => {
     setIsModalActive(true);
     reset(initialState);
   };
@@ -84,9 +84,9 @@ const AccountForm = () => {
 
   return (
     <form className={cl.form} onSubmit={handleSubmit(onSubmit)}>
-      <Name register={register} />
-      <Login register={register} />
-      <Password register={register} />
+      <Name isLabel={true} register={register} />
+      <Login isLabel={true} register={register} />
+      <Password isLabel={true} register={register} />
       <button className={cl.submit} disabled={isPending}>
         {isPending ? (
           <img className={cl.preloader} src={preloader} alt="preloader" />

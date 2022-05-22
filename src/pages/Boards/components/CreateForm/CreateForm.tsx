@@ -6,35 +6,33 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { boardsSlice } from '../../../../store/reducers/BoardsSlice';
 
-import { CreateFormDataType } from '../../../../types';
-import Color from './Fields/Color';
-import Title from './Fields/Title';
+import { FormDataType } from '../../../../components/FormUI/types';
+import Color from '../../../../components/FormUI/Fields/Color';
+import Title from '../../../../components/FormUI/Fields/Title';
 import { createBoard } from '../../../../store/thunks/BoardsThunks';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 
 import cl from './CreateForm.module.scss';
 
 const CreateForm = () => {
-  const { isPending, error } = useAppSelector((state) => state.BoardsReducer);
-
-  const { setIsModalOpen } = boardsSlice.actions;
-  const dispatch = useAppDispatch();
+  const { error } = useAppSelector((state) => state.BoardsReducer);
   const { t } = useTranslation();
-
   const {
     formState,
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
-  } = useForm<CreateFormDataType>({
+  } = useForm<FormDataType>({
     mode: 'onSubmit',
     defaultValues: {
       color: '#0079bf',
     },
   });
+  const { setIsModalOpen } = boardsSlice.actions;
+  const dispatch = useAppDispatch();
 
-  const onSubmit: SubmitHandler<CreateFormDataType> = ({ title, color }) => {
+  const onSubmit: SubmitHandler<FormDataType> = ({ title, color }) => {
     dispatch(createBoard(`${title},${color}`));
     dispatch(setIsModalOpen(false));
     reset();

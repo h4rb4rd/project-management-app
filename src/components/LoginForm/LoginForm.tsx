@@ -4,9 +4,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { LoginFormDataType } from '../../types';
-import Login from './Fields/Login';
-import Password from './Fields/Password';
+import { FormDataType } from '../FormUI/types';
+import Login from '../FormUI/Fields/Login';
+import Password from '../FormUI/Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
 import { signIn } from '../../store/thunks/AuthThunks';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -29,7 +29,7 @@ const LoginForm = () => {
     watch,
     formState: { errors, isValid },
     reset,
-  } = useForm<LoginFormDataType>({
+  } = useForm<FormDataType>({
     mode: 'onSubmit',
     defaultValues: {
       login,
@@ -37,7 +37,7 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<LoginFormDataType> = ({ login, password }) => {
+  const onSubmit: SubmitHandler<FormDataType> = ({ login, password }) => {
     dispatch(signIn({ login, password }));
     dispatch(setLogin(''));
     dispatch(setPassword(''));

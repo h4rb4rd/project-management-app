@@ -4,36 +4,34 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { initialState, signUpFormSlice } from '../../store/reducers/SignUpFormSlice';
-import Login from './Fields/Login';
-import Name from './Fields/Name';
-import Password from './Fields/Password';
-import PasswordConfirm from './Fields/PasswordConfirm';
+import { FormDataType } from '../FormUI/types';
+import Name from '../FormUI/Fields/Name';
+import Login from '../FormUI/Fields/Login';
+import Password from '../FormUI/Fields/Password';
+import PasswordConfirm from '../FormUI/Fields/PasswordConfirm';
 import preloader from '../../assets/buttonPreloader.svg';
 import { signUp } from '../../store/thunks/AuthThunks';
-import { SignUpFormDataType } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useTranslation } from 'react-i18next';
+import { initialState, signUpFormSlice } from '../../store/reducers/SignUpFormSlice';
 
 import cl from './SignUpForm.module.scss';
-import { useTranslation } from 'react-i18next';
 
 const SignUpForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
   const { name, login, password, passwordConfirm } = useAppSelector(
     (state) => state.SignUpFormReducer
   );
-  const { setName, setLogin, setPassword, setPasswordConfirm } = signUpFormSlice.actions;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-
   const {
     formState,
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
-  } = useForm<SignUpFormDataType>({
+  } = useForm<FormDataType>({
     mode: 'onSubmit',
     defaultValues: {
       name,
@@ -42,8 +40,9 @@ const SignUpForm = () => {
       passwordConfirm,
     },
   });
+  const { setName, setLogin, setPassword, setPasswordConfirm } = signUpFormSlice.actions;
 
-  const onSubmit: SubmitHandler<SignUpFormDataType> = ({ name, login, password }) => {
+  const onSubmit: SubmitHandler<FormDataType> = ({ name, login, password }) => {
     dispatch(signUp({ name, login, password }));
     dispatch(setName(''));
     dispatch(setLogin(''));
