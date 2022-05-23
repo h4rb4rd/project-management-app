@@ -97,7 +97,7 @@ const ModalTask = ({
             id="idDescrTask"
           />
           <div className={cl.btmFormContainer}>
-            <button className={cl.btnOk}>{mode}</button>
+            <button className={cl.btnOk}>{t('modalTask.btnAdd')}</button>
           </div>
         </form>
       </div>

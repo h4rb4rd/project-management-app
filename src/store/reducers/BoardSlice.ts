@@ -92,12 +92,20 @@ export const boardSlice = createSlice({
     [getBoard.pending.type]: (state) => {
       state.isLoading = true;
     },
-    [getBoard.fulfilled.type]: (
-      state,
-      action: PayloadAction<{ board: IBoard; columns: IBoardColumn[] }>
-    ) => {
-      state.board = action.payload.board;
-      state.columnList = action.payload.columns;
+    [getBoard.fulfilled.type]: (state, action: PayloadAction<IBoard>) => {
+      state.board = action.payload;
+
+      const columns = action.payload.columns;
+      columns.sort((column1, column2) => column1.order - column2.order);
+
+      if (columns.length) {
+        columns.forEach((column) => {
+          const tasks = column.tasks;
+          tasks.sort((task1, task2) => task1.order - task2.order);
+        });
+      }
+
+      state.columnList = columns;
       state.isLoading = false;
       state.error = '';
     },
@@ -131,6 +139,7 @@ export const boardSlice = createSlice({
     },
     [updateColumnItem.fulfilled.type]: (state, action: PayloadAction<IColumn>) => {
       const columnIndex = state.columnList.findIndex((item) => item.id === action.payload.id);
+
       state.columnList[columnIndex].title = action.payload.title;
     },
     [updateColumnItem.rejected.type]: (state, action: PayloadAction<string>) => {

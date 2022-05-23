@@ -128,7 +128,8 @@
     "title": "Enter title",
     "description": "Enter description",
     "titleRequired": "Title is required",
-    "descriptionRequired": "Description is required"
+    "descriptionRequired": "Description is required",
+    "btnAdd": "Add"
   },
   "task": {
     "confirmation": "Are you sure you want to delete this card?",

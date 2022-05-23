@@ -53,6 +53,7 @@ const Task = ({
       if (task.columnId == columnId) {
         if (task.id !== id) {
           const dragId = task.id;
+
           const moveItem = {
             columnId: columnId,
             dragId: dragId,

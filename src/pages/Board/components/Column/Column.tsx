@@ -32,10 +32,10 @@ interface IColumnView extends IColumn {
 }
 
 interface IHoverColumn {
-  id: string;
+  columnId: string;
 }
 
-const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnView) => {
+const Column = ({ columnId, title, order, boardId, taskList, reorderColumn }: IColumnView) => {
   const dispatch = useDispatch<AppDispatch>();
   const [titleCard, setTitle] = useState(title || 'column');
   const [isChangeTitle, setIsChangeTitle] = useState(false);
@@ -47,7 +47,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'column',
-    item: { id, title, order },
+    item: { columnId, title, order },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -56,11 +56,12 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
   const [spec, dropRef] = useDrop({
     accept: 'column',
     hover: (column: IHoverColumn) => {
-      if (column.id !== id) {
-        const dragId = column.id;
+      if (column.columnId !== columnId) {
+        const dragId = column.columnId;
+
         const moveItem = {
           dragId: dragId,
-          hoverId: id,
+          hoverId: columnId,
         };
         dispatch(moveColumnItem(moveItem));
       }
@@ -89,12 +90,13 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
     if (!titleCard.trim()) {
       setTitle(title);
     } else {
-      const result = await BoardService.updateColumn(boardId, id, titleCard, order);
+      const result = await BoardService.updateColumn(boardId, columnId, titleCard, order);
+
       if (result?.status === 200) {
         dispatch(
           updateColumnItem({
             boardId,
-            columnId: id,
+            columnId,
             titleColumn: titleCard,
             orderColumn: order,
           })
@@ -119,7 +121,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
     dispatch(
       addTaskItem({
         boardId,
-        columnId: id,
+        columnId,
         title,
         order: taskList.length + 1,
         description: descr,
@@ -133,7 +135,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
     taskList.forEach((item) => {
       BoardService.updateTask(
         boardId,
-        id,
+        columnId,
         item.id,
         item.title,
         item.order,
@@ -144,13 +146,13 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
   };
 
   const dropTask = (dropTask: ITask) => {
-    if (dropTask.columnId !== id) {
+    if (dropTask.columnId !== columnId) {
       const order = getNewOrder(taskList.length);
       dispatch(
         transferTaskItem({
           boardId,
           columnId: dropTask.columnId,
-          toColumnId: id,
+          toColumnId: columnId,
           taskId: dropTask.id,
           title: dropTask.title,
           order: order,
@@ -166,7 +168,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
   };
 
   const deleteColumn = () => {
-    dispatch(deleteColumnItem({ boardId, columnId: id }));
+    dispatch(deleteColumnItem({ boardId, columnId }));
     setIsShowConfirm(false);
   };
 
@@ -208,7 +210,7 @@ const Column = ({ id, title, order, boardId, taskList, reorderColumn }: IColumnV
 
       <div className={cl.taskListContainer}>
         {taskList.length
-          ? taskList.map(({ id, description, title, order, boardId, columnId, userId }) => (
+          ? taskList.map(({ id, description, title, order, userId }) => (
               <Task
                 key={id}
                 title={title}

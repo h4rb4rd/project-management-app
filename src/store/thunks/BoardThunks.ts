@@ -9,21 +9,7 @@ import BoardService from '../../services/BoardService';
 export const getBoard = createAsyncThunk('boards/getBoard', async (id: string, thunkAPI) => {
   try {
     const response = await BoardsService.getBoard(id);
-
-    const datalist = response.data.columns;
-    datalist.sort((column1, column2) => column1.order - column2.order);
-
-    if (datalist.length) {
-      for (let i = 0; i < datalist.length; i++) {
-        const column = datalist[i];
-        const resultTask = await BoardService.getTasks(id, column.id);
-        const dataTaskList = resultTask.data;
-        dataTaskList.sort((task1, task2) => task1.order - task2.order);
-        datalist[i].tasks = dataTaskList.slice(0);
-      }
-    }
-
-    return { board: response.data, columns: datalist };
+    return response.data;
   } catch (err) {
     if (axios.isAxiosError(err) && err.response) {
       const data = err.response.data as AxiosErrorDataType;

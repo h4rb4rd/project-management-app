@@ -91,7 +91,7 @@ const Board = () => {
                 key={id}
                 order={order}
                 title={title}
-                id={id}
+                columnId={id}
                 boardId={boardId}
                 index={index}
                 taskList={tasks}
