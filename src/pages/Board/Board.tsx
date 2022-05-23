@@ -74,7 +74,7 @@ const Board = () => {
           <div className={cl.breadcrumbs}>
             <Link to={RouteNames.BOARDS}>{t('board.breadcrumbs')}</Link>
             <span>&#62;</span>
-            <h2 className={cl.title}>{board?.title.split(',')?.[0]}</h2>
+            <h2 className={cl.title}>{board?.title.split('ʵ')?.[0]}</h2>
           </div>
           <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
             <span className={cl.iconAdd}>+</span>
@@ -83,7 +83,7 @@ const Board = () => {
         </div>
         <div
           className={cl.boardContainer}
-          style={{ backgroundColor: board?.title.split(',')?.[1] }}
+          style={{ backgroundColor: board?.title.split('ʵ')?.[1] }}
         >
           {columnList.length ? (
             columnList.map(({ id, order, title, tasks }, index) => (

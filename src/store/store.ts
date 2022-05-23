@@ -6,6 +6,7 @@ import BoardsReducer from './reducers/BoardsSlice';
 import LocationReducer from './reducers/LocationSlice';
 import LoginFormReducer from './reducers/LoginFormSlice';
 import SignUpFormReducer from './reducers/SignUpFormSlice';
+import SearchModalReducer from './reducers/SearchModalSlice';
 import UserModalReducer from './reducers/UserModalSlice';
 import BoardReducer from './reducers/BoardSlice';
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   LocationReducer,
   LoginFormReducer,
   SignUpFormReducer,
+  SearchModalReducer,
   UserModalReducer,
   BoardReducer,
 });

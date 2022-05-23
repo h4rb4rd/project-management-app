@@ -33,7 +33,7 @@ const CreateForm = () => {
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<FormDataType> = ({ title, color }) => {
-    dispatch(createBoard(`${title},${color}`));
+    dispatch(createBoard(`${title}ʵ${color}`));
     dispatch(setIsModalOpen(false));
     reset();
   };

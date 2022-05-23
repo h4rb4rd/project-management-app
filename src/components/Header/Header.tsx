@@ -5,6 +5,7 @@ import DesktopBars from './components/DesktopBars';
 
 import cl from './Header.module.scss';
 import Burger from './components/Burger';
+import SearchBar from '../SearchBar';
 import UserBar from '../UserBar';
 import { getValueWithExpiry } from '../../utils/storage';
 
@@ -36,7 +37,8 @@ const Header = () => {
     >
       <DesktopBars />
       <Burger />
-      {token && <UserBar />}
+      <SearchBar />
+      <UserBar />
     </header>
   );
 };

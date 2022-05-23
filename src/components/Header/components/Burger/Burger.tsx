@@ -25,7 +25,8 @@ const Burger = () => {
         <div className={cl.content} onClick={(e) => e.stopPropagation()}>
           <Logo />
           <hr className={cl.selector} />
-          {token ? <NavBar /> : <AuthBar />}
+          <NavBar />
+          <AuthBar />
         </div>
       </div>
     </div>

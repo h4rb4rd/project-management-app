@@ -8,6 +8,11 @@ import cl from './AuthBar.module.scss';
 
 const AuthBar = () => {
   const { t } = useTranslation();
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    return null;
+  }
 
   return (
     <div className={cl.bar}>

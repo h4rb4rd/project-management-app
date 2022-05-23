@@ -86,15 +86,15 @@
   position: relative;
   display: flex;
   align-items: center;
-  background-color: rgba(0, 101, 255, 0.1);
-  border: 1px solid rgba(0, 101, 255, 0.2);
+  background-color: #0065ff;
   border-radius: 3px;
   box-shadow: none;
-  color: #5e6c84;
+  color: #fff;
   font-size: 1.4rem;
   padding: 0.6rem 2rem 0.6rem 1rem;
   text-decoration: none;
   cursor: pointer;
+  transition: background-color 0.2s ease 0s;
 
   .iconAdd {
     margin-right: 0.5rem;
@@ -102,7 +102,7 @@
   }
 
   &:hover {
-    background-color: rgba(0, 101, 255, 0.2);
+    background-color: #0747a6;
   }
 }
 

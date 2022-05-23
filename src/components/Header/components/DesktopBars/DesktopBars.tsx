@@ -13,7 +13,8 @@ const DesktopBars = () => {
   return (
     <div className={cl.container}>
       <Logo />
-      {token ? <NavBar /> : <AuthBar />}
+      <NavBar />
+      <AuthBar />
     </div>
   );
 };
