@@ -4,13 +4,13 @@ import AuthBar from '../../../AuthBar';
 
 import Logo from '../../../Logo';
 import NavBar from '../../../NavBar';
-import { useAppSelector } from '../../../../hooks/redux';
 
 import cl from './Burger.module.scss';
+import { getValueWithExpiry } from '../../../../utils/storage';
 
 const Burger = () => {
-  const { user } = useAppSelector((state) => state.AuthReducer);
   const [isOpen, setIsOpen] = useState(false);
+  const token = getValueWithExpiry('token');
 
   const toggleBurger = () => {
     setIsOpen((prevState) => !prevState);
@@ -25,7 +25,7 @@ const Burger = () => {
         <div className={cl.content} onClick={(e) => e.stopPropagation()}>
           <Logo />
           <hr className={cl.selector} />
-          {user ? <NavBar /> : <AuthBar />}
+          {token ? <NavBar /> : <AuthBar />}
         </div>
       </div>
     </div>

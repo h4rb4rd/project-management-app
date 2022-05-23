@@ -32,9 +32,12 @@ export const signUp = createAsyncThunk(
   'auth/signUp',
   async (payload: { name: string; login: string; password: string }, thunkAPI) => {
     try {
-      const response = await AuthService.signUp(payload.name, payload.login, payload.password);
-      setValueWithExpiry('userId', response.data.id, 3600000);
-      return response.data;
+      const singUpRes = await AuthService.signUp(payload.name, payload.login, payload.password);
+      const signInRes = await AuthService.signIn(payload.login, payload.password);
+      setValueWithExpiry('token', signInRes.data.token, 3600000);
+      setValueWithExpiry('userId', singUpRes.data.id, 3600000);
+
+      return singUpRes.data;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         const data = err.response.data as AxiosErrorDataType;
@@ -78,9 +81,10 @@ export const deleteUser = createAsyncThunk('auth/delete', async (id: string, thu
 });
 
 export const checkIsAuth = createAsyncThunk('auth/check', async (_, thunkAPI) => {
+  const token = getValueWithExpiry('token');
   const userId = getValueWithExpiry('userId');
 
-  if (userId) {
+  if (token) {
     try {
       const response = await UserService.getUser(userId);
       return response.data;

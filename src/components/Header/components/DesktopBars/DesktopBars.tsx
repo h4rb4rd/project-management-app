@@ -3,17 +3,17 @@ import AuthBar from '../../../AuthBar';
 
 import Logo from '../../../Logo';
 import NavBar from '../../../NavBar';
-import { useAppSelector } from '../../../../hooks/redux';
 
 import cl from './DesktopBars.module.scss';
+import { getValueWithExpiry } from '../../../../utils/storage';
 
 const DesktopBars = () => {
-  const { user } = useAppSelector((state) => state.AuthReducer);
+  const token = getValueWithExpiry('token');
 
   return (
     <div className={cl.container}>
       <Logo />
-      {user ? <NavBar /> : <AuthBar />}
+      {token ? <NavBar /> : <AuthBar />}
     </div>
   );
 };

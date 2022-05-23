@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import DesktopBars from './components/DesktopBars';
-import { useAppSelector } from '../../hooks/redux';
 
 import cl from './Header.module.scss';
 import Burger from './components/Burger';
 import UserBar from '../UserBar';
+import { getValueWithExpiry } from '../../utils/storage';
 
 const Header = () => {
-  const { user } = useAppSelector((state) => state.AuthReducer);
   const [isScrolled, setIsScrolled] = useState(false);
+  const token = getValueWithExpiry('token');
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -29,14 +29,14 @@ const Header = () => {
     <header
       className={clsx(
         cl.header,
-        !user && isScrolled && cl.white,
-        user && cl.blue,
-        user && isScrolled && `${cl.blue} ${cl.shadow}`
+        !token && isScrolled && cl.white,
+        token && cl.blue,
+        token && isScrolled && `${cl.blue} ${cl.shadow}`
       )}
     >
       <DesktopBars />
       <Burger />
-      {user && <UserBar />}
+      {token && <UserBar />}
     </header>
   );
 };
