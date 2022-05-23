@@ -10,7 +10,7 @@ import Success from '../../components/Success';
 import cl from './Account.module.scss';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { deleteUser } from '../../store/thunks/AuthThunks';
-import ModalPortal from '../../Portals/ModalPortal';
+import ModalPortal from '../../portals/ModalPortal';
 import Confirmation from '../../components/Confirmation';
 import { useTranslation } from 'react-i18next';
 

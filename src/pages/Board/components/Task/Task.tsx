@@ -10,7 +10,7 @@ import deleteImg from '../../../../assets/delete.svg';
 import editImg from '../../../../assets/edit.svg';
 import { TAskModalMode } from '../../types';
 import { ITask } from '../../../../models/ITask';
-import ModalPortal from '../../../../Portals/ModalPortal';
+import ModalPortal from '../../../../portals/ModalPortal';
 import ModalTask from '../ModalTask';
 import TaskDetails from '../TaskDetails';
 

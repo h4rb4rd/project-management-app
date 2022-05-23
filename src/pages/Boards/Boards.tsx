@@ -7,7 +7,7 @@ import { boardsSlice } from '../../store/reducers/BoardsSlice';
 import CreateForm from './components/CreateForm';
 
 import Item from './components/Item';
-import ModalPortal from '../../Portals/ModalPortal';
+import ModalPortal from '../../portals/ModalPortal';
 import preloader from '../../assets/buttonPreloader.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 

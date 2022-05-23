@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Confirmation from '../Confirmation';
 import { FormDataType } from '../FormUI/types';
 import { initialState, accountFormSlice } from '../../store/reducers/AccountFormSlice';
-import ModalPortal from '../../Portals/ModalPortal';
+import ModalPortal from '../../portals/ModalPortal';
 import Name from '../FormUI/Fields/Name';
 import Login from '../FormUI/Fields/Login';
 import Password from '../FormUI/Fields/Password';

@@ -12,7 +12,7 @@ import { getNewOrder } from '../../../../utils/board';
 import { getValueWithExpiry } from '../../../../utils/storage';
 import { IColumn } from '../../../../models/IColumns';
 import { ITask } from '../../../../models/ITask';
-import ModalPortal from '../../../../Portals/ModalPortal';
+import ModalPortal from '../../../../portals/ModalPortal';
 import ModalTaskAdd from '../ModalTask';
 import Task from '../Task';
 import {
