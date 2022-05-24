@@ -2,9 +2,11 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { FormDataType } from '../FormUI/types';
+import { initialState, loginFormSlice } from '../../store/reducers/LoginFormSlice';
 import Login from '../FormUI/Fields/Login';
 import Password from '../FormUI/Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
@@ -12,22 +14,20 @@ import { signIn } from '../../store/thunks/AuthThunks';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './LoginForm.module.scss';
-import { initialState, loginFormSlice } from '../../store/reducers/LoginFormSlice';
-import { useTranslation } from 'react-i18next';
 
 const LoginForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
   const { login, password } = useAppSelector((state) => state.LoginFormReducer);
-  const { setLogin, setPassword } = loginFormSlice.actions;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const { setLogin, setPassword } = loginFormSlice.actions;
 
   const {
     formState,
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
   } = useForm<FormDataType>({
     mode: 'onSubmit',

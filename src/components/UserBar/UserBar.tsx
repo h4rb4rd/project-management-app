@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { useClickOutside } from '../../hooks/useClickOutside';
 
+import { useClickOutside } from '../../hooks/useClickOutside';
 import { userModalSlice } from '../../store/reducers/UserModalSlice';
 import UserModal from './components/UserModal';
 

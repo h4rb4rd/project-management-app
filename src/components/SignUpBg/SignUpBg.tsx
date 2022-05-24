@@ -1,9 +1,9 @@
 import React from 'react';
 
-import cl from './SignUpBg.module.scss';
-
 import leftImg from '../../assets/signup/left-img.svg';
 import rightImg from '../../assets/signup/right-img.svg';
+
+import cl from './SignUpBg.module.scss';
 
 const SignUpBg = () => {
   return (

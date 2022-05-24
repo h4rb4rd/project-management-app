@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 import cl from './Confirmation.module.scss';
-import { useTranslation } from 'react-i18next';
 
 interface ConfirmationProps {
   text: string;

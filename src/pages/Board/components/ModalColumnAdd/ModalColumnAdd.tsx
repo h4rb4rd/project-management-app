@@ -14,8 +14,8 @@ interface IModalColumnAdd {
 }
 
 const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
-  const rootDiv = document.createElement('div');
   const { t } = useTranslation();
+  const rootDiv = document.createElement('div');
 
   const {
     register,

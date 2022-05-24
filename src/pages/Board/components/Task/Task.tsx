@@ -8,14 +8,14 @@ import { boardSlice } from '../../../../store/reducers/BoardSlice';
 import Confirmation from '../../../../components/Confirmation';
 import deleteImg from '../../../../assets/delete.svg';
 import editImg from '../../../../assets/edit.svg';
-import { TAskModalMode } from '../../types';
 import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../portals/ModalPortal';
 import ModalTask from '../ModalTask';
+import { TAskModalMode } from '../../types';
 import TaskDetails from '../TaskDetails';
+import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks/BoardThunks';
 
 import cl from './Task.module.scss';
-import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks/BoardThunks';
 
 interface ITaskView extends ITask {
   reorderTask: () => void;
@@ -36,8 +36,8 @@ const Task = ({
   const [isUpdate, setIsUpdate] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const [isTaskDetails, setIsTaskDetails] = useState(false);
-  const { moveTaskItem } = boardSlice.actions;
   const { t } = useTranslation();
+  const { moveTaskItem } = boardSlice.actions;
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'task',

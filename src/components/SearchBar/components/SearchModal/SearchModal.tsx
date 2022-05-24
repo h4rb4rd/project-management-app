@@ -6,11 +6,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { IBoard } from '../../../../models/IBoard';
 import { getBoards } from '../../../../store/thunks/BoardsThunks';
+import { RouteNames } from '../../../AppRouter/types';
 import { searchModalSlice } from '../../../../store/reducers/SearchModalSlice';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 
 import cl from './SearchModal.module.scss';
-import { RouteNames } from '../../../AppRouter/types';
 
 const SearchModal = () => {
   const { boards, error } = useAppSelector((state) => state.BoardsReducer);
@@ -32,7 +32,15 @@ const SearchModal = () => {
   }, []);
 
   useEffect(() => {
-    setFilteredBoards(boards.filter(({ title }) => title.split('ʵ')[0] === searchValue));
+    if (searchValue) {
+      setFilteredBoards(
+        boards.filter(({ title }) =>
+          title.split('ʵ')[0].toLowerCase().includes(searchValue.trim().toLowerCase())
+        )
+      );
+    } else {
+      setFilteredBoards([]);
+    }
   }, [searchValue]);
 
   useEffect(() => {

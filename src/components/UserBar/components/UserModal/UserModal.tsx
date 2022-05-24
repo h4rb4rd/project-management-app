@@ -1,22 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
+import { useTranslation } from 'react-i18next';
 
 import { authSlice } from '../../../../store/reducers/AuthSlice';
 import { RouteNames } from '../../../AppRouter/types';
 import { userModalSlice } from '../../../../store/reducers/UserModalSlice';
 
 import cl from './UserModal.module.scss';
-import { useTranslation } from 'react-i18next';
 
 const UserModal = () => {
   const { user } = useAppSelector((state) => state.AuthReducer);
   const { isOpen } = useAppSelector((state) => state.UserModalReducer);
-  const { setIsOpen } = userModalSlice.actions;
-  const { setUser } = authSlice.actions;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { setIsOpen } = userModalSlice.actions;
+  const { setUser } = authSlice.actions;
 
   const closeModal = () => dispatch(setIsOpen(false));
   const logout = () => {

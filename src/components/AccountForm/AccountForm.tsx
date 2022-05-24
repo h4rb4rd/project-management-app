@@ -21,10 +21,10 @@ const AccountForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
   const { user } = useAppSelector((state) => state.AuthReducer);
   const { name, login, password } = useAppSelector((state) => state.AccountFormReducer);
-  const { setName, setLogin, setPassword } = accountFormSlice.actions;
   const dispatch = useAppDispatch();
   const [isModalActive, setIsModalActive] = useState(false);
   const { t } = useTranslation();
+  const { setName, setLogin, setPassword } = accountFormSlice.actions;
 
   const {
     formState,

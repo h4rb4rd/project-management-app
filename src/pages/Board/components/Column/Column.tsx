@@ -7,13 +7,13 @@ import { AppDispatch } from '../../../../store/store';
 import BoardService from '../../../../services/BoardService';
 import { boardSlice } from '../../../../store/reducers/BoardSlice';
 import Confirmation from '../../../../components/Confirmation';
-import { TAskModalMode } from '../../types';
 import { getNewOrder } from '../../../../utils/board';
 import { getValueWithExpiry } from '../../../../utils/storage';
 import { IColumn } from '../../../../models/IColumns';
 import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../portals/ModalPortal';
 import ModalTaskAdd from '../ModalTask';
+import { TAskModalMode } from '../../types';
 import Task from '../Task';
 import {
   addTaskItem,
@@ -42,8 +42,8 @@ const Column = ({ columnId, title, order, boardId, taskList, reorderColumn }: IC
   const [isShowTaskAdd, setIsShowTaskAdd] = useState(false);
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const itemRef = useRef(null);
-  const { moveColumnItem } = boardSlice.actions;
   const { t } = useTranslation();
+  const { moveColumnItem } = boardSlice.actions;
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'column',

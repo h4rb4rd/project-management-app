@@ -8,8 +8,8 @@ import { boardsSlice } from '../../../../store/reducers/BoardsSlice';
 
 import { FormDataType } from '../../../../components/FormUI/types';
 import Color from '../../../../components/FormUI/Fields/Color';
-import Title from '../../../../components/FormUI/Fields/Title';
 import { createBoard } from '../../../../store/thunks/BoardsThunks';
+import Title from '../../../../components/FormUI/Fields/Title';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 
 import cl from './CreateForm.module.scss';

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
-import DesktopBars from './components/DesktopBars';
-
-import cl from './Header.module.scss';
 import Burger from './components/Burger';
+import DesktopBars from './components/DesktopBars';
+import { getValueWithExpiry } from '../../utils/storage';
 import SearchBar from '../SearchBar';
 import UserBar from '../UserBar';
-import { getValueWithExpiry } from '../../utils/storage';
+
+import cl from './Header.module.scss';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);

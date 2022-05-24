@@ -7,15 +7,9 @@ interface DeveloperProps {
   imageUrl: string;
   position: string;
   githubUrl: string;
-  description: DescriptionType[];
 }
 
-type DescriptionType = {
-  id: number;
-  text: string;
-};
-
-const Developer = ({ name, imageUrl, position, githubUrl, description }: DeveloperProps) => {
+const Developer = ({ name, imageUrl, position, githubUrl }: DeveloperProps) => {
   return (
     <div className={cl.developer}>
       <img className={cl.image} src={imageUrl} alt="developer" />
@@ -24,11 +18,6 @@ const Developer = ({ name, imageUrl, position, githubUrl, description }: Develop
       <a className={cl.github} href={githubUrl}>
         Github
       </a>
-      <ul className={cl.description}>
-        {description.map(({ id, text }) => {
-          return <li key={id}>{text}</li>;
-        })}
-      </ul>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import img from '../../assets/search.svg';
 import { searchModalSlice } from '../../store/reducers/SearchModalSlice';
@@ -7,7 +8,6 @@ import { useClickOutside } from '../../hooks/useClickOutside';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './SearchBar.module.scss';
-import { useTranslation } from 'react-i18next';
 
 const SearchBar = () => {
   const { isOpen, searchValue } = useAppSelector((state) => state.SearchModalReducer);
@@ -18,7 +18,10 @@ const SearchBar = () => {
   const token = localStorage.getItem('token');
 
   const toggleModal = () => dispatch(setIsOpen(!isOpen));
-  const closeModal = () => dispatch(setIsOpen(false));
+  const closeModal = () => {
+    dispatch(setIsOpen(false));
+    dispatch(setSearchValue(''));
+  };
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchValue(e.target.value));
   };

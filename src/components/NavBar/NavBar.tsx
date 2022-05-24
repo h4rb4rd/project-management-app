@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { RouteNames } from '../AppRouter/types';
 import NavLink from '../NavLink';
+import { RouteNames } from '../AppRouter/types';
 
 import cl from './NavBar.module.scss';
 

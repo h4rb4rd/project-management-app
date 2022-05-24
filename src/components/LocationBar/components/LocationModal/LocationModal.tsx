@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { useAppSelector } from '../../../../hooks/redux';
 
 import cl from './LocationModal.module.scss';

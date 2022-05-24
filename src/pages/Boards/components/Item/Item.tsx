@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Confirmation from '../../../../components/Confirmation';
@@ -7,7 +8,6 @@ import { deleteBoard } from '../../../../store/thunks/BoardsThunks';
 import ModalPortal from '../../../../portals/ModalPortal';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 import cl from './Item.module.scss';
 

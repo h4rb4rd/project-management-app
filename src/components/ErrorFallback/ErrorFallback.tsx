@@ -1,9 +1,9 @@
 import React from 'react';
-
-import cl from './ErrorFallback.module.scss';
+import { useTranslation } from 'react-i18next';
 
 import img from '../../assets/warning.svg';
-import { useTranslation } from 'react-i18next';
+
+import cl from './ErrorFallback.module.scss';
 
 const ErrorFallback = () => {
   const refreshPage = () => {

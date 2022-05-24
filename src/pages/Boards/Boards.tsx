@@ -5,21 +5,19 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { boardsSlice } from '../../store/reducers/BoardsSlice';
 import CreateForm from './components/CreateForm';
-
+import { getBoards } from '../../store/thunks/BoardsThunks';
 import Item from './components/Item';
 import ModalPortal from '../../portals/ModalPortal';
 import preloader from '../../assets/buttonPreloader.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './Boards.module.scss';
-import { getBoards } from '../../store/thunks/BoardsThunks';
 
 const Boards = () => {
   const { boards, isModalOpen, isPending, error } = useAppSelector((state) => state.BoardsReducer);
-  const { setIsModalOpen } = boardsSlice.actions;
   const dispatch = useAppDispatch();
-
   const { t } = useTranslation();
+  const { setIsModalOpen } = boardsSlice.actions;
 
   const createBoard = () => {
     dispatch(setIsModalOpen(true));

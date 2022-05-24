@@ -5,6 +5,14 @@ import { IColumn } from '../../models/IColumns';
 import { ITask } from '../../models/ITask';
 import { getNewOrder } from '../../utils/board';
 import {
+  IDeleteTaskItem,
+  IInitStateBoard,
+  IMoveColumnItem,
+  IMoveTaskItem,
+  ITransferTaskItem,
+} from '../types';
+
+import {
   addColumnItem,
   addTaskItem,
   deleteColumnItem,
@@ -15,42 +23,12 @@ import {
   updateTaskItem,
 } from '../thunks/BoardThunks';
 
-interface IInitStateBoard {
-  board: IBoard | null;
-  columnList: IBoardColumn[];
-  isLoading: boolean;
-  error: string;
-}
-
 export const initialStateBoard: IInitStateBoard = {
   board: null,
   columnList: [],
   isLoading: false,
   error: '',
 };
-
-interface IMoveColumnItem {
-  dragId: string;
-  hoverId: string;
-}
-
-interface IMoveTaskItem {
-  columnId: string;
-  dragId: string;
-  hoverId: string;
-}
-
-interface ITransferTaskItem {
-  fromColumnId: string;
-  toColumnId: string;
-  taskId: string;
-  newOrder: number;
-}
-
-interface IDeleteTaskItem {
-  columnId: string;
-  taskId: string;
-}
 
 export const boardSlice = createSlice({
   name: 'board',

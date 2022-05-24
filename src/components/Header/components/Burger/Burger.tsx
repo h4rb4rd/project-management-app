@@ -1,16 +1,14 @@
-import clsx from 'clsx';
 import React, { useState } from 'react';
-import AuthBar from '../../../AuthBar';
+import clsx from 'clsx';
 
+import AuthBar from '../../../AuthBar';
 import Logo from '../../../Logo';
 import NavBar from '../../../NavBar';
 
 import cl from './Burger.module.scss';
-import { getValueWithExpiry } from '../../../../utils/storage';
 
 const Burger = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const token = getValueWithExpiry('token');
 
   const toggleBurger = () => {
     setIsOpen((prevState) => !prevState);

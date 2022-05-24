@@ -28,10 +28,8 @@ const ModalTask = ({
   const rootDiv = document.createElement('div');
 
   const {
-    formState,
     register,
     handleSubmit,
-    watch,
     formState: { errors, isValid },
     reset,
   } = useForm<TaskFormType>({
