@@ -27,7 +27,7 @@ const Board = () => {
 
   useEffect(() => {
     dispatch(getBoard(boardId));
-  }, []);
+  }, [boardId]);
 
   useEffect(() => {
     if (error) {
