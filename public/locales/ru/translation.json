@@ -134,5 +134,13 @@
   "task": {
     "confirmation": "Вы действительно хотите удалить Задачу?",
     "detailsBtn": "Закрыть"
+  },
+  "searchBar": {
+    "placeholder": "Поиск"
+  },
+  "searchModal": {
+    "title": "Ваши рабочие пространства",
+    "subtitle": "Доски",
+    "placeholder": "Не удалось найти подходящей доски"
   }
 }

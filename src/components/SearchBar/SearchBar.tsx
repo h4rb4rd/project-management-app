@@ -7,16 +7,21 @@ import { useClickOutside } from '../../hooks/useClickOutside';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import cl from './SearchBar.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const SearchBar = () => {
-  const { isOpen } = useAppSelector((state) => state.SearchModalReducer);
+  const { isOpen, searchValue } = useAppSelector((state) => state.SearchModalReducer);
   const dispatch = useAppDispatch();
   const barRef = useRef(null);
-  const { setIsOpen } = searchModalSlice.actions;
+  const { t } = useTranslation();
+  const { setIsOpen, setSearchValue } = searchModalSlice.actions;
   const token = localStorage.getItem('token');
 
   const toggleModal = () => dispatch(setIsOpen(!isOpen));
   const closeModal = () => dispatch(setIsOpen(false));
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchValue(e.target.value));
+  };
 
   useClickOutside(barRef, closeModal);
 
@@ -33,7 +38,9 @@ const SearchBar = () => {
         className={cl.input}
         type="text"
         id="searchBarId"
-        placeholder="Поиск"
+        placeholder={t('searchBar.placeholder')}
+        value={searchValue}
+        onChange={changeHandler}
         onClick={toggleModal}
       />
       <SearchModal />

@@ -134,5 +134,13 @@
   "task": {
     "confirmation": "Are you sure you want to delete this card?",
     "detailsBtn": "Close"
+  },
+  "searchBar": {
+    "placeholder": "Search"
+  },
+  "searchModal": {
+    "title": "Your workspaces",
+    "subtitle": "Boards",
+    "placeholder": "We couldn't find any boards that matched your search."
   }
 }
