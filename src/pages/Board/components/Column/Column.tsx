@@ -229,10 +229,9 @@ const Column = ({ columnId, title, order, boardId, taskList, reorderColumn }: IC
         <span className={cl.iconAdd}>+</span>
         <span>{t('column.btnAdd')}</span>
       </button>
-      {isShowTaskAdd ? (
+      <ModalPortal isActive={isShowTaskAdd} close={handleCloseModal}>
         <ModalTaskAdd mode={TAskModalMode.ADD} handleClose={handleCloseModal} addTask={addTask} />
-      ) : null}
-
+      </ModalPortal>
       <ModalPortal
         isActive={isShowConfirm}
         close={() => {

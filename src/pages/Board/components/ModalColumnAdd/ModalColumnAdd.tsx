@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast, ToastContainer } from 'react-toastify';
@@ -15,7 +14,6 @@ interface IModalColumnAdd {
 
 const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
   const { t } = useTranslation();
-  const rootDiv = document.createElement('div');
 
   const {
     register,
@@ -30,17 +28,6 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
     },
   });
 
-  useEffect(() => {
-    document.body.append(rootDiv);
-    return () => {
-      document.body.removeChild(rootDiv);
-    };
-  });
-
-  const handleClickContainer = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
   const onSubmit: SubmitHandler<TitleInputType> = ({ titleColumn }) => {
     addColumn(titleColumn);
     reset();
@@ -52,12 +39,9 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
     }
   }, [errors]);
 
-  return ReactDOM.createPortal(
+  return (
     <div className={cl.modal} onClick={handleClose}>
-      <div className={cl.formContainer} onClick={(e) => handleClickContainer(e)}>
-        <button onClick={handleClose} className={cl.btnCancel}>
-          &#10006;
-        </button>
+      <div className={cl.formContainer} onClick={(e) => e.stopPropagation()}>
         <h2>{t('board.modalAdd.title')}</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
@@ -66,6 +50,7 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
             })}
             type="text"
             id="idTitleColumn"
+            autoFocus
           />
           <div className={cl.btmFormContainer}>
             <button className={cl.btnOk}>{t('board.modalAdd.button')}</button>
@@ -84,8 +69,7 @@ const ModalColumnAdd = ({ addColumn, handleClose }: IModalColumnAdd) => {
         draggable={false}
         pauseOnHover
       />
-    </div>,
-    rootDiv
+    </div>
   );
 };
 

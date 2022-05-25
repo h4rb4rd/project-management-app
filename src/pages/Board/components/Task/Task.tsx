@@ -119,7 +119,7 @@ const Task = ({
           <img src={deleteImg} alt="delete" />
         </button>
       </div>
-      {isUpdate ? (
+      <ModalPortal isActive={isUpdate} close={closeModal}>
         <ModalTask
           mode={TAskModalMode.UPDATE}
           handleClose={closeModal}
@@ -127,7 +127,7 @@ const Task = ({
           valueDescr={description}
           valueTitle={title}
         />
-      ) : null}
+      </ModalPortal>
       <ModalPortal
         isActive={isShowConfirm}
         close={() => {

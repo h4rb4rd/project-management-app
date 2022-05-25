@@ -31,6 +31,7 @@ const Title = ({ register }: TitleProps) => {
         placeholder={t('titleField.placeholder')}
         type="text"
         id="titleFieldId"
+        autoFocus
       />
     </div>
   );

@@ -10,7 +10,9 @@ import { useTranslation } from 'react-i18next';
 import { AppDispatch, RootState } from '../../store/store';
 import Column from './components/Column';
 import { getNewOrder } from '../../utils/board';
+import ModalPortal from '../../portals/ModalPortal';
 import ModalColumnAdd from './components/ModalColumnAdd';
+import preloaderImg from '../../assets/preloader.svg';
 import { RouteNames } from '../../components/AppRouter/types';
 import { addColumnItem, getBoard, updateColumnItem } from '../../store/thunks/BoardThunks';
 
@@ -18,7 +20,9 @@ import cl from './Board.module.scss';
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { error, columnList, board } = useSelector((state: RootState) => state.BoardReducer);
+  const { error, columnList, board, isLoading } = useSelector(
+    (state: RootState) => state.BoardReducer
+  );
   const params = useParams();
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
   const { t } = useTranslation();
@@ -81,31 +85,37 @@ const Board = () => {
             <span>{t('board.btnAdd')}</span>
           </button>
         </div>
-        <div
-          className={cl.boardContainer}
-          style={{ backgroundColor: board?.title.split('ʵ')?.[1] }}
-        >
-          {columnList.length ? (
-            columnList.map(({ id, order, title, tasks }, index) => (
-              <Column
-                key={id}
-                order={order}
-                title={title}
-                columnId={id}
-                boardId={boardId}
-                index={index}
-                taskList={tasks}
-                reorderColumn={requestReorderColumn}
-              />
-            ))
-          ) : (
-            <span className={cl.placeholder}>{t('board.placeholder')}</span>
-          )}
-        </div>
+        {!isLoading ? (
+          <div
+            className={cl.boardContainer}
+            style={{ backgroundColor: board?.title.split('ʵ')?.[1] }}
+          >
+            {columnList.length ? (
+              columnList.map(({ id, order, title, tasks }, index) => (
+                <Column
+                  key={id}
+                  order={order}
+                  title={title}
+                  columnId={id}
+                  boardId={boardId}
+                  index={index}
+                  taskList={tasks}
+                  reorderColumn={requestReorderColumn}
+                />
+              ))
+            ) : (
+              <span className={cl.placeholder}>{t('board.placeholder')}</span>
+            )}
+          </div>
+        ) : (
+          <div className={cl.preloader}>
+            <img src={preloaderImg} alt="preloader" />
+          </div>
+        )}
 
-        {isShowColumnAdd ? (
+        <ModalPortal isActive={isShowColumnAdd} close={handleCloseModal}>
           <ModalColumnAdd handleClose={handleCloseModal} addColumn={addColumn} />
-        ) : null}
+        </ModalPortal>
         <ToastContainer
           position="bottom-right"
           theme="colored"

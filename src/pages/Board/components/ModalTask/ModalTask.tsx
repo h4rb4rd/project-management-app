@@ -25,8 +25,6 @@ const ModalTask = ({
   valueDescr,
   valueTitle,
 }: IModalTaskAdd) => {
-  const rootDiv = document.createElement('div');
-
   const {
     register,
     handleSubmit,
@@ -41,13 +39,6 @@ const ModalTask = ({
   });
 
   const { t } = useTranslation();
-
-  useEffect(() => {
-    document.body.append(rootDiv);
-    return () => {
-      document.body.removeChild(rootDiv);
-    };
-  });
 
   const onSubmit: SubmitHandler<TaskFormType> = ({ titleTask, descrTask }) => {
     if (mode === TAskModalMode.ADD) {
@@ -71,13 +62,9 @@ const ModalTask = ({
     }
   }, [errors]);
 
-  return ReactDOM.createPortal(
+  return (
     <div className={cl.modal} onClick={handleClose}>
       <div className={cl.formContainer} onClick={(e) => e.stopPropagation()}>
-        <button onClick={handleClose} className={cl.btnCancel}>
-          &#10006;
-        </button>
-
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2>{t('modalTask.title')}</h2>
           <input
@@ -86,6 +73,7 @@ const ModalTask = ({
             })}
             type="text"
             id="idTitleTask"
+            autoFocus
           />
           <h2>{t('modalTask.description')}</h2>
           <textarea
@@ -111,8 +99,7 @@ const ModalTask = ({
         draggable={false}
         pauseOnHover
       />
-    </div>,
-    rootDiv
+    </div>
   );
 };
 
