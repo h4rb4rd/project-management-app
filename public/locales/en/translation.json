@@ -142,5 +142,13 @@
     "title": "Your workspaces",
     "subtitle": "Boards",
     "placeholder": "We couldn't find any boards that matched your search."
+  },
+  "editTaskModal": {
+    "title": "Title",
+    "description": "Description",
+    "btnSave": "Save",
+    "btnCancel": "Cancel",
+    "btnChange": "Change",
+    "btnClose": "Close"
   }
 }

@@ -1,0 +1,40 @@
+.form {
+  display: flex;
+  align-items: center;
+}
+
+.save {
+  border-radius: 3px;
+  font-weight: 400;
+  color: #fff;
+  background-color: #0065ff;
+  padding: 0.2rem 0.6rem;
+  transition: background-color 0.3s ease 0s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0747a6;
+  }
+}
+
+.changeBtn {
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #091e4214;
+  }
+}
+
+.changeBtnNo {
+  color: #af1919;
+}
+
+.changeBtnOk {
+  color: #2baf19;
+}

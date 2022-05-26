@@ -7,15 +7,13 @@ import { AppDispatch } from '../../../../store/store';
 import { boardSlice } from '../../../../store/reducers/BoardSlice';
 import Confirmation from '../../../../components/Confirmation';
 import deleteImg from '../../../../assets/delete.svg';
-import editImg from '../../../../assets/edit.svg';
 import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../portals/ModalPortal';
-import ModalTask from '../ModalTask';
-import { TAskModalMode } from '../../types';
 import TaskDetails from '../TaskDetails';
 import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks/BoardThunks';
 
 import cl from './Task.module.scss';
+import EditTaskModal from '../EditTaskModal';
 
 interface ITaskView extends ITask {
   reorderTask: () => void;
@@ -103,13 +101,10 @@ const Task = ({
 
   return (
     <div ref={taskRef} className={isDragging ? `${cl.itemTask} ${cl.hide}` : cl.itemTask}>
-      <div className={cl.taskTitle} onClick={() => setIsTaskDetails(true)}>
+      <div className={cl.taskTitle} onClick={showModal}>
         {title}
       </div>
       <div className={cl.taskBtnContainer}>
-        <button className={cl.buttonTask} onClick={showModal}>
-          <img src={editImg} alt="edit" />
-        </button>
         <button
           className={cl.buttonTask}
           onClick={() => {
@@ -120,8 +115,7 @@ const Task = ({
         </button>
       </div>
       <ModalPortal isActive={isUpdate} close={closeModal}>
-        <ModalTask
-          mode={TAskModalMode.UPDATE}
+        <EditTaskModal
           handleClose={closeModal}
           updateTask={updateTask}
           valueDescr={description}

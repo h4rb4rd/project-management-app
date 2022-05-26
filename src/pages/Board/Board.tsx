@@ -3,35 +3,38 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Link, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { AppDispatch, RootState } from '../../store/store';
+import { AppDispatch } from '../../store/store';
 import Column from './components/Column';
+import EditBoard from './components/EditBoard';
+import editImg from '../../assets/edit.svg';
 import { getNewOrder } from '../../utils/board';
 import ModalPortal from '../../portals/ModalPortal';
 import ModalColumnAdd from './components/ModalColumnAdd';
 import preloaderImg from '../../assets/preloader.svg';
 import { RouteNames } from '../../components/AppRouter/types';
+import { useAppSelector } from '../../hooks/redux';
 import { addColumnItem, getBoard, updateColumnItem } from '../../store/thunks/BoardThunks';
 
 import cl from './Board.module.scss';
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { error, columnList, board, isLoading } = useSelector(
-    (state: RootState) => state.BoardReducer
-  );
+  const { error, columnList, board, isLoading } = useAppSelector((state) => state.BoardReducer);
+  const { isPending } = useAppSelector((state) => state.BoardsReducer);
+
   const params = useParams();
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
   const { t } = useTranslation();
 
   const boardId = params.id || '';
 
   useEffect(() => {
     dispatch(getBoard(boardId));
-  }, [boardId]);
+  }, [boardId, isPending]);
 
   useEffect(() => {
     if (error) {
@@ -78,7 +81,19 @@ const Board = () => {
           <div className={cl.breadcrumbs}>
             <Link to={RouteNames.BOARDS}>{t('board.breadcrumbs')}</Link>
             <span>&#62;</span>
-            <h2 className={cl.title}>{board?.title.split('ʵ')?.[0]}</h2>
+            {isEditable ? (
+              <EditBoard
+                id={boardId}
+                title={board?.title.split('ʵ')?.[0]}
+                color={board?.title.split('ʵ')?.[1]}
+                handleClose={() => setIsEditable(false)}
+              />
+            ) : (
+              <h2 className={cl.title} onClick={() => setIsEditable(true)}>
+                {board?.title.split('ʵ')?.[0]}
+                <img className={cl.icon} src={editImg} alt="edit" />
+              </h2>
+            )}
           </div>
           <button className={cl.btnColumnAdd} onClick={showAddColumnDialog}>
             <span className={cl.iconAdd}>+</span>
@@ -112,7 +127,6 @@ const Board = () => {
             <img src={preloaderImg} alt="preloader" />
           </div>
         )}
-
         <ModalPortal isActive={isShowColumnAdd} close={handleCloseModal}>
           <ModalColumnAdd handleClose={handleCloseModal} addColumn={addColumn} />
         </ModalPortal>

@@ -13,7 +13,6 @@ import { IColumn } from '../../../../models/IColumns';
 import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../portals/ModalPortal';
 import ModalTaskAdd from '../ModalTask';
-import { TAskModalMode } from '../../types';
 import Task from '../Task';
 import {
   addTaskItem,
@@ -186,11 +185,11 @@ const Column = ({ columnId, title, order, boardId, taskList, reorderColumn }: IC
               }}
               autoFocus
             />
-            <button className={`${cl.changeBtn} ${cl.changeBtnNo}`} onClick={handleNo}>
-              &#10008;
-            </button>
             <button className={`${cl.changeBtn} ${cl.changeBtnOk}`} onClick={handleOk}>
               &#10004;
+            </button>
+            <button className={`${cl.changeBtn} ${cl.changeBtnNo}`} onClick={handleNo}>
+              &#10008;
             </button>
           </div>
         ) : (
@@ -230,7 +229,7 @@ const Column = ({ columnId, title, order, boardId, taskList, reorderColumn }: IC
         <span>{t('column.btnAdd')}</span>
       </button>
       <ModalPortal isActive={isShowTaskAdd} close={handleCloseModal}>
-        <ModalTaskAdd mode={TAskModalMode.ADD} handleClose={handleCloseModal} addTask={addTask} />
+        <ModalTaskAdd handleClose={handleCloseModal} addTask={addTask} />
       </ModalPortal>
       <ModalPortal
         isActive={isShowConfirm}

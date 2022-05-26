@@ -1,34 +1,25 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 
-import { TAskModalMode, TaskFormType } from '../../types';
+import { TaskFormType } from '../../types';
 
 import cl from './ModalTask.module.scss';
 
 interface IModalTaskAdd {
   handleClose: () => void;
-  mode: TAskModalMode;
   valueTitle?: string;
   valueDescr?: string;
   addTask?: (title: string, descr: string) => void;
   updateTask?: (title: string, descr: string) => void;
 }
 
-const ModalTask = ({
-  addTask,
-  handleClose,
-  mode,
-  updateTask,
-  valueDescr,
-  valueTitle,
-}: IModalTaskAdd) => {
+const ModalTask = ({ addTask, handleClose, valueDescr, valueTitle }: IModalTaskAdd) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
   } = useForm<TaskFormType>({
     mode: 'onSubmit',
@@ -41,11 +32,7 @@ const ModalTask = ({
   const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<TaskFormType> = ({ titleTask, descrTask }) => {
-    if (mode === TAskModalMode.ADD) {
-      addTask?.call(null, titleTask, descrTask);
-    } else {
-      updateTask?.call(null, titleTask, descrTask);
-    }
+    addTask?.call(null, titleTask, descrTask);
 
     reset({
       titleTask: '',
@@ -83,7 +70,9 @@ const ModalTask = ({
             id="idDescrTask"
           />
           <div className={cl.btmFormContainer}>
-            <button className={cl.btnOk}>{t('modalTask.btnAdd')}</button>
+            <button className={cl.btnOk} type="submit">
+              {t('modalTask.btnAdd')}
+            </button>
           </div>
         </form>
       </div>

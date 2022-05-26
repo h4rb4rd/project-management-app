@@ -142,5 +142,13 @@
     "title": "Ваши рабочие пространства",
     "subtitle": "Доски",
     "placeholder": "Не удалось найти подходящей доски"
+  },
+  "editTaskModal": {
+    "title": "Название",
+    "description": "Описание",
+    "btnSave": "Сохранить",
+    "btnCancel": "Отмена",
+    "btnChange": "Изменить",
+    "btnClose": "Закрыть"
   }
 }

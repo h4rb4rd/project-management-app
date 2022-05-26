@@ -36,8 +36,26 @@
 }
 
 .title {
+  position: relative;
   font-size: 1.6rem;
   font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    .icon {
+      display: block;
+    }
+  }
+}
+
+.icon {
+  display: none;
+  position: absolute;
+  top: 0.5rem;
+  right: -1.8rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  object-fit: cover;
 }
 
 .boardContainer {
@@ -137,7 +155,7 @@
   }
 }
 
-@media screen and (max-width: 479.98px) {
+@media screen and (max-width: 490.98px) {
   .breadcrumbs {
     margin-bottom: 1rem;
   }
