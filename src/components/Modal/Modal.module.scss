@@ -29,3 +29,13 @@
   color: #b3bac5;
   cursor: pointer;
 }
+
+@media screen and (max-width: 479.98px) {
+  .content {
+    max-width: 32rem;
+    width: 100%;
+  }
+  .content {
+    padding: 1rem 2rem;
+  }
+}

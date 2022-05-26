@@ -19,9 +19,9 @@
   border-radius: 3px;
   padding: 2.5rem 4rem;
   margin-top: 2rem;
-  z-index: 500;
 
   h2 {
+    text-align: center;
     color: #5e6c84;
     font-size: 1.6rem;
     line-height: 2.8rem;
@@ -101,6 +101,23 @@
 
 @media screen and (max-width: 479.98px) {
   .container {
-    max-width: 31rem;
+    max-width: 32rem;
+    padding: 1rem 2rem;
+  }
+
+  .or {
+    &:before,
+    &:after {
+      width: 12rem;
+    }
+  }
+}
+
+@media screen and (max-width: 345.98px) {
+  .or {
+    &:before,
+    &:after {
+      width: 10.5rem;
+    }
   }
 }

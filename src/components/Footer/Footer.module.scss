@@ -1,7 +1,6 @@
 .footer {
   display: flex;
   align-items: center;
-  // min-height: 6.5rem;
   background-color: #fff;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
   margin-top: auto;
@@ -83,6 +82,10 @@
 }
 
 @media screen and (max-width: 479.98px) {
+  .footer {
+    padding: 0;
+  }
+
   .githubs {
     display: none;
     order: 2;

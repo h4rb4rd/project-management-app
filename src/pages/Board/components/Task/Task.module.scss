@@ -57,3 +57,9 @@
     background-color: #091e4214;
   }
 }
+
+@media screen and (max-width: 767.98px) {
+  .taskBtnContainer {
+    display: flex;
+  }
+}
