@@ -22,8 +22,9 @@ import cl from './Board.module.scss';
 
 const Board = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { error, columnList, board, isLoading } = useAppSelector((state) => state.BoardReducer);
-  const { isPending } = useAppSelector((state) => state.BoardsReducer);
+  const { error, columnList, title, color, isLoading } = useAppSelector(
+    (state) => state.BoardReducer
+  );
 
   const params = useParams();
   const [isShowColumnAdd, setIsShowColumnAdd] = useState(false);
@@ -34,7 +35,7 @@ const Board = () => {
 
   useEffect(() => {
     dispatch(getBoard(boardId));
-  }, [boardId, isPending]);
+  }, [boardId]);
 
   useEffect(() => {
     if (error) {
@@ -84,14 +85,16 @@ const Board = () => {
             {isEditable ? (
               <EditBoard
                 id={boardId}
-                title={board?.title.split('ʵ')?.[0]}
-                color={board?.title.split('ʵ')?.[1]}
+                title={title}
+                color={color}
                 handleClose={() => setIsEditable(false)}
               />
             ) : (
-              <h2 className={cl.title} onClick={() => setIsEditable(true)}>
-                {board?.title.split('ʵ')?.[0]}
-                <img className={cl.icon} src={editImg} alt="edit" />
+              <h2 className={cl.title}>
+                {title}
+                <div className={cl.icon} onClick={() => setIsEditable(true)}>
+                  <img src={editImg} alt="edit" />
+                </div>
               </h2>
             )}
           </div>
@@ -101,10 +104,7 @@ const Board = () => {
           </button>
         </div>
         {!isLoading ? (
-          <div
-            className={cl.boardContainer}
-            style={{ backgroundColor: board?.title.split('ʵ')?.[1] }}
-          >
+          <div className={cl.boardContainer} style={{ backgroundColor: color }}>
             {columnList.length ? (
               columnList.map(({ id, order, title, tasks }, index) => (
                 <Column

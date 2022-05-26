@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IBoard } from '../../models/IBoard';
-import { createBoard, deleteBoard, getBoards, updateBoard } from '../thunks/BoardsThunks';
+import { createBoard, deleteBoard, getBoards } from '../thunks/BoardsThunks';
 
 interface boardsSlice {
   isModalOpen: boolean;
@@ -61,18 +61,6 @@ export const boardsSlice = createSlice({
       state.boards = state.boards.filter((board) => board.id !== action.payload);
     },
     [deleteBoard.rejected.type]: (state, action: PayloadAction<string>) => {
-      state.isPending = false;
-      state.error = action.payload;
-    },
-    [updateBoard.pending.type]: (state) => {
-      state.isPending = true;
-    },
-    [updateBoard.fulfilled.type]: (state, action: PayloadAction<IBoard[]>) => {
-      state.isPending = false;
-      state.error = '';
-      state.boards = action.payload;
-    },
-    [updateBoard.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isPending = false;
       state.error = action.payload;
     },

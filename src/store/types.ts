@@ -5,6 +5,8 @@ export interface IInitStateBoard {
   columnList: IBoardColumn[];
   isLoading: boolean;
   error: string;
+  title: string;
+  color: string;
 }
 
 export interface IMoveColumnItem {

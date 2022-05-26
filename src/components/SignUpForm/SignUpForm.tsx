@@ -48,8 +48,13 @@ const SignUpForm = () => {
     dispatch(setLogin(''));
     dispatch(setPassword(''));
     dispatch(setPasswordConfirm(''));
-    reset(initialState);
   };
+
+  useEffect(() => {
+    if (isPending === false) {
+      reset(initialState);
+    }
+  }, [isPending]);
 
   useEffect(() => {
     const subscription = watch(({ name, login, password, passwordConfirm }) => {

@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { EditBoardType } from './types';
 import Color from './Fields/Color';
-import { useAppDispatch } from '../../../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
 import { updateBoard } from '../../../../store/thunks/BoardsThunks';
 import Title from './Fields/Title';
 
@@ -19,6 +19,8 @@ interface EditBoardProps {
 }
 
 const EditBoard = ({ id, title = '', color = '', handleClose }: EditBoardProps) => {
+  const { error } = useAppSelector((state) => state.BoardsReducer);
+
   const {
     formState,
     register,
@@ -39,6 +41,12 @@ const EditBoard = ({ id, title = '', color = '', handleClose }: EditBoardProps) 
     handleClose();
     reset();
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     if (formState.errors.title) {

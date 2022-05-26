@@ -46,8 +46,7 @@ export const updateBoard = createAsyncThunk(
   'boards/updateBoard',
   async (payload: { id: string; title: string }, thunkAPI) => {
     try {
-      await BoardsService.updateBoard(payload.id, payload.title);
-      const response = await BoardsService.getBoards();
+      const response = await BoardsService.updateBoard(payload.id, payload.title);
       return response.data;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {

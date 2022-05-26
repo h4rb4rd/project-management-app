@@ -7,13 +7,14 @@ import { AppDispatch } from '../../../../store/store';
 import { boardSlice } from '../../../../store/reducers/BoardSlice';
 import Confirmation from '../../../../components/Confirmation';
 import deleteImg from '../../../../assets/delete.svg';
+import editImg from '../../../../assets/edit.svg';
+import EditTaskModal from '../EditTaskModal';
 import { ITask } from '../../../../models/ITask';
 import ModalPortal from '../../../../portals/ModalPortal';
-import TaskDetails from '../TaskDetails';
+import TaskDetailsModal from '../TaskDetailsModal';
 import { deleteTaskItem, updateTaskItem } from '../../../../store/thunks/BoardThunks';
 
 import cl from './Task.module.scss';
-import EditTaskModal from '../EditTaskModal';
 
 interface ITaskView extends ITask {
   reorderTask: () => void;
@@ -31,11 +32,12 @@ const Task = ({
 }: ITaskView) => {
   const dispatch = useDispatch<AppDispatch>();
   const taskRef = useRef(null);
-  const [isUpdate, setIsUpdate] = useState(false);
+
   const [isShowConfirm, setIsShowConfirm] = useState(false);
-  const [isTaskDetails, setIsTaskDetails] = useState(false);
   const { t } = useTranslation();
   const { moveTaskItem } = boardSlice.actions;
+  const [isDetailsModal, setIsDetailsModal] = useState(false);
+  const [isEditModal, setIsEditModal] = useState(false);
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'task',
@@ -88,23 +90,18 @@ const Task = ({
         userId,
       })
     );
-    closeModal();
-  };
-
-  const closeModal = () => {
-    setIsUpdate(false);
-  };
-
-  const showModal = () => {
-    setIsUpdate(true);
+    setIsDetailsModal(false);
   };
 
   return (
     <div ref={taskRef} className={isDragging ? `${cl.itemTask} ${cl.hide}` : cl.itemTask}>
-      <div className={cl.taskTitle} onClick={showModal}>
+      <div className={cl.taskTitle} onClick={() => setIsDetailsModal(true)}>
         {title}
       </div>
       <div className={cl.taskBtnContainer}>
+        <button className={cl.buttonTask} onClick={() => setIsEditModal(true)}>
+          <img src={editImg} alt="delete" />
+        </button>
         <button
           className={cl.buttonTask}
           onClick={() => {
@@ -114,9 +111,17 @@ const Task = ({
           <img src={deleteImg} alt="delete" />
         </button>
       </div>
-      <ModalPortal isActive={isUpdate} close={closeModal}>
+      <ModalPortal isActive={isDetailsModal} close={() => setIsDetailsModal(false)}>
+        <TaskDetailsModal
+          handleClose={() => setIsDetailsModal(false)}
+          updateTask={updateTask}
+          valueDescr={description}
+          valueTitle={title}
+        />
+      </ModalPortal>
+      <ModalPortal isActive={isEditModal} close={() => setIsEditModal(false)}>
         <EditTaskModal
-          handleClose={closeModal}
+          handleClose={() => setIsEditModal(false)}
           updateTask={updateTask}
           valueDescr={description}
           valueTitle={title}
@@ -133,20 +138,6 @@ const Task = ({
           confirm={deleteTask}
           close={() => {
             setIsShowConfirm(false);
-          }}
-        />
-      </ModalPortal>
-      <ModalPortal
-        isActive={isTaskDetails}
-        close={() => {
-          setIsTaskDetails(false);
-        }}
-      >
-        <TaskDetails
-          title={title}
-          description={description}
-          close={() => {
-            setIsTaskDetails(false);
           }}
         />
       </ModalPortal>

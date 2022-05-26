@@ -22,12 +22,15 @@ import {
   updateColumnItem,
   updateTaskItem,
 } from '../thunks/BoardThunks';
+import { updateBoard } from '../thunks/BoardsThunks';
 
 export const initialStateBoard: IInitStateBoard = {
   board: null,
   columnList: [],
   isLoading: false,
   error: '',
+  title: '',
+  color: '',
 };
 
 export const boardSlice = createSlice({
@@ -73,6 +76,9 @@ export const boardSlice = createSlice({
     [getBoard.fulfilled.type]: (state, action: PayloadAction<IBoard>) => {
       state.board = action.payload;
 
+      const title = action.payload.title.split('ʵ')?.[0];
+      const color = action.payload.title.split('ʵ')?.[1];
+
       const columns = action.payload.columns;
       columns.sort((column1, column2) => column1.order - column2.order);
 
@@ -82,7 +88,8 @@ export const boardSlice = createSlice({
           tasks.sort((task1, task2) => task1.order - task2.order);
         });
       }
-
+      state.title = title;
+      state.color = color;
       state.columnList = columns;
       state.isLoading = false;
       state.error = '';
@@ -184,6 +191,22 @@ export const boardSlice = createSlice({
       state.columnList[fromColumn].tasks.splice(indexTask, 1);
     },
     [transferTaskItem.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [updateBoard.pending.type]: (state) => {
+      state.isLoading = true;
+    },
+    [updateBoard.fulfilled.type]: (state, action: PayloadAction<IBoard>) => {
+      const title = action.payload.title.split('ʵ')?.[0];
+      const color = action.payload.title.split('ʵ')?.[1];
+
+      state.isLoading = false;
+      state.error = '';
+      state.title = title;
+      state.color = color;
+    },
+    [updateBoard.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },

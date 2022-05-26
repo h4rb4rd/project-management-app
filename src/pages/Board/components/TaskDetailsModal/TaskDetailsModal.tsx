@@ -6,9 +6,9 @@ import { toast, ToastContainer } from 'react-toastify';
 
 import { TaskFormType } from '../../types';
 
-import cl from './EditTaskModal.module.scss';
+import cl from './TaskDetailsModal.module.scss';
 
-interface EditTaskModalProps {
+interface TaskDetailsModalProps {
   handleClose: () => void;
   valueTitle?: string;
   valueDescr?: string;
@@ -16,7 +16,13 @@ interface EditTaskModalProps {
   updateTask?: (title: string, descr: string) => void;
 }
 
-const EditTaskModal = ({ handleClose, updateTask, valueDescr, valueTitle }: EditTaskModalProps) => {
+const TaskDetailsModal = ({
+  handleClose,
+  updateTask,
+  valueDescr,
+  valueTitle,
+}: TaskDetailsModalProps) => {
+  const [isEditable, setIsEditable] = useState(false);
   const titleRef = useRef<HTMLLabelElement | null>(null);
   const {
     watch,
@@ -36,11 +42,9 @@ const EditTaskModal = ({ handleClose, updateTask, valueDescr, valueTitle }: Edit
     updateTask?.call(null, titleTask, descrTask);
 
     reset({
-      titleTask: titleTask,
-      descrTask: descrTask,
+      titleTask: '',
+      descrTask: '',
     });
-
-    handleClose();
   };
 
   useEffect(() => {
@@ -49,6 +53,15 @@ const EditTaskModal = ({ handleClose, updateTask, valueDescr, valueTitle }: Edit
     });
     return () => subscription.unsubscribe();
   }, [watch]);
+  const onClose = () => {
+    setIsEditable(false);
+    handleClose();
+  };
+
+  const onChange = () => {
+    setIsEditable(true);
+    titleRef.current?.click();
+  };
 
   useEffect(() => {
     if (errors.descrTask) {
@@ -71,25 +84,42 @@ const EditTaskModal = ({ handleClose, updateTask, valueDescr, valueTitle }: Edit
               required: t('modalTask.titleRequired'),
             })}
             type="text"
+            className={clsx(!isEditable && cl.preview)}
             id="titleEditId"
-            autoFocus
           />
           <label htmlFor="descrEditId">{t('editTaskModal.description')}</label>
           <textarea
             {...register('descrTask', {
               required: t('modalTask.descriptionRequired'),
             })}
+            className={clsx(!isEditable && cl.preview)}
             id="descrEditId"
           />
           <div className={cl.btmFormContainer}>
-            <button className={cl.btnOk} type="submit">
-              {t('editTaskModal.btnSave')}
-            </button>
-            <button className={cl.btnOk} onClick={handleClose}>
-              {t('editTaskModal.btnClose')}
-            </button>
+            {isEditable && (
+              <>
+                <button className={cl.btnOk} type="submit">
+                  {t('editTaskModal.btnSave')}
+                </button>
+                <button className={cl.btnOk} onClick={() => setIsEditable(false)} type="button">
+                  {t('editTaskModal.btnCancel')}
+                </button>
+              </>
+            )}
           </div>
         </form>
+        <div className={cl.btmFormContainer}>
+          {!isEditable && (
+            <>
+              <button className={cl.btnOk} onClick={onChange} type="button">
+                {t('editTaskModal.btnChange')}
+              </button>
+              <button className={cl.btnOk} onClick={onClose}>
+                {t('editTaskModal.btnClose')}
+              </button>
+            </>
+          )}
+        </div>
       </div>
       <ToastContainer
         position="bottom-right"
@@ -107,4 +137,4 @@ const EditTaskModal = ({ handleClose, updateTask, valueDescr, valueTitle }: Edit
   );
 };
 
-export default EditTaskModal;
+export default TaskDetailsModal;
