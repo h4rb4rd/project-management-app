@@ -6,11 +6,22 @@ import { RouteNames } from '../AppRouter/types';
 
 import cl from './Logo.module.scss';
 
-const Logo = () => {
+interface LogoProps {
+  closeBurger?: () => void;
+}
+const Logo = ({ closeBurger }: LogoProps) => {
   const navigate = useNavigate();
 
+  const handleClick = () => {
+    if (closeBurger) {
+      closeBurger();
+    }
+
+    navigate(RouteNames.HOME);
+  };
+
   return (
-    <button className={cl.logo} onClick={() => navigate(RouteNames.HOME)}>
+    <button className={cl.logo} onClick={handleClick}>
       <img src={logoImage} alt="logo" />
       <span>Trello</span>
     </button>

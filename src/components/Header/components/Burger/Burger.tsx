@@ -14,17 +14,21 @@ const Burger = () => {
     setIsOpen((prevState) => !prevState);
   };
 
+  const closeBurger = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div className={cl.container}>
       <button className={clsx(cl.button, isOpen && cl.open)} onClick={toggleBurger}>
         <span className={cl.burger} />
       </button>
-      <div className={clsx(cl.menu, isOpen && cl.open)} onClick={() => setIsOpen(false)}>
+      <div className={clsx(cl.menu, isOpen && cl.open)} onClick={closeBurger}>
         <div className={cl.content} onClick={(e) => e.stopPropagation()}>
-          <Logo />
+          <Logo closeBurger={closeBurger} />
           <hr className={cl.selector} />
-          <NavBar />
-          <AuthBar />
+          <NavBar closeBurger={closeBurger} />
+          <AuthBar closeBurger={closeBurger} />
         </div>
       </div>
     </div>

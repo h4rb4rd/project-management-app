@@ -6,7 +6,10 @@ import { RouteNames } from '../AppRouter/types';
 
 import cl from './NavBar.module.scss';
 
-const NavBar = () => {
+interface NavBarProps {
+  closeBurger?: () => void;
+}
+const NavBar = ({ closeBurger }: NavBarProps) => {
   const { t } = useTranslation();
   const token = localStorage.getItem('token');
 
@@ -16,8 +19,8 @@ const NavBar = () => {
 
   return (
     <nav className={cl.links}>
-      <NavLink text={t('navbar.main')} path={RouteNames.HOME} />
-      <NavLink text={t('navbar.boards')} path={RouteNames.BOARDS} />
+      <NavLink text={t('navbar.main')} path={RouteNames.HOME} closeBurger={closeBurger} />
+      <NavLink text={t('navbar.boards')} path={RouteNames.BOARDS} closeBurger={closeBurger} />
     </nav>
   );
 };
