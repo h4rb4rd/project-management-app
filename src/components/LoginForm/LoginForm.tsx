@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { authSlice } from '../../store/reducers/AuthSlice';
 import { FormDataType } from '../FormUI/types';
 import { initialState, loginFormSlice } from '../../store/reducers/LoginFormSlice';
 import Login from '../FormUI/Fields/Login';
@@ -16,11 +17,12 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import cl from './LoginForm.module.scss';
 
 const LoginForm = () => {
-  const { isPending, error } = useAppSelector((state) => state.AuthReducer);
+  const { isPending, error, isSuccess } = useAppSelector((state) => state.AuthReducer);
   const { login, password } = useAppSelector((state) => state.LoginFormReducer);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { setLogin, setPassword } = loginFormSlice.actions;
+  const { setError } = authSlice.actions;
 
   const {
     formState,
@@ -44,10 +46,10 @@ const LoginForm = () => {
   };
 
   useEffect(() => {
-    if (isPending === false) {
+    if (isSuccess === true) {
       reset(initialState);
     }
-  }, [isPending]);
+  }, [isSuccess]);
 
   useEffect(() => {
     const subscription = watch(({ login, password }) => {
@@ -61,6 +63,7 @@ const LoginForm = () => {
     if (error) {
       toast.error(error);
     }
+    dispatch(setError(''));
   }, [error]);
 
   useEffect(() => {
@@ -70,6 +73,8 @@ const LoginForm = () => {
     if (formState.errors.password) {
       toast.error(errors.password?.message);
     }
+
+    toast.clearWaitingQueue();
   }, [formState.isSubmitting]);
 
   return (
@@ -85,18 +90,6 @@ const LoginForm = () => {
       </button>
       <hr className={cl.selector} />
       <Link to="/signup">{t('loginForm.signUpAccount')}</Link>
-      <ToastContainer
-        position="bottom-right"
-        theme="colored"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-      />
     </form>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { FormDataType } from '../FormUI/types';
@@ -16,9 +16,10 @@ import { useTranslation } from 'react-i18next';
 import { initialState, signUpFormSlice } from '../../store/reducers/SignUpFormSlice';
 
 import cl from './SignUpForm.module.scss';
+import { authSlice } from '../../store/reducers/AuthSlice';
 
 const SignUpForm = () => {
-  const { isPending, error } = useAppSelector((state) => state.AuthReducer);
+  const { isPending, isSuccess, error } = useAppSelector((state) => state.AuthReducer);
   const { name, login, password, passwordConfirm } = useAppSelector(
     (state) => state.SignUpFormReducer
   );
@@ -41,6 +42,7 @@ const SignUpForm = () => {
     },
   });
   const { setName, setLogin, setPassword, setPasswordConfirm } = signUpFormSlice.actions;
+  const { setError } = authSlice.actions;
 
   const onSubmit: SubmitHandler<FormDataType> = ({ name, login, password }) => {
     dispatch(signUp({ name, login, password }));
@@ -51,10 +53,10 @@ const SignUpForm = () => {
   };
 
   useEffect(() => {
-    if (isPending === false) {
+    if (isSuccess === true) {
       reset(initialState);
     }
-  }, [isPending]);
+  }, [isSuccess]);
 
   useEffect(() => {
     const subscription = watch(({ name, login, password, passwordConfirm }) => {
@@ -66,12 +68,6 @@ const SignUpForm = () => {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
 
   useEffect(() => {
     if (formState.errors.name) {
@@ -86,7 +82,16 @@ const SignUpForm = () => {
     if (formState.errors.passwordConfirm) {
       toast.error(errors.passwordConfirm?.message);
     }
+
+    toast.clearWaitingQueue();
   }, [formState.isSubmitting]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    dispatch(setError(''));
+  }, [error]);
 
   return (
     <form className={cl.form} onSubmit={handleSubmit(onSubmit)}>
@@ -103,18 +108,6 @@ const SignUpForm = () => {
       </button>
       <hr className={cl.selector} />
       <Link to="/login">{t('signUpForm.signInAccount')}</Link>
-      <ToastContainer
-        position="bottom-right"
-        theme="colored"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-      />
     </form>
   );
 };

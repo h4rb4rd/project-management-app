@@ -7,6 +7,7 @@ interface AuthState {
   isPending: boolean;
   isChanged: boolean;
   isChecking: boolean;
+  isSuccess: boolean;
   error: string;
 }
 
@@ -15,6 +16,7 @@ const initialState: AuthState = {
   isPending: false,
   isChanged: false,
   isChecking: false,
+  isSuccess: false,
   error: '',
 };
 
@@ -28,29 +30,38 @@ export const authSlice = createSlice({
     setIsChanged(state, action: PayloadAction<boolean>) {
       state.isChanged = action.payload;
     },
+    setError(state, action: PayloadAction<string>) {
+      state.error = action.payload;
+    },
   },
   extraReducers: {
     [signIn.pending.type]: (state) => {
+      state.isSuccess = false;
       state.isPending = true;
     },
     [signIn.fulfilled.type]: (state, action: PayloadAction<IUser | null>) => {
+      state.isSuccess = true;
       state.isPending = false;
       state.error = '';
       state.user = action.payload;
     },
     [signIn.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isSuccess = false;
       state.isPending = false;
       state.error = action.payload;
     },
     [signUp.pending.type]: (state) => {
+      state.isSuccess = false;
       state.isPending = true;
     },
     [signUp.fulfilled.type]: (state, action: PayloadAction<IUser | null>) => {
+      state.isSuccess = true;
       state.isPending = false;
       state.error = '';
       state.user = action.payload;
     },
     [signUp.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isSuccess = false;
       state.isPending = false;
       state.error = action.payload;
     },

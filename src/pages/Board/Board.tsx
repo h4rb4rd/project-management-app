@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Link, useParams } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -130,18 +130,6 @@ const Board = () => {
         <ModalPortal isActive={isShowColumnAdd} close={handleCloseModal}>
           <ModalColumnAdd handleClose={handleCloseModal} addColumn={addColumn} />
         </ModalPortal>
-        <ToastContainer
-          position="bottom-right"
-          theme="colored"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover
-        />
       </div>
     </DndProvider>
   );

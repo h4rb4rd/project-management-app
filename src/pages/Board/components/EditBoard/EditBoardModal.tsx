@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { EditBoardType } from './types';
@@ -10,6 +10,7 @@ import { updateBoard } from '../../../../store/thunks/BoardsThunks';
 import Title from './Fields/Title';
 
 import cl from './EditBoard.module.scss';
+import { boardSlice } from '../../../../store/reducers/BoardSlice';
 
 interface EditBoardProps {
   id: string;
@@ -20,7 +21,6 @@ interface EditBoardProps {
 
 const EditBoard = ({ id, title = '', color = '', handleClose }: EditBoardProps) => {
   const { error } = useAppSelector((state) => state.BoardsReducer);
-
   const {
     formState,
     register,
@@ -36,6 +36,8 @@ const EditBoard = ({ id, title = '', color = '', handleClose }: EditBoardProps) 
   });
   const dispatch = useAppDispatch();
 
+  const { setError } = boardSlice.actions;
+
   const onSubmit: SubmitHandler<EditBoardType> = ({ title, color }) => {
     dispatch(updateBoard({ id, title: `${title}ʵ${color}` }));
     handleClose();
@@ -46,6 +48,7 @@ const EditBoard = ({ id, title = '', color = '', handleClose }: EditBoardProps) 
     if (error) {
       toast.error(error);
     }
+    dispatch(setError(''));
   }, [error]);
 
   useEffect(() => {
@@ -55,6 +58,8 @@ const EditBoard = ({ id, title = '', color = '', handleClose }: EditBoardProps) 
     if (formState.errors.color) {
       toast.error(errors.color?.message);
     }
+
+    toast.clearWaitingQueue();
   }, [formState.isSubmitting]);
 
   return (
@@ -69,18 +74,6 @@ const EditBoard = ({ id, title = '', color = '', handleClose }: EditBoardProps) 
           &#10008;
         </button>
       </form>
-      <ToastContainer
-        position="bottom-right"
-        theme="colored"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-      />
     </div>
   );
 };

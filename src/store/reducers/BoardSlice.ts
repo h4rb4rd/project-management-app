@@ -68,6 +68,10 @@ export const boardSlice = createSlice({
         item.order = getNewOrder(index);
       });
     },
+
+    setError(state, action: PayloadAction<string>) {
+      state.error = action.payload;
+    },
   },
   extraReducers: {
     [getBoard.pending.type]: (state) => {

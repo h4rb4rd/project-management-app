@@ -19,14 +19,6 @@ const PasswordConfirm = ({ register, watch }: PasswordProps) => {
       <input
         {...register('passwordConfirm', {
           required: t('passwordField.required'),
-          minLength: {
-            value: 4,
-            message: t('passwordField.minLength'),
-          },
-          maxLength: {
-            value: 12,
-            message: t('passwordField.maxLength'),
-          },
           validate: (val: string) => {
             if (watch('password') != val) {
               return t('passwordField.doesNotMuch');

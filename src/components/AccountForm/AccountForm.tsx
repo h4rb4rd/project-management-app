@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { authSlice } from '../../store/reducers/AuthSlice';
 import Confirmation from '../Confirmation';
 import { FormDataType } from '../FormUI/types';
 import { initialState, accountFormSlice } from '../../store/reducers/AccountFormSlice';
@@ -12,10 +14,9 @@ import Login from '../FormUI/Fields/Login';
 import Password from '../FormUI/Fields/Password';
 import preloader from '../../assets/buttonPreloader.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { updateUserData } from '../../store/thunks/AuthThunks';
 
 import cl from './AccountForm.module.scss';
-import { useTranslation } from 'react-i18next';
-import { updateUserData } from '../../store/thunks/AuthThunks';
 
 const AccountForm = () => {
   const { isPending, error } = useAppSelector((state) => state.AuthReducer);
@@ -25,6 +26,7 @@ const AccountForm = () => {
   const [isModalActive, setIsModalActive] = useState(false);
   const { t } = useTranslation();
   const { setName, setLogin, setPassword } = accountFormSlice.actions;
+  const { setError } = authSlice.actions;
 
   const {
     formState,
@@ -71,6 +73,7 @@ const AccountForm = () => {
     if (error) {
       toast.error(error);
     }
+    dispatch(setError(''));
   }, [error]);
 
   useEffect(() => {
@@ -80,6 +83,8 @@ const AccountForm = () => {
     if (formState.errors.name) {
       toast.error(errors.name?.message);
     }
+
+    toast.clearWaitingQueue();
   }, [formState.isSubmitting]);
 
   return (
@@ -101,18 +106,6 @@ const AccountForm = () => {
           close={closeModal}
         />
       </ModalPortal>
-      <ToastContainer
-        position="bottom-right"
-        theme="colored"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-      />
     </form>
   );
 };

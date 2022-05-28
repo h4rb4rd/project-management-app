@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,8 +29,9 @@ const CreateForm = () => {
       color: '#0079bf',
     },
   });
-  const { setIsModalOpen } = boardsSlice.actions;
   const dispatch = useAppDispatch();
+
+  const { setIsModalOpen, setError } = boardsSlice.actions;
 
   const onSubmit: SubmitHandler<FormDataType> = ({ title, color }) => {
     dispatch(createBoard(`${title}ʵ${color}`));
@@ -42,12 +43,16 @@ const CreateForm = () => {
     if (error) {
       toast.error(error);
     }
+
+    dispatch(setError(''));
   }, [error]);
 
   useEffect(() => {
     if (formState.errors.title) {
       toast.error(errors.title?.message);
     }
+
+    toast.clearWaitingQueue();
   }, [formState.isSubmitting]);
 
   return (
@@ -59,18 +64,6 @@ const CreateForm = () => {
       <button className={cl.submit}>
         <span>{t('createForm.btn')}</span>
       </button>
-      <ToastContainer
-        position="bottom-right"
-        theme="colored"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-      />
     </form>
   );
 };
