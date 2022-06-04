@@ -47,12 +47,6 @@ const TaskDetailsModal = ({
     });
   };
 
-  useEffect(() => {
-    const subscription = watch(({ titleTask }) => {
-      if (titleTask) console.log(titleTask);
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
   const onClose = () => {
     setIsEditable(false);
     handleClose();

@@ -43,13 +43,6 @@ const EditTaskModal = ({ handleClose, updateTask, valueDescr, valueTitle }: Edit
   };
 
   useEffect(() => {
-    const subscription = watch(({ titleTask }) => {
-      if (titleTask) console.log(titleTask);
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
-  useEffect(() => {
     if (errors.descrTask) {
       toast.error(errors.descrTask.message);
     }

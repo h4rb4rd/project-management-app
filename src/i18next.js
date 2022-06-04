@@ -10,7 +10,7 @@ i18next
   .init({
     fallbackLng: 'ru',
     whitelist: ['ru', 'en'],
-    debug: true,
+    debug: false,
     detection: {
       order: ['localStorage', 'queryString', 'cookie'],
       caches: ['localStorage', 'cookie'],
