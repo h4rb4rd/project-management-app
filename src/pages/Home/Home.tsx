@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
 import img from '../../assets/home.png';
@@ -10,8 +11,14 @@ import { useAppSelector } from '../../hooks/redux';
 import cl from './Home.module.scss';
 
 const Home = () => {
-  const { user } = useAppSelector((state) => state.AuthReducer);
+  const { user, error } = useAppSelector((state) => state.AuthReducer);
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   return (
     <PageLayout isHeader={true}>

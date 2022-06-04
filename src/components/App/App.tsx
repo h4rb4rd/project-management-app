@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { withErrorBoundary } from 'react-error-boundary';
 import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import AppRouter from '../AppRouter';
@@ -11,12 +12,18 @@ import Preloader from '../../pages/Preloader';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 const App = () => {
-  const { isChecking } = useAppSelector((state) => state.AuthReducer);
+  const { isChecking, error } = useAppSelector((state) => state.AuthReducer);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(checkIsAuth());
   }, []);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   if (isChecking) {
     return <Preloader />;

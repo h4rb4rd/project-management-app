@@ -21,7 +21,12 @@ $api.interceptors.response.use(
     return config;
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
+    if (
+      error.response &&
+      (error.response.status === 401 ||
+        error.response.status === 400 ||
+        error.response.status === 500)
+    ) {
       localStorage.clear();
       window.location.href = '/';
     } else {
