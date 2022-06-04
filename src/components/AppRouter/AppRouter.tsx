@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Account from '../../pages/Account';
 import Boards from '../../pages/Boards';
 import Board from '../../pages/Board';
+import ErrorFallback from '../ErrorFallback';
 import Home from '../../pages/Home';
 import Login from '../../pages/Login';
 import MainLayout from '../../layouts/MainLayout';
@@ -18,7 +19,6 @@ const AppRouter = () => {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Navigate to={RouteNames.HOME} />} />
-
         <Route path={RouteNames.HOME} element={<Home />} />
         <Route element={<PrivateRoutes />}>
           <Route path={RouteNames.BOARDS} element={<Boards />} />
@@ -30,6 +30,7 @@ const AppRouter = () => {
         <Route path={RouteNames.LOGIN} element={<Login />} />
         <Route path={RouteNames.SIGN_UP} element={<SignUp />} />
       </Route>
+      <Route path={RouteNames.ERROR} element={<ErrorFallback />} />
       <Route path={RouteNames.NOT_FOUND} element={<NotFound />} />
     </Routes>
   );

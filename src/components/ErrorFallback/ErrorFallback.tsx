@@ -5,9 +5,16 @@ import img from '../../assets/warning.svg';
 
 import cl from './ErrorFallback.module.scss';
 
-const ErrorFallback = () => {
+interface ErrorFallbackProps {
+  isRedirect?: boolean;
+}
+const ErrorFallback = ({ isRedirect = true }: ErrorFallbackProps) => {
   const refreshPage = () => {
     window.location.reload();
+  };
+
+  const redirectHome = () => {
+    window.location.href = '/home';
   };
 
   const { t } = useTranslation();
@@ -18,7 +25,7 @@ const ErrorFallback = () => {
       <h2>{t('errorFallback.title')}</h2>
       <p>{t('errorFallback.p1')}</p>
       <p>{t('errorFallback.p2')}</p>
-      <button onClick={refreshPage}>{t('errorFallback.btn')}</button>
+      <button onClick={isRedirect ? redirectHome : refreshPage}>{t('errorFallback.btn')}</button>
     </div>
   );
 };

@@ -5,5 +5,6 @@ export enum RouteNames {
   ACCOUNT = '/account',
   LOGIN = '/login',
   SIGN_UP = '/signup',
+  ERROR = '/error',
   NOT_FOUND = '*',
 }

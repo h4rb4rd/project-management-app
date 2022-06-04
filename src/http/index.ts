@@ -1,3 +1,5 @@
+import React from 'react';
+
 import axios from 'axios';
 
 import { getValueWithExpiry } from '../utils/storage';
@@ -21,14 +23,12 @@ $api.interceptors.response.use(
     return config;
   },
   (error) => {
-    if (
-      error.response &&
-      (error.response.status === 401 ||
-        error.response.status === 400 ||
-        error.response.status === 500)
-    ) {
+    if (error.response && error.response.status === 401) {
       localStorage.clear();
       window.location.href = '/';
+    } else if ((error.response && error.response.status === 400) || error.response.status === 500) {
+      localStorage.clear();
+      window.location.href = '/error';
     } else {
       throw error;
     }

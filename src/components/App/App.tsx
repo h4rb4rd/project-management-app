@@ -50,5 +50,5 @@ const App = () => {
 };
 
 export default withErrorBoundary(App, {
-  fallback: <ErrorFallback />,
+  fallback: <ErrorFallback isRedirect={false} />,
 });
