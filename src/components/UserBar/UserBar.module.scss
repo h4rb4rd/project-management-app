@@ -1,0 +1,16 @@
+.userbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  color: #fff;
+  text-transform: uppercase;
+  background: none;
+  background-color: #5243aa;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 600;
+}

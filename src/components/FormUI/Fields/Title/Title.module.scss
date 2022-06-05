@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+
+  label {
+    align-self: flex-start;
+    color: #5e6c84;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  input,
+  label {
+    font-size: 1.4rem;
+  }
+
+  input {
+    background-color: #fafbfc;
+    border: 2px solid #dfe1e6;
+    border-radius: 3px;
+    height: 4.4rem;
+    width: 100%;
+    padding: 0.5rem 1rem;
+
+    &:focus {
+      border: 2px solid #4c9aff;
+    }
+  }
+}
+
+@media screen and (max-width: 479.98px) {
+  .container {
+    input {
+      max-width: 30rem;
+    }
+  }
+}

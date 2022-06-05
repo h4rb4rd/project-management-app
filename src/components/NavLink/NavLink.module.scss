@@ -1,0 +1,23 @@
+a {
+  border-radius: 3px;
+  font-weight: 500;
+  color: #0065ff;
+  text-decoration: none;
+  padding: 0.8rem 0.9rem;
+  margin-right: 1rem;
+  transition: all 0.2s ease 0s;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.active {
+  color: #fff;
+  background-color: #0065ff;
+
+  &:hover {
+    text-decoration: none;
+    background-color: #0747a6;
+  }
+}

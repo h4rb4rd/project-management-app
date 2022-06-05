@@ -1,0 +1,25 @@
+.logo {
+  display: flex;
+  align-items: center;
+  background: none;
+  cursor: pointer;
+
+  img {
+    height: 3rem;
+    width: 3rem;
+    margin-right: 1rem;
+  }
+
+  span {
+    color: #293856;
+    font-size: 3rem;
+    font-weight: 700;
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .logo {
+    justify-content: center;
+    width: 100%;
+  }
+}

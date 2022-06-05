@@ -1,0 +1,154 @@
+.column {
+  border-radius: 0.3rem;
+  width: 100%;
+  max-width: 30rem;
+  background-color: #ebecf0;
+  border-radius: 3px;
+  box-shadow: rgb(0 0 0 / 10%) 0 0 10px;
+  align-self: flex-start;
+  padding: 0 0.5rem;
+}
+
+.columnHeader {
+  display: flex;
+  background-color: #ebecf0;
+  padding-left: 1rem;
+  column-gap: 0.1rem;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.titleBoard {
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #172b4d;
+  font-size: 1.4rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  padding: 0 0.5rem;
+}
+
+.columnBtn {
+  color: #fff;
+  padding: 0.8rem 1.8rem;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease 0s;
+}
+
+.addButton {
+  background-color: #5aac44;
+}
+
+.deleteButton {
+  font-size: 1.2rem;
+  background: none;
+  color: #b3bac5;
+  cursor: pointer;
+}
+
+.taskListContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  width: 100%;
+  max-height: calc(100vh - 50rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem;
+  min-height: 5rem;
+}
+
+.taskListContainer::-webkit-scrollbar {
+  width: 0.7rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.taskListContainer::-webkit-scrollbar-track {
+  width: 0.8rem;
+  border-radius: 3px;
+  background-color: #dadbe2;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.taskListContainer::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: #bfc4ce;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.hide {
+  opacity: 0;
+}
+
+.titleChangeContainer {
+  display: flex;
+  width: 100%;
+  .inputTitle {
+    height: 3rem;
+    border: 1px solid rgba(0, 101, 255, 0.5);
+    background-color: rgba(0, 101, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+    color: #172b4d;
+    font-weight: 500;
+    width: 100%;
+    padding-left: 1rem;
+    margin-right: 0.5rem;
+  }
+
+  .changeBtn {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.6rem;
+    font-weight: bold;
+
+    &:hover {
+      background-color: #091e4214;
+    }
+  }
+
+  .changeBtnNo {
+    color: #af1919;
+  }
+
+  .changeBtnOk {
+    color: #2baf19;
+  }
+}
+
+.btnTaskAdd {
+  display: flex;
+  align-items: center;
+  width: 25rem;
+  background: none;
+  border-radius: 3px;
+  color: #5e6c84;
+  cursor: pointer;
+  transition: background-color 0.3s ease 0s;
+  text-align: left;
+  font-size: 1.4rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+
+  .iconAdd {
+    margin-right: 0.5rem;
+    font-size: 1.6rem;
+    font-weight: 300;
+  }
+
+  &:hover {
+    background-color: #091e4214;
+    color: #172b4d;
+  }
+}
